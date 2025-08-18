@@ -175,11 +175,11 @@ export default function HeroSection() {
                 </div>
               </motion.div>
 
-              {/* CTA Buttons - Performance Optimized */}
+              {/* CTA Buttons - Performance Optimized & Size Matched */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
                   onClick={handleStartBuild}
-                  className="hero-cta group focus:outline-none focus:ring-4 focus:ring-electric-blue/50 focus:ring-offset-2 focus:ring-offset-deep-navy"
+                  className="hero-cta group focus:outline-none focus:ring-4 focus:ring-electric-blue/50 focus:ring-offset-2 focus:ring-offset-deep-navy px-8 py-4 rounded-2xl font-semibold text-lg"
                   data-testid="button-hero-start-build"
                   aria-label="Start Your 7-Day Website Build Process"
                 >
