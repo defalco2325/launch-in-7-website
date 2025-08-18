@@ -3,17 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Critical font preload for LCP optimization -->
+    <!-- CRITICAL: Direct font file preloading for LCP optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@800;900&display=swap"></noscript>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"></noscript>
     
-    <!-- Resource hints for performance -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <!-- Preload exact woff2 files used in hero (Latin subset only for LCP) -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v23/pxiByp8kv8JHgFVrLDD4Z1xlFd2JQEk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v23/pxiByp8kv8JHgFVrLBT5Z1xlFd2JQEk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Load font stylesheets async after preload -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@800;900&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@800;900&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    </noscript>
     
     <!-- Critical CSS for hero section -->
     <style>
@@ -29,14 +34,22 @@
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
         position: relative;
         overflow: hidden;
+        /* Stable height to prevent layout shift during font loading */
+        min-height: 100vh;
+        height: 100vh;
       }
       .hero-headline { 
-        font-family: Poppins, sans-serif; 
+        font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
         font-weight: 900; 
         font-size: clamp(2.5rem, 8vw, 4.5rem);
         line-height: 0.9; 
+        letter-spacing: -0.025em;
         margin: 0;
-        contain: layout paint;
+        contain: layout style paint;
+        /* Critical for LCP - stable dimensions during font swap */
+        min-height: 0.9em;
+        font-display: swap;
+        text-rendering: optimizeSpeed;
       }
       .hero-cta {
         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
@@ -63,21 +76,59 @@
       /* Hide non-critical elements during initial load */
       .hero-decoration { opacity: 0; }
       
-      /* Optimize LCP element */
-      .hero-headline {
+      /* Additional critical hero content */
+      .hero-subtitle {
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-weight: 400;
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+        line-height: 1.6;
+        color: #94a3b8;
+        margin: 0;
+        letter-spacing: -0.01em;
         font-display: swap;
-        text-rendering: optimizeSpeed;
+      }
+      .hero-process {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
       }
       
-      /* Prevent layout shifts */
+      /* Prevent layout shifts during font loading */
       img { max-width: 100%; height: auto; }
       .aspect-video { aspect-ratio: 16 / 9; }
+      
+      /* Defer non-critical animations */
+      .hero-decoration { 
+        opacity: 0; 
+        will-change: auto;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
+    <!-- Critical route script loaded first, analytics deferred -->
     <script type="module" src="/src/main.tsx"></script>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    
+    <!-- Defer non-critical scripts to idle -->
+    <script>
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+          // Load Replit banner when idle
+          const script = document.createElement('script');
+          script.src = 'https://replit.com/public/js/replit-dev-banner.js';
+          script.async = true;
+          document.head.appendChild(script);
+        });
+      } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(() => {
+          const script = document.createElement('script');
+          script.src = 'https://replit.com/public/js/replit-dev-banner.js';
+          script.async = true;
+          document.head.appendChild(script);
+        }, 2000);
+      }
+    </script>
   </body>
 </html>
