@@ -1,0 +1,22 @@
+{
+  "name": "launch-in-7-static",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --config vite.config.static.ts",
+    "build:static": "vite build --config vite.config.static.ts",
+    "preview": "vite preview --config vite.config.static.ts"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.1.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}

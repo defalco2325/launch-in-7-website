@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,28 +26,50 @@ export default function ContactForm() {
     },
   });
 
-  const submitMutation = useMutation({
-    mutationFn: async (data: ContactFormData) => {
-      return apiRequest("POST", "/api/lead", data);
-    },
-    onSuccess: () => {
-      setIsSuccess(true);
-      toast({
-        title: "Message Sent Successfully!",
-        description: "We'll get back to you within 24 hours.",
+  const onSubmit = async (data: ContactFormData) => {
+    try {
+      // Create a form element for Netlify submission
+      const formElement = document.createElement('form');
+      formElement.setAttribute('data-netlify', 'true');
+      formElement.setAttribute('name', 'contact');
+      formElement.style.display = 'none';
+      
+      // Add form fields
+      Object.entries(data).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.name = key;
+        input.value = value || '';
+        formElement.appendChild(input);
       });
-    },
-    onError: (error: any) => {
+      
+      document.body.appendChild(formElement);
+      
+      // Submit to Netlify
+      const formData = new FormData(formElement);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
+      });
+      
+      document.body.removeChild(formElement);
+      
+      if (response.ok) {
+        setIsSuccess(true);
+        toast({
+          title: "Message Sent Successfully!",
+          description: "We'll get back to you within 24 hours.",
+        });
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
       toast({
         title: "Submission Failed",
-        description: error.message || "Please try again later.",
+        description: "Please try again later.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: ContactFormData) => {
-    submitMutation.mutate(data);
+    }
   };
 
   if (isSuccess) {
@@ -73,7 +93,15 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <form 
+      onSubmit={form.handleSubmit(onSubmit)} 
+      className="space-y-6"
+      data-netlify="true"
+      name="contact"
+      method="POST"
+    >
+      {/* Hidden input for Netlify form detection */}
+      <input type="hidden" name="form-name" value="contact" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <Label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -159,11 +187,11 @@ export default function ContactForm() {
 
       <Button
         type="submit"
-        disabled={submitMutation.isPending}
+        disabled={form.formState.isSubmitting}
         className="gradient-bg text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full md:w-auto"
         data-testid="button-submit-contact"
       >
-        {submitMutation.isPending ? "Sending..." : "Send My Project Details"}
+        {form.formState.isSubmitting ? "Sending..." : "Send My Project Details"}
       </Button>
     </form>
   );

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { auditFormSchema, type AuditFormData } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,28 +25,50 @@ export default function AuditForm() {
     },
   });
 
-  const submitMutation = useMutation({
-    mutationFn: async (data: AuditFormData) => {
-      return apiRequest("POST", "/api/audit", data);
-    },
-    onSuccess: () => {
-      setIsSuccess(true);
-      toast({
-        title: "Audit Request Submitted!",
-        description: "We'll review your site and send insights within 24 hours.",
+  const onSubmit = async (data: AuditFormData) => {
+    try {
+      // Create a form element for Netlify submission
+      const formElement = document.createElement('form');
+      formElement.setAttribute('data-netlify', 'true');
+      formElement.setAttribute('name', 'audit');
+      formElement.style.display = 'none';
+      
+      // Add form fields
+      Object.entries(data).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.name = key;
+        input.value = value || '';
+        formElement.appendChild(input);
       });
-    },
-    onError: (error: any) => {
+      
+      document.body.appendChild(formElement);
+      
+      // Submit to Netlify
+      const formData = new FormData(formElement);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
+      });
+      
+      document.body.removeChild(formElement);
+      
+      if (response.ok) {
+        setIsSuccess(true);
+        toast({
+          title: "Audit Request Submitted!",
+          description: "We'll review your site and send insights within 24 hours.",
+        });
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
       toast({
         title: "Submission Failed",
-        description: error.message || "Please try again later.",
+        description: "Please try again later.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: AuditFormData) => {
-    submitMutation.mutate(data);
+    }
   };
 
   if (isSuccess) {
@@ -72,7 +92,15 @@ export default function AuditForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <form 
+      onSubmit={form.handleSubmit(onSubmit)} 
+      className="space-y-6"
+      data-netlify="true"
+      name="audit"
+      method="POST"
+    >
+      {/* Hidden input for Netlify form detection */}
+      <input type="hidden" name="form-name" value="audit" />
       {/* Form Fields Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -174,11 +202,11 @@ export default function AuditForm() {
       <div className="flex flex-col items-center space-y-4 pt-4">
         <Button
           type="submit"
-          disabled={submitMutation.isPending}
+          disabled={form.formState.isSubmitting}
           className="gradient-bg text-white px-12 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect min-w-[240px]"
           data-testid="button-submit-audit"
         >
-          {submitMutation.isPending ? "Submitting..." : "Get My Free Audit"}
+          {form.formState.isSubmitting ? "Submitting..." : "Get My Free Audit"}
         </Button>
         
         {/* Alternative: Schedule a Call */}
