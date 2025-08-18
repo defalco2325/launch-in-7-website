@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// Removed Framer Motion for performance optimization
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,9 +21,7 @@ export default function Header() {
   };
 
   return (
-    <>
-      <a href="#main-content" className="skip-link">Skip to main content</a>
-      <header className="sticky-header fixed top-0 left-0 right-0 z-50 border-b border-white/10" role="banner">
+    <header className="sticky-header fixed top-0 left-0 right-0 z-50 border-b border-white/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -69,7 +67,13 @@ export default function Header() {
               data-testid="button-start-build"
             >
               <span>Start Build</span>
-              <span className="ml-2 animate-pulse">→</span>
+              <motion.div
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="ml-2"
+              >
+                →
+              </motion.div>
             </Button>
             
             {/* Mobile Menu Button */}
@@ -90,9 +94,15 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu - Static for performance */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden glass-card border-b border-white/10 animate-fade-in">
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass-card border-b border-white/10"
+          >
             <div className="px-4 py-6 space-y-6">
               <Link 
                 href="/about"
@@ -121,9 +131,9 @@ export default function Header() {
                 Start Your 7-Day Build
               </Button>
             </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
-    </>
   );
 }

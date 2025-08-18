@@ -1,4 +1,4 @@
-// Removed Framer Motion for performance
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface MetricBadgeProps {
@@ -15,8 +15,12 @@ export default function MetricBadge({
   delay = 0 
 }: MetricBadgeProps) {
   return (
-    <div
-      className="text-center group animate-fade-in"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      className="text-center group"
     >
       <div className="glass-card inline-flex items-center px-8 py-4 rounded-2xl font-bold text-electric-blue mb-6 glow-effect group-hover:scale-105 transition-all duration-300">
         <Icon className="w-6 h-6 mr-3" />
@@ -25,6 +29,6 @@ export default function MetricBadge({
       {description && (
         <p className="text-gray-600 text-lg leading-relaxed max-w-sm mx-auto">{description}</p>
       )}
-    </div>
+    </motion.div>
   );
 }

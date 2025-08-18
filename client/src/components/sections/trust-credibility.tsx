@@ -1,4 +1,4 @@
-// Removed Framer Motion for performance
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 export default function TrustCredibility() {
@@ -36,15 +36,22 @@ export default function TrustCredibility() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* What You Can Expect */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
             >
               <h2 className="font-poppins font-bold text-3xl text-deep-navy mb-8">
                 What You Can Expect
               </h2>
               <div className="space-y-4">
                 {expectations.map((item, index) => (
-                  <div
+                  <motion.div
                     key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
                     className="flex items-start"
                   >
                     <div className="flex-shrink-0 w-6 h-6 bg-success-green rounded-full flex items-center justify-center mr-4 mt-0.5">
@@ -54,13 +61,16 @@ export default function TrustCredibility() {
                       <h3 className="font-semibold text-deep-navy mb-1">{item.title}</h3>
                       <p className="text-gray-600">{item.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
             
             {/* Tools & Stack */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
             >
               <h2 className="font-poppins font-bold text-3xl text-deep-navy mb-8">
                 Our Tools & Stack
@@ -72,15 +82,19 @@ export default function TrustCredibility() {
               {/* Tech Stack Chips */}
               <div className="flex flex-wrap gap-3">
                 {techStack.map((tech, index) => (
-                  <span
+                  <motion.span
                     key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
                     className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

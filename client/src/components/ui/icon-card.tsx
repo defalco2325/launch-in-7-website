@@ -1,4 +1,4 @@
-// Removed Framer Motion for performance
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface IconCardProps {
@@ -15,8 +15,12 @@ export default function IconCard({
   delay = 0 
 }: IconCardProps) {
   return (
-    <div
-      className="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg group relative overflow-hidden animate-fade-in transform hover:scale-105 transition-all duration-300"
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      className="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg group relative overflow-hidden"
     >
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-electric-blue/5 to-neon-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
@@ -32,6 +36,6 @@ export default function IconCard({
           {description}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

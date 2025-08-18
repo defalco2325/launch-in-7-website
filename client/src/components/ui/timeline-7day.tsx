@@ -1,4 +1,4 @@
-// Removed Framer Motion for performance
+import { motion } from "framer-motion";
 
 interface TimelineProps {
   activeDay?: number;
@@ -16,8 +16,11 @@ export default function Timeline7Day({ activeDay = 1 }: TimelineProps) {
     <div className="relative">
       <div className="grid grid-cols-1 md:grid-cols-7 gap-6 md:gap-2">
         {steps.map((step, index) => (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.2 }}
             className={`text-center ${step.span ? `md:col-span-${step.span}` : ""}`}
           >
             <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full font-bold text-lg mb-4 mx-auto text-white ${
@@ -32,14 +35,16 @@ export default function Timeline7Day({ activeDay = 1 }: TimelineProps) {
               {step.title}
             </h3>
             <p className="text-sm text-gray-600">{step.description}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
       
       {/* Progress Line - Hidden on mobile */}
       <div className="hidden md:block absolute top-8 left-8 right-8 h-0.5 bg-gray-300">
-        <div 
+        <motion.div 
           className="h-full gradient-bg transition-all duration-1000"
+          initial={{ width: "0%" }}
+          animate={{ width: `${(activeDay / 7) * 100}%` }}
         />
       </div>
     </div>

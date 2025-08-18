@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
-// Removed Framer Motion for performance
+import { motion } from "framer-motion";
 
 export default function ContactForm() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -54,7 +54,9 @@ export default function ContactForm() {
 
   if (isSuccess) {
     return (
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         className="text-center py-8"
       >
         <div className="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
@@ -66,7 +68,7 @@ export default function ContactForm() {
         <p className="text-gray-600">
           We'll get back to you within 24 hours.
         </p>
-      </div>
+      </motion.div>
     );
   }
 
