@@ -1,124 +1,142 @@
 import { motion } from "framer-motion";
-import { Rocket, Sparkles, Shield, Gauge, Trophy, Users, Code2, Zap } from "lucide-react";
+import { Rocket, Sparkles, Shield, Gauge, Trophy, Users, Code2, Zap, Clock, Award } from "lucide-react";
 import IconCard from "@/components/ui/icon-card";
 
 export default function ServicesSnapshot() {
+  const achievements = [
+    { number: "100%", label: "On-Time", color: "text-success-green", icon: Clock },
+    { number: "50+", label: "Launched", color: "text-electric-blue", icon: Rocket },
+    { number: "7", label: "Days Max", color: "text-tech-orange", icon: Zap },
+    { number: "95%", label: "Satisfied", color: "text-accent-purple", icon: Users }
+  ];
+
   const services = [
     {
       icon: Rocket,
-      title: "Cutting-Edge Tech Stack",
-      description: "Built with the latest frameworks and technologies for maximum performance and scalability.",
-    },
-    {
-      icon: Sparkles,
-      title: "AI-Powered Optimization",
-      description: "Smart algorithms optimize every aspect of your site for superior user engagement and conversions.",
+      title: "Lightning Speed",
+      description: "Advanced tech stack delivers professional sites in record time",
+      color: "electric-blue"
     },
     {
       icon: Shield,
-      title: "Enterprise Security",
-      description: "Bank-level security protocols protect your data and customers with advanced threat detection.",
+      title: "100% Guarantee", 
+      description: "Miss our deadline? Your entire project is completely free",
+      color: "success-green"
     },
     {
-      icon: Gauge,
-      title: "Lightning Performance",
-      description: "Sub-2 second load times with Core Web Vitals scores of 95+ guaranteed across all devices.",
+      icon: Zap,
+      title: "Performance First",
+      description: "Built for speed, SEO, and conversions with best practices",
+      color: "tech-orange"
     },
-  ];
-
-  const achievements = [
-    { number: "50+", label: "Websites Launched", color: "text-electric-blue" },
-    { number: "100%", label: "On-Time Delivery", color: "text-success-green" },
-    { number: "4.9/5", label: "Client Rating", color: "text-tech-orange" },
-    { number: "24/7", label: "Support Available", color: "text-neon-cyan" }
+    {
+      icon: Users,
+      title: "Expert Team",
+      description: "Seasoned developers with proven premium delivery records",
+      color: "accent-purple"
+    }
   ];
 
   return (
-    <section className="py-32 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-electric-blue to-neon-cyan rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-accent-purple to-tech-orange rounded-full blur-3xl"></div>
+    <section className="py-16 bg-white relative overflow-hidden">
+      {/* Subtle Background Effects */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 tech-grid-bg"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-l from-electric-blue/5 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-accent-purple/5 to-transparent rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+        <div className="max-w-6xl mx-auto">
+          {/* Compact Header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12"
           >
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full px-6 py-2 mb-6">
-              <Trophy className="w-5 h-5 text-electric-blue" />
-              <span className="text-electric-blue font-semibold">Award-Winning Excellence</span>
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-electric-blue/5 to-success-green/5 border border-electric-blue/10 rounded-full px-4 py-2 mb-4">
+              <Award className="w-4 h-4 text-electric-blue" />
+              <span className="text-electric-blue font-medium text-sm">Premium Excellence</span>
             </div>
             
-            <h2 className="font-poppins font-black text-4xl lg:text-6xl text-deep-navy mb-6">
+            <h2 className="font-poppins font-black text-3xl lg:text-5xl text-deep-navy mb-4">
               Why Choose <span className="gradient-text">Launch in 7</span>?
             </h2>
             
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              We've revolutionized website development with a perfect blend of cutting-edge technology, 
-              proven methodologies, and unmatched speed. <span className="text-electric-blue font-semibold">Experience the future of web development.</span>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Revolutionary development process combining cutting-edge tech with proven speed.
+              <span className="text-electric-blue font-semibold"> Experience the future.</span>
             </p>
           </motion.div>
 
-          {/* Achievement Stats */}
+          {/* Compact Stats Row */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20"
+            className="flex flex-wrap justify-center gap-6 mb-12"
           >
             {achievements.map((achievement, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="text-center group"
+                className="flex items-center space-x-3 bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
               >
-                <div className="glass-card rounded-3xl p-6 hover:scale-105 transition-all duration-300 glow-effect">
-                  <div className={`text-3xl lg:text-4xl font-black ${achievement.color} mb-2`}>
+                <div className={`p-2 rounded-xl ${
+                  achievement.color === 'text-success-green' ? 'bg-gradient-to-br from-success-green to-success-green/70' :
+                  achievement.color === 'text-electric-blue' ? 'bg-gradient-to-br from-electric-blue to-electric-blue/70' :
+                  achievement.color === 'text-tech-orange' ? 'bg-gradient-to-br from-tech-orange to-tech-orange/70' :
+                  'bg-gradient-to-br from-accent-purple to-accent-purple/70'
+                }`}>
+                  <achievement.icon className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className={`text-2xl font-black ${achievement.color}`}>
                     {achievement.number}
                   </div>
-                  <div className="text-gray-600 font-semibold">{achievement.label}</div>
+                  <div className="text-gray-600 text-sm font-medium">{achievement.label}</div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
           
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Compact Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <IconCard
+              <motion.div
                 key={index}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-                delay={index * 0.15}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group"
+              >
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 hover:border-electric-blue/20 h-full">
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-xl ${
+                    service.color === 'electric-blue' ? 'bg-gradient-to-br from-electric-blue to-electric-blue/70' :
+                    service.color === 'success-green' ? 'bg-gradient-to-br from-success-green to-success-green/70' :
+                    service.color === 'tech-orange' ? 'bg-gradient-to-br from-tech-orange to-tech-orange/70' :
+                    'bg-gradient-to-br from-accent-purple to-accent-purple/70'
+                  } flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <service.icon className="w-6 h-6 text-white" />
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="font-poppins font-bold text-lg text-deep-navy mb-2 group-hover:text-electric-blue transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* Bottom CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8 }}
-            className="text-center mt-20"
-          >
-            <div className="inline-flex items-center space-x-4 glass-card rounded-2xl px-8 py-4 glow-effect">
-              <Users className="w-6 h-6 text-electric-blue" />
-              <span className="text-lg font-semibold text-deep-navy">
-                Join 50+ successful businesses who chose Launch in 7
-              </span>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>
