@@ -11,6 +11,10 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"></noscript>
     
+    <!-- Resource hints for performance -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
     <!-- Critical CSS for hero section -->
     <style>
       /* Critical above-the-fold styles */
@@ -58,6 +62,16 @@
       }
       /* Hide non-critical elements during initial load */
       .hero-decoration { opacity: 0; }
+      
+      /* Optimize LCP element */
+      .hero-headline {
+        font-display: swap;
+        text-rendering: optimizeSpeed;
+      }
+      
+      /* Prevent layout shifts */
+      img { max-width: 100%; height: auto; }
+      .aspect-video { aspect-ratio: 16 / 9; }
     </style>
   </head>
   <body>
