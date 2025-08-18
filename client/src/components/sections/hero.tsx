@@ -152,10 +152,10 @@ export default function HeroSection() {
                 <Button 
                   onClick={handleFreeAudit}
                   variant="outline"
-                  className="glass-card text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:glow-effect transition-all duration-300 border-white/20"
+                  className="bg-white text-deep-navy px-8 py-4 rounded-2xl font-semibold text-lg border-white shadow-lg"
                   data-testid="button-hero-free-audit"
                 >
-                  <Sparkles className="mr-2 w-5 h-5 text-neon-cyan" />
+                  <Sparkles className="mr-2 w-5 h-5 text-electric-blue" />
                   Free Website Audit
                 </Button>
               </motion.div>
