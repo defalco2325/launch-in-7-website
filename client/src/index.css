@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via preload in HTML for better performance */
 
 @tailwind base;
 @tailwind components;
@@ -164,14 +164,40 @@
     50% { transform: translate3d(0, -20px, 0); }
   }
 
+  /* Performance-optimized hero animations */
+  .hero-progress-bar {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: layout paint;
+  }
+  
+  .hero-chevron {
+    will-change: opacity, transform;
+    transform: translateZ(0);
+    contain: layout paint;
+  }
+  
+  .hero-glow-bg {
+    contain: layout paint;
+    transform: translateZ(0);
+  }
+
   /* Mobile Performance Optimizations */
   @media (max-width: 768px) {
     .cutting-edge-gradient {
       /* Reduce gradient complexity on mobile for better performance */
       background: linear-gradient(90deg, #3B82F6 0%, #06B6D4 50%, #10B981 100%);
-      will-change: width;
+      will-change: transform;
       transform: translateZ(0);
       backface-visibility: hidden;
+      contain: layout paint;
+    }
+    
+    .glass-card {
+      /* Simplified backdrop-filter for mobile */
+      backdrop-filter: blur(10px);
+      contain: layout paint;
     }
     
     /* Reduce motion for users who prefer it */
@@ -181,7 +207,16 @@
       }
       
       .cutting-edge-gradient {
-        transition: width 0.3s ease-out;
+        transition: none;
+      }
+      
+      .hero-progress-bar {
+        animation: none;
+        width: 85% !important;
+      }
+      
+      .hero-chevron {
+        animation: none;
       }
     }
   }

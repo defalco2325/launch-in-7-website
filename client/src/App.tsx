@@ -11,6 +11,8 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
+import CriticalCSS from "@/components/performance/CriticalCSS";
+import WebVitals from "@/components/performance/WebVitals";
 
 function Router() {
   return (
@@ -29,6 +31,8 @@ function App() {
       <TooltipProvider>
         <SEOProvider>
           <div className="min-h-screen bg-background">
+            <CriticalCSS />
+            <WebVitals />
             <Header />
             <main className="pt-16">
               <Router />
