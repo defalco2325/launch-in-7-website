@@ -27,7 +27,7 @@ export default function ServicesSnapshot() {
   ];
 
   const achievements = [
-    { number: "500+", label: "Websites Launched", color: "text-electric-blue" },
+    { number: "50+", label: "Websites Launched", color: "text-electric-blue" },
     { number: "100%", label: "On-Time Delivery", color: "text-success-green" },
     { number: "4.9/5", label: "Client Rating", color: "text-tech-orange" },
     { number: "24/7", label: "Support Available", color: "text-neon-cyan" }
@@ -115,7 +115,7 @@ export default function ServicesSnapshot() {
             <div className="inline-flex items-center space-x-4 glass-card rounded-2xl px-8 py-4 glow-effect">
               <Users className="w-6 h-6 text-electric-blue" />
               <span className="text-lg font-semibold text-deep-navy">
-                Join 500+ successful businesses who chose Launch in 7
+                Join 50+ successful businesses who chose Launch in 7
               </span>
             </div>
           </motion.div>

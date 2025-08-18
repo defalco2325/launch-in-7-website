@@ -119,7 +119,7 @@ export default function HeroSection() {
                 className="flex items-center space-x-8"
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">500+</div>
+                  <div className="text-2xl font-bold text-white">50+</div>
                   <div className="text-sm text-gray-400">Sites Launched</div>
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
