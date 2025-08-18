@@ -10,15 +10,15 @@ export default function Footer() {
             {/* Company Info */}
             <div className="lg:col-span-2">
               <div className="font-poppins font-bold text-xl mb-4">Launch in 7</div>
-              <p className="text-gray-200 mb-6 max-w-md">
+              <p className="text-gray-300 mb-6 max-w-md">
                 Conversion-focused, SEO-ready websites delivered in 7 days. We help businesses launch faster without compromising on quality.
               </p>
               <div className="space-y-2">
-                <p className="text-gray-200 flex items-center">
+                <p className="text-gray-300 flex items-center">
                   <Mail className="w-4 h-4 mr-2" />
                   hello@launchin7.com
                 </p>
-                <p className="text-gray-200 flex items-center">
+                <p className="text-gray-300 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
                   (555) 123-7777
                 </p>
@@ -32,7 +32,7 @@ export default function Footer() {
                 <li>
                   <Link 
                     href="/"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-home"
                   >
                     Home
@@ -41,7 +41,7 @@ export default function Footer() {
                 <li>
                   <Link 
                     href="/about"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-about"
                   >
                     About
@@ -50,7 +50,7 @@ export default function Footer() {
                 <li>
                   <Link 
                     href="/contact"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-contact"
                   >
                     Contact
@@ -64,7 +64,7 @@ export default function Footer() {
                         auditSection.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="text-gray-200 hover:text-white transition-colors text-left"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-audit"
                   >
                     Free Audit
@@ -92,7 +92,7 @@ export default function Footer() {
                   </button>
                 </li>
                 <li>
-                  <span className="text-gray-400 cursor-not-allowed">Blog (Coming Soon)</span>
+                  <span className="text-gray-500 cursor-not-allowed">Blog (Coming Soon)</span>
                 </li>
                 <li>
                   <span className="text-gray-500 cursor-not-allowed">Case Studies (Coming Soon)</span>
