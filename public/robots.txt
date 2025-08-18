@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://launchin7.com/sitemap.xml

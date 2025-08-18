@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(210, 25%, 7.8%);
+  --card: hsl(180, 6.7%, 97.1%);
+  --card-foreground: hsl(210, 25%, 7.8%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(210, 25%, 7.8%);
+  --primary: hsl(203.9, 88.3%, 53.1%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 25%, 7.8%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(240, 2%, 90%);
+  --muted-foreground: hsl(210, 25%, 7.8%);
+  --accent: hsl(211.6, 51.4%, 92.7%);
+  --accent-foreground: hsl(203.9, 88.3%, 53.1%);
+  --destructive: hsl(356.3, 90.6%, 54.3%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(201.4, 30.4%, 90.98%);
+  --input: hsl(200, 23.1%, 97.5%);
+  --ring: hsl(202.8, 89.1%, 53.1%);
+  --chart-1: hsl(203.9, 88.3%, 53.1%);
+  --chart-2: hsl(159.8, 100%, 36.1%);
+  --chart-3: hsl(42, 92.8%, 56.3%);
+  --chart-4: hsl(147.1, 78.5%, 41.96%);
+  --chart-5: hsl(341.5, 75.2%, 50.98%);
+  
+  /* Custom brand colors */
+  --deep-navy: hsl(212, 75%, 10%);
+  --electric-blue: hsl(216, 87%, 53%);
+  --aqua: hsl(184, 95%, 44%);
+  --success-green: hsl(158, 85%, 40%);
+  --light-gray: hsl(210, 20%, 98%);
+  
+  /* Fonts */
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(200, 6.7%, 91.2%);
+  --card: hsl(228, 9.8%, 10%);
+  --card-foreground: hsl(0, 0%, 85.1%);
+  --popover: hsl(0, 0%, 0%);
+  --popover-foreground: hsl(200, 6.7%, 91.2%);
+  --primary: hsl(203.8, 87.6%, 52.5%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(195, 15.4%, 94.9%);
+  --secondary-foreground: hsl(210, 25%, 7.8%);
+  --muted: hsl(0, 0%, 9.4%);
+  --muted-foreground: hsl(210, 3.4%, 46.3%);
+  --accent: hsl(205.7, 70%, 7.8%);
+  --accent-foreground: hsl(203.8, 87.6%, 52.5%);
+  --destructive: hsl(356.3, 90.6%, 54.3%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(210, 5.3%, 14.9%);
+  --input: hsl(207.7, 27.7%, 18.4%);
+  --ring: hsl(202.8, 89.1%, 53.1%);
+  --chart-1: hsl(203.9, 88.3%, 53.1%);
+  --chart-2: hsl(159.8, 100%, 36.1%);
+  --chart-3: hsl(42, 92.8%, 56.3%);
+  --chart-4: hsl(147.1, 78.5%, 41.96%);
+  --chart-5: hsl(341.5, 75.2%, 50.98%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins);
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(135deg, var(--electric-blue), var(--aqua));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, var(--electric-blue), var(--aqua));
+  }
+  
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .sticky-header {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  .metric-badge {
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+  }
+}
+
+@layer utilities {
+  .text-deep-navy {
+    color: var(--deep-navy);
+  }
+  
+  .bg-deep-navy {
+    background-color: var(--deep-navy);
+  }
+  
+  .text-electric-blue {
+    color: var(--electric-blue);
+  }
+  
+  .bg-electric-blue {
+    background-color: var(--electric-blue);
+  }
+  
+  .text-aqua {
+    color: var(--aqua);
+  }
+  
+  .bg-aqua {
+    background-color: var(--aqua);
+  }
+  
+  .text-success-green {
+    color: var(--success-green);
+  }
+  
+  .bg-success-green {
+    background-color: var(--success-green);
+  }
+  
+  .bg-light-gray {
+    background-color: var(--light-gray);
+  }
+  
+  .font-poppins {
+    font-family: var(--font-poppins);
+  }
+  
+  .font-inter {
+    font-family: var(--font-inter);
+  }
+}
