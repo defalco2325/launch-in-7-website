@@ -1,4 +1,6 @@
 import { memo, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 // Memoized LCP element to prevent re-renders before paint
 const HeroLCPText = memo(() => {
@@ -12,6 +14,17 @@ const HeroLCPText = memo(() => {
         Cutting-edge, conversion-focused websites that launch your business into the future. 
         <span className="text-cyan-400 font-semibold"> Fast. Professional. Guaranteed.</span>
       </p>
+      
+      <div className="mt-8 flex flex-col sm:flex-row gap-4">
+        <Button 
+          size="lg" 
+          className="hero-cta text-lg px-8 py-4 shadow-2xl shadow-blue-500/20 hover:shadow-blue-500/30 transform hover:scale-105 transition-all duration-200"
+          data-testid="button-get-started"
+        >
+          Start Your 7-Day Journey
+          <ArrowRight className="ml-2 w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 });

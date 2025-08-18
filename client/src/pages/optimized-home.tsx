@@ -4,15 +4,21 @@ import OptimizedHeroSection from "@/components/sections/optimized-hero";
 
 // Route-level code splitting - defer non-critical components
 const LazyGuaranteeExplainer = lazy(() => 
-  import("@/components/sections/guarantee-explainer")
+  import("@/components/sections/guarantee-explainer").catch(() => ({
+    default: () => <div className="h-96 bg-gray-900/20 animate-pulse" />
+  }))
 );
 
 const LazyServicesSnapshot = lazy(() => 
-  import("@/components/sections/services-snapshot")
+  import("@/components/sections/services-snapshot").catch(() => ({
+    default: () => <div className="h-64 bg-gray-900/20 animate-pulse" />
+  }))
 );
 
 const LazyAuditForm = lazy(() => 
-  import("@/components/forms/audit-form")
+  import("@/components/forms/audit-form").catch(() => ({
+    default: () => <div className="h-64 bg-gray-900/20 animate-pulse" />
+  }))
 );
 
 // Minimal skeleton for lazy sections
