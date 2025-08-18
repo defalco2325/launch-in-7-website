@@ -1,0 +1,229 @@
+Build a visually stunning, conversion-focused marketing website for a website-building company with these exact requirements:
+
+Tech & Setup
+
+Framework: Next.js 14 (App Router) + TypeScript + Tailwind CSS.
+
+UI: shadcn/ui, lucide-react icons, Framer Motion for smooth, subtle animations.
+
+Forms: React Hook Form + Zod validation. Lead forms POST to a server action or /api/lead; log submissions and include a Nodemailer transport scaffold with .env.example placeholders (no real send).
+
+SEO: Configure next-seo, generate sitemap.xml and robots.txt, add OpenGraph/Twitter meta, and FAQ JSON-LD.
+
+Performance: Target Lighthouse ≥95 across Performance/SEO/Best Practices/Accessibility.
+
+Analytics: Add a simple placeholder snippet (e.g., Vercel/Umami/GA) with a TODO for the ID.
+
+Style & Branding
+
+Look: Apple/Stripe-inspired minimalism; premium and trustworthy with bold type and generous whitespace.
+
+Colors (no purple):
+
+Deep Navy #0F172A (or #111827) for authority/headers/hero backgrounds
+
+White #FFFFFF and Light Gray #F9FAFB for clean sections
+
+Accent gradient Electric Blue → Aqua (#2563EB → #06B6D4) for CTAs/highlights
+
+Success Green #10B981 for guarantee badges/success states
+
+Typography:
+
+Headlines: Poppins or Inter (bold weights)
+
+Body: Inter or Open Sans
+
+Animation: Framer Motion fade-ins/slide-ups; tasteful only (no gimmicks).
+
+Information Architecture (Pages)
+
+/ – Landing (primary funnel)
+
+/about – Story, values, process
+
+/contact – Lead form + guarantee reminder
+
+Important: Do not create or link any Pricing page. No pricing displays anywhere.
+
+Global Components
+
+Sticky header with text logo (placeholder “Launch in 7” unless changed), nav (About, Contact), and persistent CTA “Start Your 7-Day Build”.
+
+Mobile sticky bottom bar with the same CTA.
+
+Footer with company blurb, quick links, email/phone placeholders, micro-FAQ links, and legal.
+
+Homepage Sections (exact order)
+
+Hero — 7-Day Hook
+
+H1: “Your New Website, Live in 7 Days.”
+
+Sub: “Conversion-focused, SEO-ready builds designed to grow your business fast.”
+
+Primary CTA (gradient): “Start Your 7-Day Build”
+
+Secondary CTA: “Get a Free Website Audit”
+
+Guarantee Badge: “7-Day Turnaround Guarantee — or it’s Free”
+
+Visual: full-width abstract gradient with subtle animated device mockup frame (placeholder image).
+
+7-Day Guarantee (Explainer)
+
+Short statement: “If we miss the 7-day launch due to our process, your build is free.”
+
+Horizontal timeline Day 1→7:
+
+Day 1: Strategy & intake
+
+Day 2–3: UX/UI design
+
+Day 4–6: Build & integrations
+
+Day 7: QA & launch
+
+Animated progress indicator/icons for each day.
+
+Services Snapshot (no pricing)
+
+Four cards with icons + benefits:
+
+Custom Website Design & Development (mobile-first, UX-driven)
+
+SEO & Performance Optimization (Core Web Vitals)
+
+E-Commerce / Bookings Integration (checkout/appointments)
+
+Ongoing Support & Maintenance (updates, security, uptime)
+
+Results-Centric Value (without portfolio)
+
+Headline: “Built for Speed, Designed to Convert.”
+
+Three metric-style value props with MetricBadge components (generic but credible, no client names), e.g.:
+
+“Sub-2s load targets”
+
+“SEO-ready architecture”
+
+“Clear conversion paths”
+
+Short paragraph on the conversion-first methodology (research → wireframe → build → optimize).
+
+Trust & Credibility
+
+“What You Can Expect” checklist:
+
+Dedicated PM & clear daily updates
+
+Mobile-first design
+
+Accessibility (WCAG-aware)
+
+Secure hosting & SSL
+
+Clean handoff & docs
+
+“Tools & Stack” chip cloud (Next.js, Tailwind, shadcn/ui, Node, Stripe/Bookings-ready, Analytics).
+
+Free Website Audit (Lead Magnet)
+
+Compact form: name, email, website URL, goal (select), timeline (select).
+
+On submit: validate with Zod, show success state, store server-side, and display “We’ll review your site and send insights.”
+
+Place FAQPage JSON-LD on this section.
+
+FAQ
+
+At least 6 Q&As, including:
+
+“How does the 7-day process work?”
+
+“What do you need from me to start?”
+
+“Can you add online booking or e-commerce?”
+
+“What’s included post-launch?”
+
+“Why don’t you show pricing?”
+
+“How do revisions work inside the 7 days?”
+
+Final Conversion Section
+
+Reiterate guarantee and speed.
+
+Primary CTA: “Start Your 7-Day Build”
+
+Secondary CTA: “Book a Strategy Call”
+
+Mobile sticky CTA remains visible.
+
+About Page
+
+Founder/Team intro (photo placeholder), credibility copy, values (Speed, Clarity, Outcomes).
+
+Mini 7-day process timeline repeated.
+
+“Our Standards” block (QA checklist, accessibility, performance targets).
+
+Contact Page
+
+Lead form (name, email, phone, website, message).
+
+Sidebar block with guarantee and quick “What happens next?” steps.
+
+Success message: “We’ll get back to you within 24 hours.”
+
+Components to Implement
+
+<Timeline7Day /> (animated horizontal day steps)
+
+<MetricBadge /> (rounded badges for value props)
+
+<StickyCTA /> (mobile)
+
+<AuditForm /> & <ContactForm /> (Hook Form + Zod)
+
+<FAQ /> with schema injection
+
+<Header />, <Footer />, <Section /> utilities
+
+<IconCard /> for Services
+
+Accessibility & Quality
+
+Semantic HTML, aria labels, clear focus states, AA+ contrast.
+
+Keyboard navigable components (sliders, menus).
+
+next/image with proper alt text and aspect ratios.
+
+Avoid CLS; pre-size media and use skeletons where helpful.
+
+Rules & Constraints
+
+Absolutely no pricing anywhere.
+
+7-Day Turnaround Guarantee must appear in the hero, mid-page guarantee section, and final CTA.
+
+No portfolio/case studies/demo projects—omit entirely.
+
+The site must be visually stunning, premium, and conversion-optimized.
+
+Deliverables
+
+Clean, commented code; successful build.
+
+README.md with:
+
+Local run instructions
+
+How to connect email transport & analytics
+
+How to deploy (Replit/Vercel)
+
+.env.example with placeholders for email and analytics.
