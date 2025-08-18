@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 export default function HeroSection() {
   // 7-day process animation state
   const [currentDay, setCurrentDay] = useState(1);
-  const [progress, setProgress] = useState(14.28); // 1/7 = 14.28%
 
   const dayProcesses = [
     { day: 1, label: "Strategy & Planning", icon: Code2, color: "text-electric-blue", description: "Discovery & wireframes" },
@@ -20,15 +19,8 @@ export default function HeroSection() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentDay(prev => {
-        const nextDay = prev >= 7 ? 1 : prev + 1;
-        // Use requestAnimationFrame for smoother mobile performance
-        requestAnimationFrame(() => {
-          setProgress((nextDay / 7) * 100);
-        });
-        return nextDay;
-      });
-    }, 2500); // Slightly slower for better mobile experience
+      setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
+    }, 2500); // Day changes every 2.5 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -248,15 +240,18 @@ export default function HeroSection() {
                       </motion.span>
                     </div>
                     
-                    {/* Progress Bar - Optimized for Mobile */}
+                    {/* Continuous Progress Bar - Optimized for Mobile */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <motion.div 
                         className="cutting-edge-gradient h-3 rounded-full will-change-transform"
-                        animate={{ width: `${progress}%` }}
+                        animate={{ 
+                          width: ["0%", "100%"] 
+                        }}
                         transition={{ 
-                          duration: 0.8, 
-                          ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier for smoothness
-                          type: "tween" // Use tween instead of spring for better mobile performance
+                          duration: 17.5, // Total cycle time (7 days × 2.5 seconds each)
+                          ease: "linear", // Constant speed
+                          repeat: Infinity,
+                          type: "tween"
                         }}
                         style={{
                           // Force hardware acceleration for smoother animation on mobile
