@@ -22,10 +22,13 @@ export default function HeroSection() {
     const interval = setInterval(() => {
       setCurrentDay(prev => {
         const nextDay = prev >= 7 ? 1 : prev + 1;
-        setProgress((nextDay / 7) * 100);
+        // Use requestAnimationFrame for smoother mobile performance
+        requestAnimationFrame(() => {
+          setProgress((nextDay / 7) * 100);
+        });
         return nextDay;
       });
-    }, 2000); // Change day every 2 seconds
+    }, 2500); // Slightly slower for better mobile experience
 
     return () => clearInterval(interval);
   }, []);
@@ -245,12 +248,22 @@ export default function HeroSection() {
                       </motion.span>
                     </div>
                     
-                    {/* Progress Bar */}
+                    {/* Progress Bar - Optimized for Mobile */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <motion.div 
-                        className="cutting-edge-gradient h-3 rounded-full"
+                        className="cutting-edge-gradient h-3 rounded-full will-change-transform"
                         animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        transition={{ 
+                          duration: 0.8, 
+                          ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier for smoothness
+                          type: "tween" // Use tween instead of spring for better mobile performance
+                        }}
+                        style={{
+                          // Force hardware acceleration for smoother animation on mobile
+                          transform: "translateZ(0)",
+                          backfaceVisibility: "hidden",
+                          perspective: 1000
+                        }}
                       ></motion.div>
                     </div>
 

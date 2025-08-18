@@ -155,11 +155,35 @@
 
   .floating-animation {
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0); /* Force hardware acceleration */
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -20px, 0); }
+  }
+
+  /* Mobile Performance Optimizations */
+  @media (max-width: 768px) {
+    .cutting-edge-gradient {
+      /* Reduce gradient complexity on mobile for better performance */
+      background: linear-gradient(90deg, #3B82F6 0%, #06B6D4 50%, #10B981 100%);
+      will-change: width;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+      .floating-animation {
+        animation: none;
+      }
+      
+      .cutting-edge-gradient {
+        transition: width 0.3s ease-out;
+      }
+    }
   }
 
   .pulse-ring {
