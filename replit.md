@@ -97,6 +97,13 @@ Preferred communication style: Simple, everyday language.
 - ESBuild for server-side bundling
 - Path aliases for clean import statements
 
+**Deployment Configuration (Fixed August 18, 2025)**
+- Custom build scripts to fix Replit deployment structure requirements
+- `build-for-deployment.js` - Complete build + deployment structure fix
+- `fix-deployment.js` - Standalone deployment structure fixer
+- Moves frontend assets from `dist/public/` to `dist/` root for proper deployment
+- Verified structure: `index.html` at root, server bundle as `index.js`
+
 **Development Tools**
 - Hot module replacement in development
 - Runtime error overlay for better debugging
