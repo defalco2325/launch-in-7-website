@@ -18,10 +18,43 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" as="style">
     <style>
-      /* Critical CSS for hero section to prevent layout shift */
-      .hero-container { min-height: 100vh; }
-      .hero-title { font-family: 'Poppins', sans-serif; font-weight: 800; }
-      .hero-subtitle { font-family: 'Inter', sans-serif; font-weight: 400; }
+      /* Critical above-the-fold CSS to prevent layout shift */
+      .hero-container { 
+        min-height: 100vh; 
+        background: linear-gradient(135deg, #0B1426 0%, #1a2332 50%, #0B1426 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-title { 
+        font-family: 'Poppins', sans-serif; 
+        font-weight: 800; 
+        font-size: clamp(2.5rem, 8vw, 4rem);
+        line-height: 1.1;
+        color: white;
+      }
+      .hero-subtitle { 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 400; 
+        color: #94a3b8;
+        font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+      }
+      /* Navigation critical styles */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background: rgba(11, 20, 38, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      /* Prevent layout shifts */
+      .glass-card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"></noscript>
@@ -69,6 +102,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration for Caching -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+    
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
   </body>
