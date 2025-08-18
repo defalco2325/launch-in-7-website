@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+// Removed Framer Motion for performance
 
 export default function MobileCTA() {
   const [location] = useLocation();
@@ -25,13 +25,7 @@ export default function MobileCTA() {
           data-testid="mobile-cta-start-build"
         >
           <span>Start Your 7-Day Build</span>
-          <motion.div
-            animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="ml-2"
-          >
-            →
-          </motion.div>
+          <span className="ml-2 animate-pulse">→</span>
         </Button>
       </div>
     </div>

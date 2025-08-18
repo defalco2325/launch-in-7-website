@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+// Removed Framer Motion for performance
 import { Clock, Search, Target } from "lucide-react";
 import MetricBadge from "@/components/ui/metric-badge";
 
@@ -25,10 +25,7 @@ export default function ResultsCentric() {
     <section className="py-20 bg-light-gray">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          <div
             className="text-center mb-16"
           >
             <h2 className="font-poppins font-bold text-3xl lg:text-4xl text-deep-navy mb-6">
@@ -38,7 +35,7 @@ export default function ResultsCentric() {
               Our conversion-first methodology follows a proven process: research → wireframe → build → optimize. 
               Every element is strategically placed to guide visitors toward your business goals.
             </p>
-          </motion.div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {metrics.map((metric, index) => (

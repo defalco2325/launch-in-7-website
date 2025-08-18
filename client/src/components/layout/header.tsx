@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+// Removed Framer Motion for performance optimization
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -69,13 +69,7 @@ export default function Header() {
               data-testid="button-start-build"
             >
               <span>Start Build</span>
-              <motion.div
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="ml-2"
-              >
-                →
-              </motion.div>
+              <span className="ml-2 animate-pulse">→</span>
             </Button>
             
             {/* Mobile Menu Button */}
@@ -96,15 +90,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass-card border-b border-white/10"
-          >
+      {/* Mobile Menu - Static for performance */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden glass-card border-b border-white/10 animate-fade-in">
             <div className="px-4 py-6 space-y-6">
               <Link 
                 href="/about"
@@ -133,9 +121,8 @@ export default function Header() {
                 Start Your 7-Day Build
               </Button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </header>
     </>
   );
