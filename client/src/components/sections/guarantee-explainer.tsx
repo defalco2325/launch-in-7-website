@@ -1,166 +1,135 @@
 import { motion } from "framer-motion";
-import { CheckCircle, Clock, Zap, Target, Shield, ArrowRight } from "lucide-react";
+import { CheckCircle, Clock, Zap, Target, Shield, ArrowRight, Palette, Code, TestTube, Rocket } from "lucide-react";
 
 export default function GuaranteeExplainer() {
   const processSteps = [
-    {
-      day: "Day 1",
-      title: "Strategy & Discovery",
-      description: "Deep dive into your business goals, target audience, and competitive landscape",
-      icon: Target,
-      color: "from-electric-blue to-neon-cyan",
-      duration: "8 hours"
-    },
-    {
-      day: "Day 2-3",
-      title: "Design & Architecture",
-      description: "Wireframes, visual design, and user experience optimization",
-      icon: Zap,
-      color: "from-neon-cyan to-accent-purple",
-      duration: "16 hours"
-    },
-    {
-      day: "Day 4-6",
-      title: "Development & Integration",
-      description: "Full-stack development with cutting-edge technologies and integrations",
-      icon: CheckCircle,
-      color: "from-accent-purple to-tech-orange",
-      duration: "24 hours"
-    },
-    {
-      day: "Day 7",
-      title: "Testing & Launch",
-      description: "Quality assurance, performance optimization, and live deployment",
-      icon: Shield,
-      color: "from-tech-orange to-success-green",
-      duration: "8 hours"
-    }
+    { day: 1, title: "Strategy", icon: Target, color: "electric-blue", desc: "Discovery & planning" },
+    { day: 2, title: "Design", icon: Palette, color: "accent-purple", desc: "UI/UX creation" },
+    { day: 3, title: "Development", icon: Code, color: "neon-cyan", desc: "Frontend build" },
+    { day: 4, title: "Features", icon: Zap, color: "tech-orange", desc: "Core functionality" },
+    { day: 5, title: "Testing", icon: TestTube, color: "electric-blue", desc: "Quality assurance" },
+    { day: 6, title: "Optimization", icon: Rocket, color: "accent-purple", desc: "Performance tuning" },
+    { day: 7, title: "Launch", icon: CheckCircle, color: "success-green", desc: "Go live!" }
   ];
 
   return (
-    <section id="guarantee-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 tech-grid-bg"></div>
+    <section id="guarantee-section" className="py-20 bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy relative overflow-hidden">
+      {/* Advanced Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
+        <motion.div 
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-electric-blue/10 to-transparent rounded-full blur-3xl"
+          animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+          transition={{ duration: 20, repeat: Infinity }}
+        />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+        <div className="max-w-6xl mx-auto">
+          {/* Compact Header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12"
           >
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full px-6 py-2 mb-6">
-              <Shield className="w-5 h-5 text-electric-blue" />
-              <span className="text-electric-blue font-semibold">Iron-Clad Guarantee</span>
+            <div className="inline-flex items-center space-x-2 glass-card px-4 py-2 mb-4 glow-effect">
+              <Clock className="w-4 h-4 text-neon-cyan" />
+              <span className="text-white font-medium text-sm">7-Day Guarantee</span>
             </div>
             
-            <h2 className="font-poppins font-black text-4xl lg:text-6xl text-deep-navy mb-6">
-              Our <span className="gradient-text">7-Day Process</span>
+            <h2 className="font-poppins font-black text-3xl lg:text-5xl text-white mb-4">
+              Lightning-Fast <span className="gradient-text">Process</span>
             </h2>
             
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              A battle-tested methodology that delivers premium websites in exactly 7 days. 
-              If we miss the deadline due to our process, <span className="text-electric-blue font-semibold">your build is completely free.</span>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Precision-engineered methodology delivering premium websites in exactly 7 days. 
+              <span className="text-neon-cyan font-semibold"> Miss the deadline? Build is free.</span>
             </p>
           </motion.div>
 
-          {/* Process Timeline */}
+          {/* Compact Process Grid */}
           <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5">
-              <div className="h-full bg-gradient-to-r from-electric-blue via-neon-cyan via-accent-purple to-success-green opacity-20"></div>
-              <motion.div 
-                className="h-full bg-gradient-to-r from-electric-blue via-neon-cyan via-accent-purple to-success-green"
-                initial={{ width: "0%" }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ duration: 2, delay: 0.5 }}
-              />
+            {/* Background Connection Lines */}
+            <div className="absolute inset-0 opacity-20">
+              <svg className="w-full h-full" viewBox="0 0 800 200">
+                <motion.path
+                  d="M 50 100 Q 200 50, 350 100 T 750 100"
+                  stroke="url(#gradient1)"
+                  strokeWidth="2"
+                  fill="none"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: 0.5 }}
+                />
+                <defs>
+                  <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="33%" stopColor="#06B6D4" />
+                    <stop offset="66%" stopColor="#8B5CF6" />
+                    <stop offset="100%" stopColor="#10B981" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-3">
               {processSteps.map((step, index) => (
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  key={step.day}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
+                  transition={{ delay: index * 0.1 }}
                   className="relative group"
                 >
-                  {/* Card */}
-                  <div className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 card-hover relative overflow-hidden">
-                    {/* Background Gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500 rounded-3xl`}></div>
+                  {/* Compact Process Card */}
+                  <div className="glass-card rounded-2xl p-4 text-center hover:scale-105 transition-all duration-300 glow-effect group-hover:border-white/30">
+                    {/* Day Circle */}
+                    <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-${step.color} to-${step.color}/70 flex items-center justify-center shadow-lg`}>
+                      <span className="text-white font-bold text-sm">{step.day}</span>
+                    </div>
                     
-                    {/* Day Badge */}
-                    <div className="relative">
-                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} text-white font-bold text-lg mb-6 shadow-lg`}>
-                        {index + 1}
-                      </div>
-                      
-                      {/* Floating Icon */}
-                      <motion.div
-                        className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center"
-                        animate={{ rotate: [0, 10, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                      >
-                        <step.icon className="w-4 h-4 text-deep-navy" />
-                      </motion.div>
+                    {/* Icon */}
+                    <div className="mb-2">
+                      <step.icon className={`w-5 h-5 mx-auto text-${step.color}`} />
                     </div>
-
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-poppins font-bold text-xl text-deep-navy">
-                          {step.title}
-                        </h3>
-                        <div className="flex items-center space-x-1 text-sm text-gray-500">
-                          <Clock className="w-4 h-4" />
-                          <span>{step.duration}</span>
-                        </div>
-                      </div>
-                      
-                      <p className="text-gray-600 leading-relaxed">
-                        {step.description}
-                      </p>
-
-                      <div className="pt-4 border-t border-gray-100">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-semibold text-deep-navy">{step.day}</span>
-                          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-electric-blue group-hover:translate-x-1 transition-all" />
-                        </div>
-                      </div>
+                    
+                    {/* Title & Description */}
+                    <h3 className="text-white font-semibold text-sm mb-1">{step.title}</h3>
+                    <p className="text-gray-400 text-xs leading-tight">{step.desc}</p>
+                    
+                    {/* Progress Indicator */}
+                    <div className="mt-3 w-full bg-gray-700 h-1 rounded-full overflow-hidden">
+                      <motion.div 
+                        className={`h-full bg-gradient-to-r from-${step.color} to-${step.color}/70`}
+                        initial={{ width: "0%" }}
+                        whileInView={{ width: "100%" }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.15 + 0.5, duration: 0.8 }}
+                      />
                     </div>
-                  </div>
-
-                  {/* Step Number for Mobile */}
-                  <div className="lg:hidden flex justify-center mt-4">
-                    {index < processSteps.length - 1 && (
-                      <ArrowRight className="w-6 h-6 text-gray-300 transform rotate-90" />
-                    )}
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Bottom CTA */}
+          {/* Guarantee Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 1 }}
-            className="text-center mt-20"
+            transition={{ delay: 1.2 }}
+            className="text-center mt-12"
           >
-            <div className="inline-flex items-center space-x-4 bg-deep-navy/5 rounded-2xl px-8 py-4">
-              <Shield className="w-6 h-6 text-success-green" />
-              <span className="text-lg font-semibold text-deep-navy">
-                100% Satisfaction Guaranteed or Your Money Back
+            <div className="inline-flex items-center space-x-3 glass-card px-6 py-3 glow-effect">
+              <Shield className="w-5 h-5 text-success-green" />
+              <span className="text-white font-semibold text-sm">
+                100% On-Time Guarantee
               </span>
+              <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
             </div>
           </motion.div>
         </div>
