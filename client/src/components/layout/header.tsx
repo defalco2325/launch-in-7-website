@@ -82,6 +82,8 @@ export default function Header() {
               size="icon"
               className="md:hidden glass-card rounded-xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              aria-expanded={isMobileMenuOpen}
               data-testid="button-mobile-menu"
             >
               {isMobileMenuOpen ? (

@@ -6,6 +6,8 @@ Launch in 7 is a conversion-focused marketing website for a website-building com
 
 **Latest Performance Optimization (August 18, 2025)**: Hero section optimized for maximum mobile performance achieving sub-2s LCP, hardware-accelerated animations, and critical CSS inlining for instant rendering.
 
+**Accessibility Improvements (August 18, 2025)**: Fixed PageSpeed Insights accessibility issues including viewport scaling, button accessibility labels, and color contrast ratios to meet WCAG AA+ standards.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

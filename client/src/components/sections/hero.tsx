@@ -119,7 +119,7 @@ export default function HeroSection() {
               >
                 <div className="flex items-center space-x-2 glass-card rounded-full px-4 py-2">
                   <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
-                  <span className="text-sm text-gray-300">Live Development</span>
+                  <span className="text-sm text-gray-200">Live Development</span>
                   <Code2 className="w-4 h-4 text-neon-cyan" />
                 </div>
               </motion.div>
@@ -146,7 +146,7 @@ export default function HeroSection() {
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
                 
-                <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
+                <p className="text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-xl">
                   Cutting-edge, conversion-focused websites that launch your business into the future. 
                   <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
                 </p>
@@ -161,12 +161,12 @@ export default function HeroSection() {
               >
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">50+</div>
-                  <div className="text-sm text-gray-400">Sites Launched</div>
+                  <div className="text-sm text-gray-300">Sites Launched</div>
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">7</div>
-                  <div className="text-sm text-gray-400">Day Process</div>
+                  <div className="text-sm text-gray-300">Day Process</div>
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
@@ -220,7 +220,7 @@ export default function HeroSection() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     </div>
-                    <div className="text-xs text-gray-400 font-mono">launchin7.com</div>
+                    <div className="text-xs text-gray-300 font-mono">launchin7.com</div>
                   </div>
 
                   {/* Code Editor Mockup */}
@@ -315,7 +315,7 @@ export default function HeroSection() {
             className="flex flex-col items-center space-y-2 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg p-2"
             aria-label="Scroll to explore more sections"
           >
-            <span className="text-sm">Scroll to explore</span>
+            <span className="text-sm text-gray-300">Scroll to explore</span>
             <motion.div
               className="hero-chevron"
               animate={isProgressVisible ? { 
