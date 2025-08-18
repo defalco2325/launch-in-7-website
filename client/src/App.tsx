@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/home";
+import OptimizedHome from "@/pages/optimized-home";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import Header from "@/components/layout/header";
@@ -17,7 +17,7 @@ import WebVitals from "@/components/performance/WebVitals";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={OptimizedHome} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
