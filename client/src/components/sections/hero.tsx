@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Zap, Code2, Sparkles, ArrowRight, ChevronDown, Palette, TestTube, Rocket, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export default function HeroSection() {
   // 7-day process animation state
   const [currentDay, setCurrentDay] = useState(1);
 
-  const dayProcesses = [
+  const dayProcesses = useMemo(() => [
     { day: 1, label: "Strategy & Planning", icon: Code2, color: "text-electric-blue", description: "Discovery & wireframes" },
     { day: 2, label: "Design Creation", icon: Palette, color: "text-accent-purple", description: "UI/UX design & mockups" },
     { day: 3, label: "Development Start", icon: Zap, color: "text-tech-orange", description: "Frontend development" },
@@ -15,7 +15,7 @@ export default function HeroSection() {
     { day: 5, label: "Testing & QA", icon: TestTube, color: "text-neon-cyan", description: "Quality assurance" },
     { day: 6, label: "Optimization", icon: Rocket, color: "text-electric-blue", description: "Performance tuning" },
     { day: 7, label: "Launch Ready", icon: CheckCircle, color: "text-success-green", description: "Go live!" }
-  ];
+  ], []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,33 +52,10 @@ export default function HeroSection() {
         {/* Tech Grid Background */}
         <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
         
-        {/* Animated Gradient Orbs */}
-        <motion.div 
-          className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, -30, 0]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/20 to-electric-blue/20 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            x: [0, -40, 0],
-            y: [0, 20, 0]
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/15 to-neon-cyan/15 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.3, 1],
-            rotate: [0, 180, 360]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Optimized static gradient orbs for better performance */}
+        <div className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/15 to-neon-cyan/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/15 to-electric-blue/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/10 to-neon-cyan/10 rounded-full blur-3xl" />
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">

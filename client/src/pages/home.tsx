@@ -1,9 +1,11 @@
 import HeroSection from "@/components/sections/hero";
-import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
-import ServicesSnapshot from "@/components/sections/services-snapshot";
-import AuditForm from "@/components/forms/audit-form";
+import { lazy, Suspense, useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
-import { useEffect } from "react";
+
+// Lazy load non-critical sections for better performance
+const GuaranteeExplainer = lazy(() => import("@/components/sections/guarantee-explainer"));
+const ServicesSnapshot = lazy(() => import("@/components/sections/services-snapshot"));
+const AuditForm = lazy(() => import("@/components/forms/audit-form"));
 
 export default function Home() {
   useEffect(() => {
@@ -16,9 +18,10 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
-      <GuaranteeExplainer />
-      <ServicesSnapshot />
-      <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
+      <Suspense fallback={<div className="min-h-screen animate-pulse bg-gray-50"></div>}>
+        <GuaranteeExplainer />
+        <ServicesSnapshot />
+        <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 tech-grid-bg"></div>
@@ -88,7 +91,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </Suspense>
     </div>
   );
 }
