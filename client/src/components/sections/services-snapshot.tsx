@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Rocket, Sparkles, Shield, Gauge, Trophy, Users, Code2, Zap, Clock, Award } from "lucide-react";
+import { Rocket, Sparkles, Shield, Gauge, Trophy, Users, Code2, Zap, Clock, Award, Target } from "lucide-react";
 import IconCard from "@/components/ui/icon-card";
 
 export default function ServicesSnapshot() {
@@ -12,7 +12,7 @@ export default function ServicesSnapshot() {
 
   const services = [
     {
-      icon: Rocket,
+      icon: Zap,
       title: "Lightning Speed",
       description: "Advanced tech stack delivers professional sites in record time",
       color: "electric-blue"
@@ -24,7 +24,7 @@ export default function ServicesSnapshot() {
       color: "success-green"
     },
     {
-      icon: Zap,
+      icon: Target,
       title: "Performance First",
       description: "Built for speed, SEO, and conversions with best practices",
       color: "tech-orange"
