@@ -111,12 +111,16 @@ export default function ContactForm() {
             id="contact-name"
             type="text"
             placeholder="Enter your full name"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent focus:outline-none focus:ring-offset-2"
             data-testid="input-contact-name"
+            aria-required="true"
+            aria-describedby={form.formState.errors.name ? "contact-name-error" : undefined}
             {...form.register("name")}
           />
           {form.formState.errors.name && (
-            <p className="text-red-500 text-sm mt-1">{form.formState.errors.name.message}</p>
+            <p id="contact-name-error" className="text-red-500 text-sm mt-1" role="alert" aria-live="polite">
+              {form.formState.errors.name.message}
+            </p>
           )}
         </div>
 

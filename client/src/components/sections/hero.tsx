@@ -1,12 +1,14 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ShieldCheck, Zap, Code2, Sparkles, ArrowRight, ChevronDown, Palette, TestTube, Rocket, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo, memo } from "react";
+import { useState, useEffect, useMemo, memo, useRef } from "react";
 
 const HeroSection = memo(function HeroSection() {
   // 7-day process animation state
   const [currentDay, setCurrentDay] = useState(1);
+  const [isVisible, setIsVisible] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
 
   const dayProcesses = useMemo(() => [
     { day: 1, label: "Strategy & Planning", icon: Code2, color: "text-electric-blue", description: "Discovery & wireframes" },
@@ -18,13 +20,35 @@ const HeroSection = memo(function HeroSection() {
     { day: 7, label: "Launch Ready", icon: CheckCircle, color: "text-success-green", description: "Go live!" }
   ], []);
 
+  // Intersection Observer for animation start
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => {
+            setIsVisible(true);
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || shouldReduceMotion) return;
+    
     const interval = setInterval(() => {
       setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
     }, 2500); // Day changes every 2.5 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible, shouldReduceMotion]);
 
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
@@ -48,18 +72,24 @@ const HeroSection = memo(function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden">
+    <section 
+      ref={heroRef}
+      className="relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden"
+      style={{ minHeight: '100vh' }}
+    >
       {/* Advanced Background Effects */}
       <div className="absolute inset-0">
         {/* Tech Grid Background */}
         <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
         
         {/* Animated Gradient Orbs - Optimized for Performance */}
-        {!shouldReduceMotion && (
+        {!shouldReduceMotion && isVisible && (
           <>
             <motion.div 
-              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl will-change-transform"
+              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl"
+              initial={{ opacity: 0 }}
               animate={{ 
+                opacity: 1,
                 scale: [1, 1.2, 1],
                 x: [0, 50, 0],
                 y: [0, -30, 0]
@@ -71,8 +101,8 @@ const HeroSection = memo(function HeroSection() {
                 type: "tween"
               }}
               style={{
-                transform: "translateZ(0)",
-                backfaceVisibility: "hidden"
+                transform: "translate3d(0,0,0)",
+                willChange: "transform"
               }}
             />
             <motion.div 
