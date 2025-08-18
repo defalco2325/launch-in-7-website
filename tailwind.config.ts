@@ -66,6 +66,9 @@ export default {
         "aqua": "var(--aqua)",
         "success-green": "var(--success-green)",
         "light-gray": "var(--light-gray)",
+        "accent-purple": "var(--accent-purple)",
+        "neon-cyan": "var(--neon-cyan)",
+        "tech-orange": "var(--tech-orange)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],

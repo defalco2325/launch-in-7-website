@@ -16,20 +16,26 @@ export default function IconCard({
 }: IconCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
       transition={{ delay }}
-      className="card-hover bg-white rounded-xl p-8 border border-gray-200 shadow-sm"
+      className="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg group relative overflow-hidden"
     >
-      <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
-        <Icon className="w-6 h-6 text-white" />
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-electric-blue/5 to-neon-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+      
+      <div className="relative">
+        <div className="w-16 h-16 cutting-edge-gradient rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="font-poppins font-bold text-2xl text-deep-navy mb-4 group-hover:text-electric-blue transition-colors">
+          {title}
+        </h3>
+        <p className="text-gray-600 leading-relaxed text-lg">
+          {description}
+        </p>
       </div>
-      <h3 className="font-poppins font-semibold text-xl text-deep-navy mb-4">
-        {title}
-      </h3>
-      <p className="text-gray-600 leading-relaxed">
-        {description}
-      </p>
     </motion.div>
   );
 }
