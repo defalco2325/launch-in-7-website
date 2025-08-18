@@ -61,10 +61,10 @@ export default function AuditForm() {
         <div className="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
           <Check className="w-8 h-8 text-white" />
         </div>
-        <h3 className="font-poppins font-semibold text-xl mb-2 text-white">
+        <h3 className="font-poppins font-semibold text-xl mb-2 text-deep-navy">
           Audit Request Submitted!
         </h3>
-        <p className="text-gray-300">
+        <p className="text-gray-600">
           We'll review your site and send insights within 24 hours.
         </p>
       </motion.div>
