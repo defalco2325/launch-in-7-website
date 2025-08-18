@@ -129,7 +129,7 @@ export default function HeroSection() {
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">98%</div>
+                  <div className="text-2xl font-bold text-white">100%</div>
                   <div className="text-sm text-gray-400">On-Time Rate</div>
                 </div>
               </motion.div>

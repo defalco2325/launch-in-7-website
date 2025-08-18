@@ -28,7 +28,7 @@ export default function ServicesSnapshot() {
 
   const achievements = [
     { number: "500+", label: "Websites Launched", color: "text-electric-blue" },
-    { number: "98%", label: "On-Time Delivery", color: "text-success-green" },
+    { number: "100%", label: "On-Time Delivery", color: "text-success-green" },
     { number: "4.9/5", label: "Client Rating", color: "text-tech-orange" },
     { number: "24/7", label: "Support Available", color: "text-neon-cyan" }
   ];
