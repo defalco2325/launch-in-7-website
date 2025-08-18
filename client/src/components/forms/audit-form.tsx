@@ -171,7 +171,7 @@ export default function AuditForm() {
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-center pt-4">
+      <div className="flex flex-col items-center space-y-4 pt-4">
         <Button
           type="submit"
           disabled={submitMutation.isPending}
@@ -179,6 +179,26 @@ export default function AuditForm() {
           data-testid="button-submit-audit"
         >
           {submitMutation.isPending ? "Submitting..." : "Get My Free Audit"}
+        </Button>
+        
+        {/* Alternative: Schedule a Call */}
+        <div className="flex items-center space-x-4 text-gray-500">
+          <div className="h-px bg-gray-300 flex-1"></div>
+          <span className="text-sm font-medium">or</span>
+          <div className="h-px bg-gray-300 flex-1"></div>
+        </div>
+        
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => window.open('https://calendly.com/defalco2325/website-strategy-discovery', '_blank')}
+          className="bg-white border-2 border-electric-blue text-electric-blue px-8 py-3 rounded-xl font-semibold hover:bg-electric-blue hover:text-white transition-all duration-300"
+          data-testid="button-schedule-call"
+        >
+          <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Schedule Strategy Call
         </Button>
       </div>
     </form>
