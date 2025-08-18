@@ -1,8 +1,34 @@
 import { motion } from "framer-motion";
-import { ShieldCheck, Zap, Code2, Sparkles, ArrowRight, ChevronDown } from "lucide-react";
+import { ShieldCheck, Zap, Code2, Sparkles, ArrowRight, ChevronDown, Palette, TestTube, Rocket, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 export default function HeroSection() {
+  // 7-day process animation state
+  const [currentDay, setCurrentDay] = useState(1);
+  const [progress, setProgress] = useState(14.28); // 1/7 = 14.28%
+
+  const dayProcesses = [
+    { day: 1, label: "Strategy & Planning", icon: Code2, color: "text-electric-blue", description: "Discovery & wireframes" },
+    { day: 2, label: "Design Creation", icon: Palette, color: "text-accent-purple", description: "UI/UX design & mockups" },
+    { day: 3, label: "Development Start", icon: Zap, color: "text-tech-orange", description: "Frontend development" },
+    { day: 4, label: "Feature Build", icon: ShieldCheck, color: "text-success-green", description: "Core functionality" },
+    { day: 5, label: "Testing & QA", icon: TestTube, color: "text-neon-cyan", description: "Quality assurance" },
+    { day: 6, label: "Optimization", icon: Rocket, color: "text-electric-blue", description: "Performance tuning" },
+    { day: 7, label: "Launch Ready", icon: CheckCircle, color: "text-success-green", description: "Go live!" }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDay(prev => {
+        const nextDay = prev >= 7 ? 1 : prev + 1;
+        setProgress((nextDay / 7) * 100);
+        return nextDay;
+      });
+    }, 2000); // Change day every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
     if (auditSection) {
@@ -205,41 +231,67 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Progress Visualization */}
-                  <div className="space-y-3">
+                  {/* Animated 7-Day Progress */}
+                  <div className="space-y-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-400">Build Progress</span>
-                      <span className="text-neon-cyan">Day 3/7</span>
+                      <motion.span 
+                        key={currentDay}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="text-neon-cyan font-semibold"
+                      >
+                        Day {currentDay}/7
+                      </motion.span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
+                    
+                    {/* Progress Bar */}
+                    <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <motion.div 
-                        className="cutting-edge-gradient h-2 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: "43%" }}
-                        transition={{ delay: 1, duration: 2, ease: "easeOut" }}
+                        className="cutting-edge-gradient h-3 rounded-full"
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
                       ></motion.div>
                     </div>
+
+                    {/* Current Day Process */}
+                    <motion.div
+                      key={currentDay}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="glass-card rounded-xl p-4 border border-electric-blue/20"
+                    >
+                      <div className="flex items-center space-x-3">
+                        {(() => {
+                          const currentProcess = dayProcesses[currentDay - 1];
+                          const IconComponent = currentProcess.icon;
+                          return (
+                            <>
+                              <div className={`p-2 rounded-lg ${currentProcess.color.replace('text-', 'bg-')}/10`}>
+                                <IconComponent className={`w-5 h-5 ${currentProcess.color}`} />
+                              </div>
+                              <div>
+                                <div className="text-white font-medium text-sm">{currentProcess.label}</div>
+                                <div className="text-gray-400 text-xs">{currentProcess.description}</div>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </motion.div>
                   </div>
 
-                  {/* Feature Icons */}
-                  <div className="grid grid-cols-3 gap-4 pt-4">
-                    {[
-                      { icon: Code2, label: "Dev", color: "text-electric-blue" },
-                      { icon: Zap, label: "Speed", color: "text-tech-orange" },
-                      { icon: ShieldCheck, label: "Secure", color: "text-success-green" }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.5 + index * 0.1 }}
-                        className="glass-card rounded-xl p-4 text-center floating-animation"
-                        style={{ animationDelay: `${index * 0.5}s` }}
-                      >
-                        <item.icon className={`w-6 h-6 ${item.color} mx-auto mb-2`} />
-                        <div className="text-xs text-gray-400">{item.label}</div>
-                      </motion.div>
-                    ))}
+                  {/* Bottom Status */}
+                  <div className="text-center pt-2">
+                    <motion.div
+                      key={`status-${currentDay}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-xs text-gray-400"
+                    >
+                      {currentDay === 7 ? "🎉 Ready to launch!" : "Building your website..."}
+                    </motion.div>
                   </div>
                 </div>
               </div>
