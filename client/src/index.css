@@ -1,4 +1,5 @@
 /* Fonts are now loaded in HTML head for better performance */
+/* Critical CSS moved to HTML head to prevent layout shift */
 
 @tailwind base;
 @tailwind components;
@@ -147,26 +148,51 @@
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(56, 189, 248, 0.1);
   }
 
-  /* Enhanced focus styles for accessibility */
-  .focus-visible:focus {
-    outline: 2px solid var(--electric-blue);
+  /* Enhanced focus styles for WCAG AA+ accessibility */
+  .focus-visible:focus, 
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--electric-blue);
     outline-offset: 2px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
   }
 
-  /* Better button contrast */
+  /* High contrast button styles */
   .btn-primary {
     background-color: var(--electric-blue);
     color: white;
-    border: none;
+    border: 2px solid transparent;
+    min-height: 44px; /* WCAG touch target */
   }
 
   .btn-primary:hover {
     background-color: hsl(222, 84%, 55%);
+    border-color: var(--electric-blue);
   }
 
   .btn-primary:focus {
-    outline: 2px solid white;
+    outline: 3px solid white;
     outline-offset: 2px;
+    border-color: var(--neon-cyan);
+  }
+
+  /* Skip link for accessibility */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--electric-blue);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+    border-radius: 4px;
+  }
+
+  .skip-link:focus {
+    top: 6px;
   }
 
   .neon-border {

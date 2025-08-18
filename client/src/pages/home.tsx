@@ -30,7 +30,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="font-poppins font-black text-4xl lg:text-5xl text-deep-navy mb-6">
+              <h2 className="font-poppins font-black text-4xl lg:text-5xl text-deep-navy mb-6" role="heading" aria-level="2">
                 Get Your <span className="gradient-text">Free Website Audit</span>
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed">

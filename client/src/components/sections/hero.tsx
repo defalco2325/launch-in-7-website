@@ -17,12 +17,16 @@ export default function HeroSection() {
     { day: 7, label: "Launch Ready", icon: CheckCircle, color: "text-success-green", description: "Go live!" }
   ], []);
 
+  // Defer animation start to improve LCP
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
-    }, 2500); // Day changes every 2.5 seconds
+    const timeoutId = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
+      }, 2500);
+      return () => clearInterval(interval);
+    }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeoutId);
   }, []);
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
@@ -46,7 +50,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden">
+    <section className="hero-container relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden">
       {/* Advanced Background Effects */}
       <div className="absolute inset-0">
         {/* Tech Grid Background */}
@@ -98,12 +102,12 @@ export default function HeroSection() {
                 transition={{ delay: 0.2 }}
                 className="space-y-6"
               >
-                <h1 className="font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight">
+                <h1 className="hero-title font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" role="heading" aria-level="1">
                   <span className="block text-white">Your Website,</span>
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
                 
-                <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
+                <p className="hero-subtitle text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
                   Cutting-edge, conversion-focused websites that launch your business into the future. 
                   <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
                 </p>
