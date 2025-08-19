@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+// Removed framer-motion imports for performance optimization
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky-header fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -67,13 +67,7 @@ export default function Header() {
               data-testid="button-start-build"
             >
               <span>Start Build</span>
-              <motion.div
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="ml-2"
-              >
-                →
-              </motion.div>
+              <span className="ml-2">→</span>
             </Button>
             
             {/* Mobile Menu Button */}
@@ -97,14 +91,8 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass-card border-b border-white/10"
-          >
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white border-b border-gray-200 shadow-sm">
             <div className="px-4 py-6 space-y-6">
               <Link 
                 href="/about"
@@ -133,9 +121,8 @@ export default function Header() {
                 Start Your 7-Day Build
               </Button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </header>
   );
 }

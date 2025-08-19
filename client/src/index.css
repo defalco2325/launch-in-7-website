@@ -59,6 +59,7 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-kerning: none;
+  padding-top: 80px; /* Account for fixed header height */
 }
 
 /* Aggressive layout shift prevention */

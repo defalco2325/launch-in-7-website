@@ -20,9 +20,6 @@ export default function FinalConversion() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Guarantee Badge */}
           <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             className="inline-flex items-center px-6 py-3 bg-success-green/20 border border-success-green/30 rounded-full text-success-green font-medium mb-8"
           >
             <ShieldCheck className="w-5 h-5 mr-2" />
@@ -30,10 +27,6 @@ export default function FinalConversion() {
           </MotionDiv>
           
           <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
             className="font-poppins font-bold text-3xl lg:text-5xl mb-6"
           >
             Ready to Launch Your Website in{" "}
@@ -41,10 +34,6 @@ export default function FinalConversion() {
           </MotionDiv>
           
           <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
             className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto"
           >
             Join hundreds of businesses who've trusted us to deliver conversion-focused websites on time, every time.
@@ -52,10 +41,6 @@ export default function FinalConversion() {
           
           {/* CTA Buttons */}
           <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
           >
             <Button 
@@ -76,10 +61,6 @@ export default function FinalConversion() {
           </MotionDiv>
           
           <MotionDiv
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
             className="text-sm text-gray-400"
           >
             No long-term contracts • 7-day guarantee • Professional results

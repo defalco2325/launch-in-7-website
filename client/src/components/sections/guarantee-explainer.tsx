@@ -90,10 +90,6 @@ export default function GuaranteeExplainer() {
                     <div className="mt-3 w-full bg-gray-700 h-1 rounded-full overflow-hidden">
                       <div 
                         className={`h-full bg-gradient-to-r from-${step.color} to-${step.color}/70`}
-                        initial={{ width: "0%" }}
-                        whileInView={{ width: "100%" }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.15 + 0.5, duration: 0.8 }}
                       />
                     </div>
                   </div>
@@ -104,10 +100,6 @@ export default function GuaranteeExplainer() {
 
           {/* Guarantee Badge */}
           <div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 1.2 }}
             className="text-center mt-12"
           >
             <div className="inline-flex items-center space-x-3 glass-card px-6 py-3 glow-effect">

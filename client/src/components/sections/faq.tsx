@@ -60,9 +60,6 @@ export default function FAQ() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="font-poppins font-bold text-3xl lg:text-4xl text-deep-navy mb-6">
@@ -77,10 +74,6 @@ export default function FAQ() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-xl border border-gray-200 overflow-hidden"
               >
                 <button
@@ -94,7 +87,6 @@ export default function FAQ() {
                     </h3>
                     <div
                       animate={{ rotate: openIndex === index ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
                     >
                       <ChevronDown className="w-5 h-5 text-gray-400" />
                     </div>
@@ -103,10 +95,8 @@ export default function FAQ() {
                 <AnimatePresence>
                   {openIndex === index && (
                     <div
-                      initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
                       className="px-6 pb-6"
                     >
                       <p className="text-gray-600 leading-relaxed">
