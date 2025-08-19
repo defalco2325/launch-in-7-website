@@ -16,7 +16,7 @@ export default function Footer() {
               <div className="space-y-2">
                 <p className="text-gray-300 flex items-center">
                   <Mail className="w-4 h-4 mr-2" />
-                  hello@launchin7.com
+                  info@launchin7.com
                 </p>
                 <p className="text-gray-300 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
