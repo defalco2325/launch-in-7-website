@@ -40,19 +40,48 @@ try {
   const jsScripts = [];
   html = html.replace(/<script[^>]*type="module"[^>]*><\/script>/gi, (match) => {
     if (match.includes('/assets/')) {
-      // Add modulepreload for critical chunks
       const srcMatch = match.match(/src="([^"]+)"/);
       if (srcMatch && srcMatch[1]) {
         const jsPath = srcMatch[1];
+        
+        // CRITICAL FIX: Replace large vendor bundle with small app bundle
+        if (jsPath.includes('index-') && jsPath.endsWith('.js')) {
+          // Find the correct small bundle file
+          const fs = require('fs');
+          const assetsDir = path.resolve('dist/public/assets');
+          
+          try {
+            const files = fs.readdirSync(assetsDir);
+            const smallIndexFile = files.find(f => 
+              f.startsWith('index-') && 
+              f.endsWith('.js') && 
+              fs.statSync(path.join(assetsDir, f)).size < 50000 // Less than 50KB
+            );
+            
+            if (smallIndexFile) {
+              const correctedScript = match.replace(jsPath, `/assets/${smallIndexFile}`);
+              jsScripts.push(correctedScript);
+              console.log(`✅ Replaced large bundle with optimized: ${smallIndexFile}`);
+            } else {
+              jsScripts.push(match);
+              console.log(`⚠️ Small bundle not found, using original: ${jsPath}`);
+            }
+          } catch (err) {
+            jsScripts.push(match);
+            console.log(`⚠️ Error finding small bundle: ${err.message}`);
+          }
+        } else {
+          jsScripts.push(match);
+        }
+        
+        // Add modulepreload for critical chunks
         if (jsPath.includes('index-')) {
-          // Add modulepreload before collecting script
           const modulePreload = `<link rel="modulepreload" href="${jsPath}">`;
           if (!html.includes(modulePreload)) {
             html = html.replace('</head>', `    ${modulePreload}\n  </head>`);
           }
         }
       }
-      jsScripts.push(match);
       modified = true;
       return ''; // Remove from original position
     }
