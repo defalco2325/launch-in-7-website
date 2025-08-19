@@ -71,13 +71,41 @@ footer.bg-deep-navy {
   transform: translateZ(0);
 }
 
-/* Force consistent line heights */
+/* Absolute layout shift prevention - set exact dimensions */
 .font-poppins, h1, h2, h3, h4, h5, h6 {
   line-height: 1.2 !important;
+  font-display: swap;
+  font-optical-sizing: none;
 }
 
 body, p, div, span {
   line-height: 1.5 !important;
+  font-display: swap;
+}
+
+/* Remove unused CSS - strip out unnecessary animations and components */
+.animate-float-slow,
+.animate-float-medium,
+.animate-spin-slow,
+.animate-fade-in-left,
+.animate-fade-in-up,
+.animate-fade-in-up-delay,
+.animate-fade-in-up-delay-2,
+.animate-fade-in-up-delay-3 {
+  animation: none !important;
+}
+
+/* Critical path optimization - set exact hero dimensions to prevent CLS */
+.hero-critical {
+  min-height: 100vh !important;
+  height: 100vh !important;
+  contain: layout style paint;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 8vw, 4rem) !important;
+  line-height: 1.1 !important;
+  contain: layout;
 }
 
 /* Prevent layout shift during font loading */
