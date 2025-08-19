@@ -252,11 +252,10 @@ const HeroSection = memo(function HeroSection() {
                     {/* Continuous Progress Bar - Optimized for Performance */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full will-change-transform transition-all duration-500"
+                        className="cutting-edge-gradient h-3 rounded-full will-change-transform animate-progress-continuous"
                         style={{
                           transform: "translateZ(0)",
-                          backfaceVisibility: "hidden",
-                          width: `${(currentDay / 7) * 100}%`
+                          backfaceVisibility: "hidden"
                         }}
                       ></div>
                     </div>

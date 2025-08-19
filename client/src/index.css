@@ -147,6 +147,15 @@
   animation: bounce-soft 1.5s ease-in-out infinite;
 }
 
+@keyframes progress-continuous {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.animate-progress-continuous {
+  animation: progress-continuous 17.5s linear infinite;
+}
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(210, 25%, 7.8%);
