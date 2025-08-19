@@ -17,8 +17,13 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        // Force smaller chunks by splitting vendors more aggressively
+        // Inline critical path components, defer everything else
         manualChunks(id) {
+          // Keep hero/home content in main bundle (critical path)
+          if (id.includes('home.tsx') || id.includes('hero.tsx')) {
+            return undefined; // Include in main bundle
+          }
+          
           // Create tiny core bundle
           if (id.includes('react/') && !id.includes('react-dom')) {
             return 'react';
