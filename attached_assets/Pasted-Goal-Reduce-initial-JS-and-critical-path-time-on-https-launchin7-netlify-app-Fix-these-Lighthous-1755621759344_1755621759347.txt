@@ -1,0 +1,64 @@
+Goal: Reduce initial JS and critical path time on https://launchin7.netlify.app.
+Fix these Lighthouse items:
+- Network dependency tree: only /assets/index-*.js and /assets/home-*.js are critical. Keep them, but make them smaller.
+- Reduce unused JavaScript: Est. savings ~79 KB across index-*.js (≈53 KB) and home-*.js (≈25 KB).
+
+Apply the following code changes safely, without visual or functional changes, and keep the site static.
+
+A) Trim dev-only/unused code in the build
+1) In vite.config.ts:
+   - Inside export default defineConfig({ ... }), add:
+     esbuild: { drop: ["console", "debugger"] },
+     define: { "process.env.NODE_ENV": '"production"' },
+     build: {
+       modulePreload: { polyfill: false }
+     }
+   - Keep existing rollupOptions/manualChunks/treeshake settings intact.
+
+2) In package.json (root), add:
+   - "sideEffects": false
+   This helps tree-shake our own code. If side-effects are actually needed in a file, keep a file-level comment /* @preserve */ in those files only.
+
+B) Defer heavy modules (home route)
+1) Identify the Home/landing component (likely under client/src/**/home*.tsx or a page like client/src/pages/Home.tsx).
+2) Convert below-the-fold sections in Home into lazy chunks with React.lazy and Suspense:
+   - Candidates: large sections like Testimonials, FAQ, Features grid, Footer, or any component that imports icon packs, Radix components, or animation code.
+   - Replace direct imports:
+       import Features from "...";
+     With:
+       const Features = React.lazy(() => import("..."));
+   - Render them inside <Suspense fallback={null}> and only after first paint.
+
+3) Gate expensive code behind IntersectionObserver:
+   - For any heavy section that isn’t above the fold, wrap it with a simple useIntersection hook so it mounts (and triggers its lazy import) only when ~200px before entering viewport.
+   - Keep styling and content unchanged.
+
+C) Ensure Framer Motion & Radix are not in first paint
+1) Search the whole repo for:
+     import { motion } from "framer-motion"
+     import * as Radix from "@radix-ui/"
+   - Replace any remaining above-the-fold imports with a small dynamic-import wrapper:
+       const Motion = await import("framer-motion");
+       // use Motion.motion.* only after it’s loaded and when the element is visible.
+   - For modals/popovers/menus (Radix), dynamically import the component the first time the user can possibly open it (e.g., on hover/focus/first click) or when the trigger enters viewport.
+   - Do not remove any animations; just delay loading the library until it’s needed.
+
+D) Icons & utilities cleanup
+1) In Home and shared components, replace large icon-set imports with single-icon imports (e.g., from lucide-react, import only the icons used).
+2) If lodash/date-fns are used, prefer named/ES imports for the specific functions and confirm tree-shaking (no full-library imports).
+
+E) Verify and report
+1) Run a production build: npm run build
+2) After build, print:
+   - Gzipped sizes of dist/public/assets/entry/index-*.js and dist/public/assets/chunks/home-*.js (or equivalent home chunk).
+   - Total initial JS transferred on “/” (sum of the files requested by the home route).
+   - Confirm that neither framer-motion nor @radix-ui appear in the entry chunk graph; they should be lazy chunks.
+3) Output a short summary:
+   - Files changed (with brief diffs).
+   - New initial JS gz total vs. previous (~162.7 KiB transferred before).
+   - Confirmation that visuals and behavior are unchanged.
+
+Acceptance targets:
+- Reduce index-*.js by ≥40–55 KB gz.
+- Reduce home-*.js by ≥15–25 KB gz.
+- Keep only two initial JS requests for “/” (entry + home); all other libraries load on interaction or when their section scrolls into view.

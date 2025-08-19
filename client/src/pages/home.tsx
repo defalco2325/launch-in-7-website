@@ -1,11 +1,46 @@
 import HeroSection from "@/components/sections/hero";
-import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
-import ServicesSnapshot from "@/components/sections/services-snapshot";
-import AuditForm from "@/components/forms/audit-form";
 import { updateSEO } from "@/lib/seo";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense, useState, useRef } from "react";
+
+// Lazy load below-the-fold sections
+const GuaranteeExplainer = lazy(() => import("@/components/sections/guarantee-explainer"));
+const ServicesSnapshot = lazy(() => import("@/components/sections/services-snapshot"));
+const AuditForm = lazy(() => import("@/components/forms/audit-form"));
+
+// Use Intersection Observer hook for lazy loading
+function useInViewport(ref: React.RefObject<HTMLElement>, rootMargin = "200px") {
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIntersecting(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [ref, rootMargin]);
+
+  return isIntersecting;
+}
 
 export default function Home() {
+  const guaranteeRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const auditRef = useRef<HTMLDivElement>(null);
+  
+  const guaranteeInView = useInViewport(guaranteeRef);
+  const servicesInView = useInViewport(servicesRef);
+  const auditInView = useInViewport(auditRef);
+
   useEffect(() => {
     updateSEO({
       title: "Launch in 7 - Your Website Live in 7 Days | Premium Web Development",
@@ -16,8 +51,22 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
-      <GuaranteeExplainer />
-      <ServicesSnapshot />
+      
+      <div ref={guaranteeRef}>
+        {guaranteeInView && (
+          <Suspense fallback={<div className="h-96" />}>
+            <GuaranteeExplainer />
+          </Suspense>
+        )}
+      </div>
+      
+      <div ref={servicesRef}>
+        {servicesInView && (
+          <Suspense fallback={<div className="h-96" />}>
+            <ServicesSnapshot />
+          </Suspense>
+        )}
+      </div>
       <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -53,7 +102,13 @@ export default function Home() {
                   <div className="w-2 h-2 bg-accent-purple rounded-full"></div>
                 </div>
                 
-                <AuditForm />
+                <div ref={auditRef}>
+                  {auditInView && (
+                    <Suspense fallback={<div className="h-64" />}>
+                      <AuditForm />
+                    </Suspense>
+                  )}
+                </div>
                 
                 {/* Trust Indicators */}
                 <div className="mt-8 pt-6 border-t border-gray-100">

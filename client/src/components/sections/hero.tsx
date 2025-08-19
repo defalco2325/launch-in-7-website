@@ -1,5 +1,14 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { ShieldCheck, Zap, Code2, Sparkles, ArrowRight, ChevronDown, Palette, TestTube, Rocket, CheckCircle } from "lucide-react";
+// Import specific icons only
+import { ShieldCheck } from "lucide-react";
+import { Zap } from "lucide-react";
+import { Code2 } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { Palette } from "lucide-react";
+import { TestTube } from "lucide-react";
+import { Rocket } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useMemo, memo, useRef } from "react";
 
@@ -7,7 +16,6 @@ const HeroSection = memo(function HeroSection() {
   // 7-day process animation state
   const [currentDay, setCurrentDay] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
 
   const dayProcesses = useMemo(() => [
@@ -41,14 +49,14 @@ const HeroSection = memo(function HeroSection() {
   }, []);
 
   useEffect(() => {
-    if (!isVisible || shouldReduceMotion) return;
+    if (!isVisible) return;
     
     const interval = setInterval(() => {
       setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
     }, 2500); // Day changes every 2.5 seconds
 
     return () => clearInterval(interval);
-  }, [isVisible, shouldReduceMotion]);
+  }, [isVisible]);
 
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
@@ -84,60 +92,25 @@ const HeroSection = memo(function HeroSection() {
         {/* Tech Grid Background */}
         <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
         
-        {/* Animated Gradient Orbs - Optimized for Performance */}
-        {!shouldReduceMotion && isVisible && (
+        {/* Animated Gradient Orbs with CSS animations */}
+        {isVisible && (
           <>
-            <motion.div 
-              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl"
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: 1,
-                scale: [1, 1.2, 1],
-                x: [0, 50, 0],
-                y: [0, -30, 0]
-              }}
-              transition={{ 
-                duration: 8, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                type: "tween"
-              }}
+            <div 
+              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl animate-float-slow"
               style={{
                 transform: "translate3d(0,0,0)",
                 willChange: "transform"
               }}
             />
-            <motion.div 
-              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/20 to-electric-blue/20 rounded-full blur-3xl will-change-transform"
-              animate={{ 
-                scale: [1, 1.1, 1],
-                x: [0, -40, 0],
-                y: [0, 20, 0]
-              }}
-              transition={{ 
-                duration: 10, 
-                repeat: Infinity, 
-                ease: "easeInOut", 
-                delay: 2,
-                type: "tween"
-              }}
+            <div 
+              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/20 to-electric-blue/20 rounded-full blur-3xl will-change-transform animate-float-medium"
               style={{
                 transform: "translateZ(0)",
                 backfaceVisibility: "hidden"
               }}
             />
-            <motion.div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/15 to-neon-cyan/15 rounded-full blur-3xl will-change-transform"
-              animate={{ 
-                scale: [1, 1.3, 1],
-                rotate: [0, 180, 360]
-              }}
-              transition={{ 
-                duration: 12, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                type: "tween"
-              }}
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/15 to-neon-cyan/15 rounded-full blur-3xl will-change-transform animate-spin-slow"
               style={{
                 transform: "translateZ(0)",
                 backfaceVisibility: "hidden"
@@ -153,40 +126,26 @@ const HeroSection = memo(function HeroSection() {
             {/* Left Content */}
             <div className="space-y-8">
               {/* Tech Badge */}
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="inline-flex items-center space-x-2"
-              >
+              <div className="inline-flex items-center space-x-2 animate-fade-in-left">
                 <div className="flex items-center space-x-2 glass-card rounded-full px-4 py-2">
                   <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
                   <span className="text-sm text-gray-300">Live Development</span>
                   <Code2 className="w-4 h-4 text-neon-cyan" />
                 </div>
-              </motion.div>
+              </div>
 
               {/* Guarantee Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="inline-flex items-center glass-card rounded-full px-6 py-3 glow-effect"
-              >
+              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 glow-effect animate-fade-in-up">
                 <div className="relative">
                   <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
                   <div className="absolute inset-0 w-5 h-5 mr-3 pulse-ring bg-success-green/20 rounded-full"></div>
                 </div>
                 <span className="font-semibold text-success-green">7-Day Guarantee</span>
                 <span className="text-gray-300 ml-2">— or it's Free</span>
-              </motion.div>
+              </div>
               
               {/* Main Headline */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-6"
-              >
+              <div className="space-y-6 animate-fade-in-up-delay">
                 <h1 className="font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
                   <span className="block text-white">Your Website,</span>
                   <span className="block gradient-text">Live in 7 Days</span>
@@ -196,15 +155,10 @@ const HeroSection = memo(function HeroSection() {
                   Cutting-edge, conversion-focused websites that launch your business into the future. 
                   <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
                 </p>
-              </motion.div>
+              </div>
               
               {/* Stats Row */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex items-center space-x-8"
-              >
+              <div className="flex items-center space-x-8 animate-fade-in-up-delay-2">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">50+</div>
                   <div className="text-sm text-gray-400">Sites Launched</div>
@@ -219,15 +173,10 @@ const HeroSection = memo(function HeroSection() {
                   <div className="text-2xl font-bold text-white">100%</div>
                   <div className="text-sm text-gray-400">On-Time Rate</div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
+              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up-delay-3">
                 <Button 
                   onClick={handleStartBuild}
                   className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect group focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
@@ -249,16 +198,11 @@ const HeroSection = memo(function HeroSection() {
                   <Sparkles className="mr-2 w-5 h-5 text-electric-blue" />
                   Free Website Audit
                 </Button>
-              </motion.div>
+              </div>
             </div>
 
             {/* Right Visual */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 }}
-              className="relative"
-            >
+            <div className="relative animate-fade-in-right">
               {/* Main Visual Container */}
               <div className="relative">
                 {/* Background Glow */}
@@ -300,46 +244,25 @@ const HeroSection = memo(function HeroSection() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-400">Build Progress</span>
-                      <motion.span 
-                        key={currentDay}
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="text-neon-cyan font-semibold"
-                      >
+                      <span className="text-neon-cyan font-semibold animate-pulse-scale">
                         Day {currentDay}/7
-                      </motion.span>
+                      </span>
                     </div>
                     
                     {/* Continuous Progress Bar - Optimized for Performance */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                      <motion.div 
-                        className="cutting-edge-gradient h-3 rounded-full will-change-transform"
-                        animate={shouldReduceMotion ? {} : { 
-                          width: ["0%", "100%"] 
-                        }}
-                        transition={shouldReduceMotion ? {} : { 
-                          duration: 17.5, // Total cycle time (7 days × 2.5 seconds each)
-                          ease: "linear", // Constant speed
-                          repeat: Infinity,
-                          type: "tween"
-                        }}
+                      <div 
+                        className="cutting-edge-gradient h-3 rounded-full will-change-transform transition-all duration-500"
                         style={{
-                          // Force hardware acceleration for smoother animation
                           transform: "translateZ(0)",
                           backfaceVisibility: "hidden",
-                          width: shouldReduceMotion ? `${(currentDay / 7) * 100}%` : undefined
+                          width: `${(currentDay / 7) * 100}%`
                         }}
-                      ></motion.div>
+                      ></div>
                     </div>
 
                     {/* Current Day Process */}
-                    <motion.div
-                      key={currentDay}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="glass-card rounded-xl p-4 border border-electric-blue/20"
-                    >
+                    <div className="glass-card rounded-xl p-4 border border-electric-blue/20 animate-fade-in-up">
                       <div className="flex items-center space-x-3">
                         {(() => {
                           const currentProcess = dayProcesses[currentDay - 1];
@@ -357,47 +280,34 @@ const HeroSection = memo(function HeroSection() {
                           );
                         })()}
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Bottom Status */}
                   <div className="text-center pt-2">
-                    <motion.div
-                      key={`status-${currentDay}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-xs text-gray-400"
-                    >
+                    <div className="text-xs text-gray-400 animate-fade-in">
                       {currentDay === 7 ? "🎉 Ready to launch!" : "Building your website..."}
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
         
         {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in-up-delay-scroll">
           <button
             onClick={scrollToNext}
             className="flex flex-col items-center space-y-2 text-gray-400 hover:text-white transition-colors"
             data-testid="button-scroll-indicator"
           >
             <span className="text-sm">Scroll to explore</span>
-            <motion.div
-              animate={shouldReduceMotion ? {} : { y: [0, 10, 0] }}
-              transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity }}
-            >
+            <div className="animate-bounce-soft">
               <ChevronDown className="w-5 h-5" />
-            </motion.div>
+            </div>
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
