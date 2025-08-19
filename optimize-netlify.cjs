@@ -101,9 +101,12 @@ try {
     // Add resource hints and non-blocking CSS to head (after existing preloads) and JS to end of body
     if (cssLinks.length > 0) {
       // Insert resource hints and non-blocking CSS in head
-      const resourceHints = `    <!-- Resource hints for critical path optimization -->
+      const resourceHints = `    <!-- Performance optimization hints -->
     <link rel="dns-prefetch" href="//netlify.app">
-    <link rel="preconnect" href="https://launchin7.netlify.app" crossorigin>`;
+    <link rel="preconnect" href="https://launchin7.netlify.app" crossorigin>
+    <!-- Critical font preload to eliminate layout shift -->
+    <link rel="preload" href="/assets/poppins-latin-700-normal-Qrb0O0WB.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/inter-latin-400-normal-C38fXH4l.woff2" as="font" type="font/woff2" crossorigin>`;
       
       html = html.replace('</head>', `${resourceHints}\n    ${cssLinks.join('\n    ')}\n  </head>`);
     }
