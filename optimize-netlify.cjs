@@ -54,8 +54,8 @@ try {
     console.log('No resources to optimize');
   }
   
-  // Copy static files
-  const staticFiles = ['robots.txt', 'sitemap.xml', '_headers', '_redirects'];
+  // Copy static files to ensure they're available
+  const staticFiles = ['robots.txt', 'sitemap.xml'];
   staticFiles.forEach(file => {
     const src = path.resolve('public', file);
     const dest = path.resolve('dist/public', file);
@@ -64,6 +64,35 @@ try {
       console.log(`Copied ${file}`);
     }
   });
+
+  // Create _headers file for Netlify caching
+  const headersContent = `# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/*.js
+  Cache-Control: public, max-age=31536000, immutable  
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin`;
+
+  const redirectsContent = `# SPA fallback with SEO file exceptions
+/robots.txt  /robots.txt  200
+/sitemap.xml /sitemap.xml 200
+/*           /index.html  200`;
+
+  fs.writeFileSync(path.resolve('dist/public', '_headers'), headersContent);
+  fs.writeFileSync(path.resolve('dist/public', '_redirects'), redirectsContent);
+  console.log('Created _headers and _redirects files');
   
   console.log('=== OPTIMIZATION COMPLETE ===');
 } catch (error) {
