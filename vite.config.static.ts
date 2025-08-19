@@ -17,17 +17,11 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        // Force smaller chunks by splitting vendors more aggressively
+        // Create single critical bundle to eliminate chain loading
         manualChunks(id) {
-          // Create tiny core bundle
-          if (id.includes('react/') && !id.includes('react-dom')) {
-            return 'react';
-          }
-          if (id.includes('react-dom')) {
-            return 'react-dom';
-          }
-          if (id.includes('wouter')) {
-            return 'router';
+          // Keep Hero section in main bundle to eliminate chain
+          if (id.includes('components/sections/hero') || id.includes('pages/home')) {
+            return undefined; // Include in main bundle
           }
           
           // Defer ALL heavy libraries
@@ -45,6 +39,17 @@ export default defineConfig({
           }
           if (id.includes('@tanstack/react-query')) {
             return 'query';
+          }
+          
+          // Split React chunks
+          if (id.includes('react/') && !id.includes('react-dom')) {
+            return 'react';
+          }
+          if (id.includes('react-dom')) {
+            return 'react-dom';
+          }
+          if (id.includes('wouter')) {
+            return 'router';
           }
           
           // Everything else to vendor

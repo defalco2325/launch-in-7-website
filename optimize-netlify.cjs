@@ -67,10 +67,13 @@ try {
               jsScripts.push(correctedScript);
               console.log(`🎯 Force using smallest bundle: ${smallestFile.name} (${Math.round(smallestFile.size/1024)}KB)`);
               
-              // Also add modulepreload for the smallest bundle
+              // Add modulepreload for critical bundle only (no chaining)
               if (!html.includes(`modulepreload" href="/assets/${smallestFile.name}"`)) {
                 html = html.replace('</head>', `    <link rel="modulepreload" href="/assets/${smallestFile.name}">\n  </head>`);
               }
+              
+              // Remove other modulepreloads to prevent chain loading
+              html = html.replace(/<link rel="modulepreload"[^>]*href="\/assets\/(react-|vendor-|router-|forms-|ui-|motion-)[^"]*"[^>]*>/g, '');
             } else {
               jsScripts.push(match);
               console.log(`⚠️ No index files found`);
