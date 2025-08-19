@@ -21,14 +21,17 @@ export default function MobileCTA() {
       <div className="glass-card rounded-2xl p-4 glow-effect">
         <Button 
           onClick={handleStartBuild}
-          className="cutting-edge-gradient text-white w-full py-4 rounded-2xl font-bold text-lg shadow-2xl"
-          data-testid="mobile-cta-start-build"
+          className="cutting-edge-gradient text-white w-full py-4 rounded-2xl font-bold text-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
+          data-testid="button-mobile-menu"
+          style={{ minHeight: '44px', fontSize: '18px' }}
+          aria-label="Start your 7-day website build process"
         >
           <span>Start Your 7-Day Build</span>
           <motion.div
             animate={{ x: [0, 4, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="ml-2"
+            aria-hidden="true"
           >
             →
           </motion.div>
