@@ -67,6 +67,12 @@ body {
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Prevent layout shift in footer */
+footer.bg-deep-navy {
+  contain: layout style;
+  will-change: auto;
+}
+
 /* Prevent layout shift during font loading */
 .font-loading-fallback {
   font-family: Arial, sans-serif;
