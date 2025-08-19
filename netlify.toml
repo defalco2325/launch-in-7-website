@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build && node optimize-netlify.cjs"
+  command = "vite build --config vite.config.static.ts && node optimize-netlify.cjs"
   publish = "dist/public"
 
 [build.environment]

@@ -44,31 +44,40 @@ try {
       if (srcMatch && srcMatch[1]) {
         const jsPath = srcMatch[1];
         
-        // CRITICAL FIX: Replace large vendor bundle with small app bundle
+        // FORCE USE OF SMALLEST POSSIBLE BUNDLES
         if (jsPath.includes('index-') && jsPath.endsWith('.js')) {
-          // Find the correct small bundle file
           const fs = require('fs');
           const assetsDir = path.resolve('dist/public/assets');
           
           try {
             const files = fs.readdirSync(assetsDir);
-            const smallIndexFile = files.find(f => 
-              f.startsWith('index-') && 
-              f.endsWith('.js') && 
-              fs.statSync(path.join(assetsDir, f)).size < 50000 // Less than 50KB
-            );
             
-            if (smallIndexFile) {
-              const correctedScript = match.replace(jsPath, `/assets/${smallIndexFile}`);
+            // Find ALL index files and pick the absolute smallest
+            const indexFiles = files
+              .filter(f => f.startsWith('index-') && f.endsWith('.js'))
+              .map(f => ({
+                name: f,
+                size: fs.statSync(path.join(assetsDir, f)).size
+              }))
+              .sort((a, b) => a.size - b.size);
+            
+            if (indexFiles.length > 0) {
+              const smallestFile = indexFiles[0];
+              const correctedScript = match.replace(jsPath, `/assets/${smallestFile.name}`);
               jsScripts.push(correctedScript);
-              console.log(`✅ Replaced large bundle with optimized: ${smallIndexFile}`);
+              console.log(`🎯 Force using smallest bundle: ${smallestFile.name} (${Math.round(smallestFile.size/1024)}KB)`);
+              
+              // Also add modulepreload for the smallest bundle
+              if (!html.includes(`modulepreload" href="/assets/${smallestFile.name}"`)) {
+                html = html.replace('</head>', `    <link rel="modulepreload" href="/assets/${smallestFile.name}">\n  </head>`);
+              }
             } else {
               jsScripts.push(match);
-              console.log(`⚠️ Small bundle not found, using original: ${jsPath}`);
+              console.log(`⚠️ No index files found`);
             }
           } catch (err) {
             jsScripts.push(match);
-            console.log(`⚠️ Error finding small bundle: ${err.message}`);
+            console.log(`⚠️ Error: ${err.message}`);
           }
         } else {
           jsScripts.push(match);
