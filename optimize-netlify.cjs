@@ -67,9 +67,9 @@ try {
               jsScripts.push(correctedScript);
               console.log(`🎯 Force using smallest bundle: ${smallestFile.name} (${Math.round(smallestFile.size/1024)}KB)`);
               
-              // Also add modulepreload for the smallest bundle
+              // Also add modulepreload for critical bundles
               if (!html.includes(`modulepreload" href="/assets/${smallestFile.name}"`)) {
-                html = html.replace('</head>', `    <link rel="modulepreload" href="/assets/${smallestFile.name}">\n  </head>`);
+                html = html.replace('</head>', `    <link rel="modulepreload" href="/assets/${smallestFile.name}">\n    <link rel="modulepreload" href="/assets/home-${smallestFile.name.split('-')[1]}">\n  </head>`);
               }
             } else {
               jsScripts.push(match);

@@ -17,11 +17,11 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        // Inline critical path components, defer everything else
+        // Optimize critical path while preserving visuals
         manualChunks(id) {
-          // Keep hero/home content in main bundle (critical path)
-          if (id.includes('home.tsx') || id.includes('hero.tsx')) {
-            return undefined; // Include in main bundle
+          // Keep only essential routing in main bundle
+          if (id.includes('home.tsx')) {
+            return undefined; // Include in main bundle for faster routing
           }
           
           // Create tiny core bundle
