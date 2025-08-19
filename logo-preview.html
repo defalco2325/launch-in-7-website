@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch in 7 Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .instructions {
+            max-width: 500px;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo">
+            <svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Gradient for "Launch" and "7" -->
+                    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+                        <stop offset="33%" style="stop-color:#06B6D4;stop-opacity:1" />
+                        <stop offset="66%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                
+                <!-- "Launch" text with gradient -->
+                <text x="20" y="50" font-family="Arial, sans-serif" font-weight="900" font-size="36" fill="url(#brandGradient)">Launch</text>
+                
+                <!-- "in" text in dark navy -->
+                <text x="162" y="50" font-family="Arial, sans-serif" font-weight="900" font-size="36" fill="#1e293b">in</text>
+                
+                <!-- "7" text with gradient -->
+                <text x="200" y="50" font-family="Arial, sans-serif" font-weight="900" font-size="36" fill="url(#brandGradient)">7</text>
+                
+                <!-- Tech accent elements -->
+                <circle cx="250" cy="25" r="4" fill="#06B6D4" opacity="0.7"/>
+                <circle cx="258" cy="18" r="2.5" fill="#3B82F6" opacity="0.5"/>
+                <circle cx="265" cy="32" r="3" fill="#8B5CF6" opacity="0.6"/>
+            </svg>
+        </div>
+        
+        <div class="instructions">
+            <h3>Launch in 7 Logo</h3>
+            <p>Right-click on the logo above and select "Save image as..." or take a screenshot of just the logo area to get your PNG file.</p>
+            <p>Alternative: Copy the SVG code below and use an online SVG to PNG converter.</p>
+        </div>
+    </div>
+</body>
+</html>
