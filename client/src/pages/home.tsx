@@ -1,4 +1,4 @@
-import HeroCritical from "@/components/sections/hero-critical";
+import HeroSection from "@/components/sections/hero";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <div>
-      <HeroCritical />
+      <HeroSection />
       
       <div ref={guaranteeRef}>
         {guaranteeInView && (

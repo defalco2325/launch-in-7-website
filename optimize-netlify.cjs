@@ -101,30 +101,14 @@ try {
     // Add resource hints and non-blocking CSS to head (after existing preloads) and JS to end of body
     if (cssLinks.length > 0) {
       // Insert resource hints and non-blocking CSS in head
-      const criticalCSS = `    <!-- Critical Above-the-Fold CSS for FCP Optimization -->
-    <style>
-    /* Critical hero section CSS - inline for fastest FCP */
-    #root{display:flex;flex-direction:column;min-height:100vh;font-family:'Inter',system-ui,-apple-system,sans-serif}
-    .hero-critical{position:relative;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#1a1a2e 100%);overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .hero-content{position:relative;max-width:72rem;margin:0 auto;padding:5rem 1rem 8rem;display:grid;grid-template-columns:1fr;gap:3rem;align-items:center;min-height:80vh;width:100%}
-    @media (min-width:1024px){.hero-content{grid-template-columns:1fr 1fr}}
-    .hero-title{font-family:'Poppins',system-ui,-apple-system,sans-serif;font-weight:900;font-size:clamp(2rem,8vw,4rem);color:white;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.02em}
-    .gradient-text{background:linear-gradient(135deg,#00d4ff 0%,#00b4d8 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
-    .hero-subtitle{color:#d1d5db;font-size:clamp(1.125rem,3vw,1.5rem);line-height:1.6;margin-bottom:2rem;max-width:32rem}
-    .cta-button{background:#00d4ff;color:white;padding:1rem 2rem;border-radius:9999px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;border:none;cursor:pointer}
-    .cta-button:hover{background:#00b4d8;transform:translateY(-2px)}
-    /* Prevent layout shifts */
-    *{box-sizing:border-box;font-kerning:none}
-    body{margin:0;padding:0;font-family:'Inter',system-ui,-apple-system,sans-serif}
-    </style>
-    <!-- Performance optimization hints -->
+      const resourceHints = `    <!-- Performance optimization hints -->
     <link rel="dns-prefetch" href="//netlify.app">
     <link rel="preconnect" href="https://launchin7.netlify.app" crossorigin>
     <!-- Critical font preload to eliminate layout shift -->
     <link rel="preload" href="/assets/poppins-latin-700-normal-Qrb0O0WB.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/inter-latin-400-normal-C38fXH4l.woff2" as="font" type="font/woff2" crossorigin>`;
       
-      html = html.replace('</head>', `${criticalCSS}\n    ${cssLinks.join('\n    ')}\n  </head>`);
+      html = html.replace('</head>', `${resourceHints}\n    ${cssLinks.join('\n    ')}\n  </head>`);
     }
     
     // Add JS to end of body
