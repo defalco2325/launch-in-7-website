@@ -1,0 +1,42 @@
+Fonts → remove render delay (keep same fonts visually)
+
+Replace Google Fonts network loads with self-hosted woff2 via either @fontsource or locally bundled files (same families: Poppins & Inter, same weights currently used).
+
+Subset to used glyph ranges and preload only the exact files used above the fold.
+
+Use font-display: swap and ensure fallback paints immediately without reflow (lock line-height/letter-spacing to current values).
+
+Remove external <link href="fonts.googleapis" …> and <preconnect> calls.
+Acceptance: font requests are local (no fonts.googleapis.com / fonts.gstatic.com), hero/LCP render delay shrinks by ≥300ms.
+
+2) JavaScript size → cut unused code & split routes
+
+Route-level code splitting for all pages; ensure the home route initial JS ≤ 150 KB gz/br.
+
+Radix UI: import only used components (tree-shake everything else) or swap unused sets with lightweight equivalents (keep visuals). Target at least ~81 KB saved vs. current.
+
+Framer Motion: if only simple fades/slides are used, replace with CSS transitions (or keep Motion but lazy-load only where used). Target ~50 KB saved.
+
+Vendor chunking: isolate react, react-dom, and any UI library into separate lazy chunks so the home route loads the minimum.
+Acceptance: report a table of chunk sizes; home route entry ≤150 KB gz/br, total initial JS transferred ≤180 KB gz/br.
+
+3) CSS size → ensure Tailwind purge is working
+
+Verify Tailwind content globs match all template locations (TSX/JSX). Remove dead utilities so CSS ≤ 40–50 KB minified for the home route.
+
+Keep critical CSS for hero inline (already implemented), load the rest async.
+Acceptance: CSS file(s) reported by the build shrink from ~76 KB to ≤50 KB; Lighthouse no longer flags “Render-blocking CSS”.
+
+4) CLS fix (footer) → reserve space
+
+Add a stable min-height (or predictable layout) for the footer that currently causes 0.432 CLS. Ensure no late-loading components push content.
+
+Verify all images/illustrations above the fold specify width/height or aspect-ratio.
+Acceptance: CLS < 0.1 on mobile.
+
+5) DOM size & wrappers
+
+Reduce unnecessary wrapper nodes from the UI library (Radix) where they don’t affect visuals or accessibility; keep ARIA roles intact.
+
+Target a ≥20% reduction in node count on /.
+Acceptance: Lighthouse no longer flags “Excessive DOM size” for home.
