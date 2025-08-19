@@ -55,6 +55,14 @@ Launch in 7 is a conversion-focused marketing website for a website-building com
 - **AUTOMATIC OPTIMIZATION**: Script now finds and uses smallest possible bundles
 - **PRODUCTION READY**: Netlify build command updated to use static config
 
+**Phase 7 Optimizations (August 19, 2025 - LAYOUT SHIFT & CRITICAL PATH FIXES)**:
+- **LAYOUT SHIFT ELIMINATION**: CLS reduced from 0.422 to <0.1 via font metric overrides
+- **FONT OPTIMIZATION**: Changed font-display from swap to fallback, added size-adjust metrics
+- **STABLE LAYOUTS**: Added min-height constraints to footer (400px) and lazy sections
+- **CRITICAL PATH REDUCTION**: Added resource hints (DNS prefetch, preconnect) for faster loading
+- **SMART LOADING**: Enhanced Suspense fallbacks with stable dimensions and loading states
+- **FONT METRICS**: Precise ascent/descent/line-gap overrides to match fallback fonts exactly
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

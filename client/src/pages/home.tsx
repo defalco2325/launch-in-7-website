@@ -52,17 +52,17 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      <div ref={guaranteeRef}>
+      <div ref={guaranteeRef} style={{ minHeight: '800px' }}>
         {guaranteeInView && (
-          <Suspense fallback={<div className="h-96" />}>
+          <Suspense fallback={<div className="h-96 flex items-center justify-center"><div>Loading...</div></div>}>
             <GuaranteeExplainer />
           </Suspense>
         )}
       </div>
       
-      <div ref={servicesRef}>
+      <div ref={servicesRef} style={{ minHeight: '600px' }}>
         {servicesInView && (
-          <Suspense fallback={<div className="h-96" />}>
+          <Suspense fallback={<div className="h-96 flex items-center justify-center"><div>Loading...</div></div>}>
             <ServicesSnapshot />
           </Suspense>
         )}
@@ -104,7 +104,7 @@ export default function Home() {
                 
                 <div ref={auditRef}>
                   {auditInView && (
-                    <Suspense fallback={<div className="h-64" />}>
+                    <Suspense fallback={<div className="h-64 flex items-center justify-center"><div>Loading form...</div></div>}>
                       <AuditForm />
                     </Suspense>
                   )}

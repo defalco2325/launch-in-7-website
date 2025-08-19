@@ -98,10 +98,14 @@ try {
   });
   
   if (modified) {
-    // Add non-blocking CSS to head (after existing preloads) and JS to end of body
+    // Add resource hints and non-blocking CSS to head (after existing preloads) and JS to end of body
     if (cssLinks.length > 0) {
-      // Insert non-blocking CSS in head after font preloads
-      html = html.replace('</head>', `    ${cssLinks.join('\n    ')}\n  </head>`);
+      // Insert resource hints and non-blocking CSS in head
+      const resourceHints = `    <!-- Resource hints for critical path optimization -->
+    <link rel="dns-prefetch" href="//netlify.app">
+    <link rel="preconnect" href="https://launchin7.netlify.app" crossorigin>`;
+      
+      html = html.replace('</head>', `${resourceHints}\n    ${cssLinks.join('\n    ')}\n  </head>`);
     }
     
     // Add JS to end of body
