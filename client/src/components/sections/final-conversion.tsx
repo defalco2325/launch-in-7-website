@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { MotionDiv } from "@/components/ui/motion-wrapper";
 import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +19,7 @@ export default function FinalConversion() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Guarantee Badge */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -27,9 +27,9 @@ export default function FinalConversion() {
           >
             <ShieldCheck className="w-5 h-5 mr-2" />
             7-Day Turnaround Guarantee — or it's Free
-          </motion.div>
+          </MotionDiv>
           
-          <motion.h2
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -38,9 +38,9 @@ export default function FinalConversion() {
           >
             Ready to Launch Your Website in{" "}
             <span className="gradient-text">7 Days?</span>
-          </motion.h2>
+          </MotionDiv>
           
-          <motion.p
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -48,10 +48,10 @@ export default function FinalConversion() {
             className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto"
           >
             Join hundreds of businesses who've trusted us to deliver conversion-focused websites on time, every time.
-          </motion.p>
+          </MotionDiv>
           
           {/* CTA Buttons */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -73,9 +73,9 @@ export default function FinalConversion() {
             >
               Book a Strategy Call
             </Button>
-          </motion.div>
+          </MotionDiv>
           
-          <motion.p
+          <MotionDiv
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -83,7 +83,7 @@ export default function FinalConversion() {
             className="text-sm text-gray-400"
           >
             No long-term contracts • 7-day guarantee • Professional results
-          </motion.p>
+          </MotionDiv>
         </div>
       </div>
     </section>

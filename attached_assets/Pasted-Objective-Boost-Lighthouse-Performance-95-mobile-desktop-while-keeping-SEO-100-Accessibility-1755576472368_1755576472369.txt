@@ -1,0 +1,61 @@
+Objective
+Boost Lighthouse Performance ≥95 (mobile & desktop) while keeping SEO = 100, Accessibility ≥95, Best Practices ≥95. Do NOT change visuals or functionality. Keep the site fully static on Netlify.
+
+Scope of work (implement exactly, no code shown in replies)
+1) Manual chunking (Vite)
+   - In vite.config.ts, configure build.rollupOptions.output.manualChunks so:
+     • react and react-dom go to a shared vendor chunk
+     • radix-ui/* split into a separate lazy chunk(s) only loaded where used
+     • framer-motion is isolated so it can be lazy-loaded
+   - Goal: initial JS for “/” ≤ 120 KB gz (total first-load ≤ 160 KB gz).
+
+2) Lazy-load Framer Motion
+   - Convert Motion usage to dynamic import so it’s not in the main entry.
+   - Preserve existing animations and timings; respect prefers-reduced-motion.
+
+3) Preload critical fonts (self-hosted already)
+   - Preload only the above-the-fold fonts used in hero:
+     • Poppins 700 woff2
+     • Inter 400 woff2
+   - Ensure font-display: swap; lock line-height/letter-spacing so swap causes no reflow.
+   - Acceptance: LCP font delay reduced by ~200ms; no CLS introduced.
+
+4) Tailwind purge verification
+   - Verify tailwind.config content globs cover all templates (src/**/*.{ts,tsx,js,jsx,html}).
+   - Ensure production CSS is purged; target total CSS ≤ 50 KB uncompressed (≈ ≤15 KB gz).
+
+5) Image optimization (no visual change)
+   - Convert static PNG/JPG assets used on “/” to WebP (and AVIF if trivial).
+   - Add responsive srcset/sizes for hero/supporting images; keep exact rendered size and quality.
+   - Do not touch logos/icons that must remain PNG/SVG.
+   - Acceptance: Lighthouse stops flagging next-gen images on “/”.
+
+6) Keep static & headers intact
+   - Keep publish dir = dist/public, SPA redirects, and _headers (immutable cache for hashed assets, no-cache for index.html).
+   - Do not add SSR or functions.
+
+Build & Deploy
+- Run a clean production build, deploy to Netlify, and trigger “Clear cache and deploy site”.
+
+Verification & Report (return as tables/bullets, no source code)
+1) Bundle table (before vs after):
+   • Entry chunk (gz & raw)
+   • Top 5 chunks with lib names
+   • Total initial JS transferred (gz)
+2) Core Web Vitals (mobile) averaged over 3 runs:
+   • FCP, LCP, TBT, CLS
+3) Category scores (mobile & desktop) averaged over 3 runs:
+   • Performance, Accessibility, Best Practices, SEO
+4) Evidence:
+   • Confirm framer-motion and radix-ui no longer in initial entry
+   • Show the two font preload tags resolved to local .woff2 (no Google domains)
+   • Confirm hero image(s) report WebP/AVIF with dimensions
+   • Confirm CSS size after purge
+
+Targets (must meet or exceed)
+- Mobile: Perf ≥95 (FCP <1.8s, LCP <2.5s, TBT <200ms, CLS <0.1)
+- Desktop: Perf ≥95
+- Accessibility ≥95, Best Practices ≥95, SEO = 100
+- Initial JS for “/” ≤120 KB gz; total ≤160 KB gz; CSS ≤15 KB gz
+
+If any target misses, list the top 3 remaining blockers with file/chunk names, estimated ms/points to gain, and the safest one-step fix. Include a rollback note if any change affected visuals.

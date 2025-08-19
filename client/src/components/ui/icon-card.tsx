@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { MotionDiv } from "@/components/ui/motion-wrapper";
 import { LucideIcon } from "lucide-react";
 
 interface IconCardProps {
@@ -15,7 +15,7 @@ export default function IconCard({
   delay = 0 
 }: IconCardProps) {
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -36,6 +36,6 @@ export default function IconCard({
           {description}
         </p>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 }

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { MotionDiv } from "@/components/ui/motion-wrapper";
 import { LucideIcon } from "lucide-react";
 
 interface MetricBadgeProps {
@@ -15,7 +15,7 @@ export default function MetricBadge({
   delay = 0 
 }: MetricBadgeProps) {
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -29,6 +29,6 @@ export default function MetricBadge({
       {description && (
         <p className="text-gray-600 text-lg leading-relaxed max-w-sm mx-auto">{description}</p>
       )}
-    </motion.div>
+    </MotionDiv>
   );
 }
