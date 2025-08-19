@@ -15,16 +15,30 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    cssCodeSplit: true, // Split CSS for better caching
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        unused: true,
+        dead_code: true,
+      },
+      mangle: {
+        safari10: true,
+      },
+    },
     rollupOptions: {
       output: {
-        // Optimize critical path while preserving visuals
+        // Ultra-aggressive chunking for critical path optimization
         manualChunks(id) {
-          // Keep only essential routing in main bundle
-          if (id.includes('home.tsx')) {
-            return undefined; // Include in main bundle for faster routing
+          // Keep ONLY hero section in main bundle
+          if (id.includes('home.tsx') || id.includes('hero.tsx')) {
+            return undefined; // Main bundle
           }
           
-          // Create tiny core bundle
+          // Micro-chunk critical dependencies  
           if (id.includes('react/') && !id.includes('react-dom')) {
             return 'react';
           }
@@ -35,28 +49,35 @@ export default defineConfig({
             return 'router';
           }
           
-          // Defer ALL heavy libraries
+          // Defer ALL non-critical libraries
           if (id.includes('@radix-ui/')) {
             return 'ui';
           }
           if (id.includes('framer-motion')) {
-            return 'motion';
+            return 'motion-deferred'; // Explicitly defer
           }
           if (id.includes('react-hook-form') || id.includes('zod')) {
-            return 'forms';
+            return 'forms-lazy';
           }
           if (id.includes('lucide-react')) {
-            return 'icons';
+            return 'icons-lazy';
           }
           if (id.includes('@tanstack/react-query')) {
-            return 'query';
+            return 'query-lazy';
+          }
+          if (id.includes('lazy')) {
+            return 'lazy-components';
           }
           
-          // Everything else to vendor
+          // Vendor optimization
           if (id.includes('node_modules')) {
-            return 'vendor';
+            return 'vendor-deferred';
           }
         },
+        // Optimize asset naming
+        entryFileNames: '[name]-[hash].js',
+        chunkFileNames: '[name]-[hash].js',
+        assetFileNames: '[name]-[hash].[ext]'
       },
     },
   },

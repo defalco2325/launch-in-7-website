@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { CheckCircle, Clock, Zap, Target, Shield, ArrowRight, Palette, Code, TestTube, Rocket } from "lucide-react";
 
 export default function GuaranteeExplainer() {
@@ -17,22 +16,15 @@ export default function GuaranteeExplainer() {
       {/* Advanced Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
-        <motion.div 
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-electric-blue/10 to-transparent rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-          transition={{ duration: 20, repeat: Infinity }}
+        <div 
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-electric-blue/10 to-transparent rounded-full blur-3xl animate-float-slow"
         />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-6xl mx-auto">
           {/* Compact Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12 animate-fade-in-up">
             <div className="inline-flex items-center space-x-2 glass-card px-4 py-2 mb-4 glow-effect">
               <Clock className="w-4 h-4 text-neon-cyan" />
               <span className="text-white font-medium text-sm">7-Day Guarantee</span>
@@ -46,22 +38,19 @@ export default function GuaranteeExplainer() {
               Precision-engineered methodology delivering premium websites in exactly 7 days. 
               <span className="text-neon-cyan font-semibold"> Miss the deadline? Build is free.</span>
             </p>
-          </motion.div>
+          </div>
 
           {/* Compact Process Grid */}
           <div className="relative">
             {/* Background Connection Lines */}
             <div className="absolute inset-0 opacity-20">
               <svg className="w-full h-full" viewBox="0 0 800 200">
-                <motion.path
+                <path
                   d="M 50 100 Q 200 50, 350 100 T 750 100"
                   stroke="url(#gradient1)"
                   strokeWidth="2"
                   fill="none"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, delay: 0.5 }}
+                  className="animate-fade-in"
                 />
                 <defs>
                   <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -76,13 +65,10 @@ export default function GuaranteeExplainer() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-3">
               {processSteps.map((step, index) => (
-                <motion.div
+                <div
                   key={step.day}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative group"
+                  className="relative group animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Compact Process Card */}
                   <div className="glass-card rounded-2xl p-4 text-center hover:scale-105 transition-all duration-300 glow-effect group-hover:border-white/30">
@@ -102,7 +88,7 @@ export default function GuaranteeExplainer() {
                     
                     {/* Progress Indicator */}
                     <div className="mt-3 w-full bg-gray-700 h-1 rounded-full overflow-hidden">
-                      <motion.div 
+                      <div 
                         className={`h-full bg-gradient-to-r from-${step.color} to-${step.color}/70`}
                         initial={{ width: "0%" }}
                         whileInView={{ width: "100%" }}
@@ -111,13 +97,13 @@ export default function GuaranteeExplainer() {
                       />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
 
           {/* Guarantee Badge */}
-          <motion.div
+          <div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -131,7 +117,7 @@ export default function GuaranteeExplainer() {
               </span>
               <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

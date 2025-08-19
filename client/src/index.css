@@ -66,12 +66,14 @@ body {
   font-kerning: none;
 }
 
+/* Eliminate footer layout shift with stable dimensions */
 footer.bg-deep-navy {
   contain: layout style paint;
   transform: translateZ(0);
+  min-height: 384px; /* Explicit height to prevent CLS */
 }
 
-/* Force consistent line heights */
+/* Force consistent line heights to prevent CLS */
 .font-poppins, h1, h2, h3, h4, h5, h6 {
   line-height: 1.2 !important;
 }
@@ -304,26 +306,7 @@ body, p, div, span {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   }
   
-  .card-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .card-hover:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(56, 189, 248, 0.1);
-  }
-  
-  .sticky-header {
-    backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.9);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  }
-  
-  .metric-badge {
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    backdrop-filter: blur(10px);
-  }
+  /* Only keeping actively used components */
 
   .tech-grid-bg {
     background-image: 
@@ -336,42 +319,23 @@ body, p, div, span {
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(56, 189, 248, 0.1);
   }
 
-  .neon-border {
-    border: 2px solid transparent;
-    background: linear-gradient(white, white) padding-box,
-                linear-gradient(135deg, var(--neon-cyan), var(--accent-purple)) border-box;
-  }
 
-  .floating-animation {
-    animation: float 6s ease-in-out infinite;
-    will-change: transform;
-    transform: translateZ(0); /* Force hardware acceleration */
-  }
 
-  @keyframes float {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    50% { transform: translate3d(0, -20px, 0); }
-  }
 
-  /* Mobile Performance Optimizations */
+
+  /* Critical mobile optimizations only */
   @media (max-width: 768px) {
     .cutting-edge-gradient {
-      /* Reduce gradient complexity on mobile for better performance */
       background: linear-gradient(90deg, #3B82F6 0%, #06B6D4 50%, #10B981 100%);
-      will-change: width;
       transform: translateZ(0);
-      backface-visibility: hidden;
     }
-    
-    /* Reduce motion for users who prefer it */
-    @media (prefers-reduced-motion: reduce) {
-      .floating-animation {
-        animation: none;
-      }
-      
-      .cutting-edge-gradient {
-        transition: width 0.3s ease-out;
-      }
+  }
+  
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
     }
   }
 
@@ -391,48 +355,11 @@ body, p, div, span {
   }
 }
 
+/* Critical utilities only - removed unused color utilities */
 @layer utilities {
-  .text-deep-navy {
-    color: var(--deep-navy);
-  }
-  
-  .bg-deep-navy {
-    background-color: var(--deep-navy);
-  }
-  
-  .text-electric-blue {
-    color: var(--electric-blue);
-  }
-  
-  .bg-electric-blue {
-    background-color: var(--electric-blue);
-  }
-  
-  .text-aqua {
-    color: var(--aqua);
-  }
-  
-  .bg-aqua {
-    background-color: var(--aqua);
-  }
-  
-  .text-success-green {
-    color: var(--success-green);
-  }
-  
-  .bg-success-green {
-    background-color: var(--success-green);
-  }
-  
-  .bg-light-gray {
-    background-color: var(--light-gray);
-  }
-  
-  .font-poppins {
-    font-family: var(--font-poppins);
-  }
-  
-  .font-inter {
-    font-family: var(--font-inter);
-  }
+  .text-deep-navy { color: var(--deep-navy); }
+  .bg-deep-navy { background-color: var(--deep-navy); }
+  .text-electric-blue { color: var(--electric-blue); }
+  .text-success-green { color: var(--success-green); }
+  .font-poppins { font-family: var(--font-poppins); }
 }

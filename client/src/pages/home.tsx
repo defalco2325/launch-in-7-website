@@ -2,10 +2,16 @@ import HeroSection from "@/components/sections/hero";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
-// Lazy load below-the-fold sections
-const GuaranteeExplainer = lazy(() => import("@/components/sections/guarantee-explainer"));
-const ServicesSnapshot = lazy(() => import("@/components/sections/services-snapshot"));
-const AuditForm = lazy(() => import("@/components/forms/audit-form"));
+// Lazy load below-the-fold sections with preload strategy
+const GuaranteeExplainer = lazy(() => 
+  import("@/components/sections/guarantee-explainer").then(module => ({ default: module.default }))
+);
+const ServicesSnapshot = lazy(() => 
+  import("@/components/sections/services-snapshot").then(module => ({ default: module.default }))
+);
+const AuditForm = lazy(() => 
+  import("@/components/forms/audit-form").then(module => ({ default: module.default }))
+);
 
 // Use Intersection Observer hook for lazy loading
 function useInViewport(ref: React.RefObject<HTMLElement>, rootMargin = "200px") {
@@ -52,9 +58,16 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      <div ref={guaranteeRef}>
+      <div ref={guaranteeRef} id="guarantee-section">
         {guaranteeInView && (
-          <Suspense fallback={<div className="h-96" />}>
+          <Suspense fallback={
+            <div 
+              className="h-96 bg-gradient-to-b from-slate-50 to-white flex items-center justify-center"
+              style={{ minHeight: '384px' }}
+            >
+              <div className="animate-pulse">Loading...</div>
+            </div>
+          }>
             <GuaranteeExplainer />
           </Suspense>
         )}
@@ -62,7 +75,14 @@ export default function Home() {
       
       <div ref={servicesRef}>
         {servicesInView && (
-          <Suspense fallback={<div className="h-96" />}>
+          <Suspense fallback={
+            <div 
+              className="h-96 bg-white flex items-center justify-center"
+              style={{ minHeight: '384px' }}
+            >
+              <div className="animate-pulse">Loading...</div>
+            </div>
+          }>
             <ServicesSnapshot />
           </Suspense>
         )}
@@ -104,7 +124,14 @@ export default function Home() {
                 
                 <div ref={auditRef}>
                   {auditInView && (
-                    <Suspense fallback={<div className="h-64" />}>
+                    <Suspense fallback={
+                      <div 
+                        className="h-64 flex items-center justify-center"
+                        style={{ minHeight: '256px' }}
+                      >
+                        <div className="animate-pulse text-gray-500">Loading form...</div>
+                      </div>
+                    }>
                       <AuditForm />
                     </Suspense>
                   )}

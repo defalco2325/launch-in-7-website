@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Rocket, Sparkles, Shield, Gauge, Trophy, Users, Code2, Zap, Clock, Award, Target } from "lucide-react";
 import IconCard from "@/components/ui/icon-card";
 
@@ -49,12 +48,7 @@ export default function ServicesSnapshot() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-6xl mx-auto">
           {/* Compact Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12 animate-fade-in-up">
             <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-electric-blue/5 to-success-green/5 border border-electric-blue/10 rounded-full px-4 py-2 mb-4">
               <Award className="w-4 h-4 text-electric-blue" />
               <span className="text-electric-blue font-medium text-sm">Premium Excellence</span>
@@ -68,23 +62,15 @@ export default function ServicesSnapshot() {
               Revolutionary development process combining cutting-edge tech with proven speed.
               <span className="text-electric-blue font-semibold"> Experience the future.</span>
             </p>
-          </motion.div>
+          </div>
 
           {/* Compact Stats Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-6 mb-12"
-          >
+          <div className="flex flex-wrap justify-center gap-6 mb-12 animate-fade-in-up">
             {achievements.map((achievement, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-center space-x-3 bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
+                className="flex items-center space-x-3 bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className={`p-2 rounded-xl ${
                   achievement.color === 'text-success-green' ? 'bg-gradient-to-br from-success-green to-success-green/70' :
@@ -100,14 +86,14 @@ export default function ServicesSnapshot() {
                   </div>
                   <div className="text-gray-600 text-sm font-medium">{achievement.label}</div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
           
           {/* Compact Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <motion.div
+              <div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -134,7 +120,7 @@ export default function ServicesSnapshot() {
                     {service.description}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
