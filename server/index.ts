@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -47,10 +48,19 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // Add explicit static file routes for development
   if (app.get("env") === "development") {
+    // Serve specific SEO files before catch-all
+    app.get('/robots.txt', (req, res) => {
+      res.setHeader('Content-Type', 'text/plain');
+      res.sendFile(path.resolve(process.cwd(), 'public/robots.txt'));
+    });
+    
+    app.get('/sitemap.xml', (req, res) => {
+      res.setHeader('Content-Type', 'application/xml');
+      res.sendFile(path.resolve(process.cwd(), 'public/sitemap.xml'));
+    });
+    
     await setupVite(app, server);
   } else {
     serveStatic(app);

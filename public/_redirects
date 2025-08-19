@@ -1,2 +1,6 @@
-# SPA fallback for client-side routing
-/*    /index.html   200
+# Explicit rules for SEO files
+/robots.txt    /robots.txt    200
+/sitemap.xml   /sitemap.xml   200
+
+# SPA fallback for all other routes
+/*             /index.html    200
