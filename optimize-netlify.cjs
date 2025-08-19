@@ -103,22 +103,19 @@ try {
       // Insert resource hints and non-blocking CSS in head
       const criticalCSS = `    <!-- Critical Above-the-Fold CSS for FCP Optimization -->
     <style>
-    /* Ultra-critical CSS - absolute minimum for FCP */
-    *{box-sizing:border-box;margin:0;padding:0;font-kerning:none}
-    body{font-family:'Inter',system-ui,sans-serif;font-display:swap}
-    #root{min-height:100vh;display:flex;flex-direction:column}
-    .hero-critical{height:100vh;background:#1a1a2e;color:#fff;display:flex;align-items:center;justify-content:center;contain:layout style paint}
-    .hero-content{max-width:1200px;padding:2rem;display:grid;gap:2rem;align-items:center;width:100%}
-    @media(min-width:1024px){.hero-content{grid-template-columns:1fr 1fr}}
-    .hero-title{font-family:'Poppins',system-ui,sans-serif;font-weight:900;font-size:clamp(2rem,7vw,4rem);line-height:1.1;margin:0 0 1rem;color:#fff}
-    .gradient-text{background:linear-gradient(135deg,#00d4ff,#00b4d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-subtitle{color:#d1d5db;font-size:1.25rem;line-height:1.5;margin:0 0 2rem;max-width:30rem}
-    .cta-button{background:#00d4ff;color:#fff;padding:1rem 2rem;border-radius:50px;font-weight:600;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none}
-    .cta-button:hover{background:#00b4d8}
-    /* Layout shift prevention - exact dimensions */
-    .hero-critical{will-change:auto;transform:translateZ(0)}
-    .font-poppins{font-family:'Poppins',system-ui,sans-serif}
-    footer{min-height:300px;background:#1a1a2e}
+    /* Critical hero section CSS - inline for fastest FCP */
+    #root{display:flex;flex-direction:column;min-height:100vh;font-family:'Inter',system-ui,-apple-system,sans-serif}
+    .hero-critical{position:relative;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#1a1a2e 100%);overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .hero-content{position:relative;max-width:72rem;margin:0 auto;padding:5rem 1rem 8rem;display:grid;grid-template-columns:1fr;gap:3rem;align-items:center;min-height:80vh;width:100%}
+    @media (min-width:1024px){.hero-content{grid-template-columns:1fr 1fr}}
+    .hero-title{font-family:'Poppins',system-ui,-apple-system,sans-serif;font-weight:900;font-size:clamp(2rem,8vw,4rem);color:white;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.02em}
+    .gradient-text{background:linear-gradient(135deg,#00d4ff 0%,#00b4d8 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+    .hero-subtitle{color:#d1d5db;font-size:clamp(1.125rem,3vw,1.5rem);line-height:1.6;margin-bottom:2rem;max-width:32rem}
+    .cta-button{background:#00d4ff;color:white;padding:1rem 2rem;border-radius:9999px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;border:none;cursor:pointer}
+    .cta-button:hover{background:#00b4d8;transform:translateY(-2px)}
+    /* Prevent layout shifts */
+    *{box-sizing:border-box;font-kerning:none}
+    body{margin:0;padding:0;font-family:'Inter',system-ui,-apple-system,sans-serif}
     </style>
     <!-- Performance optimization hints -->
     <link rel="dns-prefetch" href="//netlify.app">

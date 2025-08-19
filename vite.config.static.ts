@@ -17,44 +17,44 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        // Ultra-aggressive unused code elimination
+        // Optimize critical path while preserving visuals
         manualChunks(id) {
-          // Critical path: Only hero-critical component
-          if (id.includes('hero-critical.tsx') || id.includes('home.tsx')) {
-            return undefined; // Include in main bundle
+          // Keep only essential routing in main bundle
+          if (id.includes('home.tsx')) {
+            return undefined; // Include in main bundle for faster routing
           }
           
-          // Micro React core
+          // Create tiny core bundle
           if (id.includes('react/') && !id.includes('react-dom')) {
-            return 'react-micro';
+            return 'react';
           }
           if (id.includes('react-dom')) {
-            return 'react-dom-deferred';
+            return 'react-dom';
           }
           if (id.includes('wouter')) {
-            return 'router-micro';
+            return 'router';
           }
           
-          // Completely defer unused libraries (load only when needed)
+          // Defer ALL heavy libraries
           if (id.includes('@radix-ui/')) {
-            return 'ui-unused'; // Mark as unused
+            return 'ui';
           }
           if (id.includes('framer-motion')) {
-            return 'motion-unused'; // 46KB - completely unused in hero
+            return 'motion';
           }
           if (id.includes('react-hook-form') || id.includes('zod')) {
-            return 'forms-unused'; // 23KB - only needed for forms
+            return 'forms';
           }
           if (id.includes('lucide-react')) {
-            return 'icons-unused'; // Using inline SVG instead
+            return 'icons';
           }
           if (id.includes('@tanstack/react-query')) {
-            return 'query-unused';
+            return 'query';
           }
           
-          // Minimal vendor
+          // Everything else to vendor
           if (id.includes('node_modules')) {
-            return 'vendor-minimal';
+            return 'vendor';
           }
         },
       },
