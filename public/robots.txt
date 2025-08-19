@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
 
+# Sitemap location
 Sitemap: https://your-domain.netlify.app/sitemap.xml
+
+# Block access to development files
+Disallow: /_next/
+Disallow: /api/
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Allow all content for SEO
+Allow: /assets/
+Allow: /images/
+Allow: /*.css
+Allow: /*.js
