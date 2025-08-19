@@ -78,7 +78,7 @@ export default defineConfig({
           return "other-vendors";
         },
 
-        // Cache-friendly filenames structure
+        // Cache-friendly filenames structure - Fixed for Netlify
         chunkFileNames: "assets/[name]-[hash].js",
         entryFileNames: "assets/[name]-[hash].js",
         assetFileNames: ({ name }) => {

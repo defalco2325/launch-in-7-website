@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Simple optimization script for Netlify - uses CommonJS
+// Optimization script for Netlify - handles assets paths correctly
 const fs = require('fs');
 const path = require('path');
 
