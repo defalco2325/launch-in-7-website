@@ -2,20 +2,13 @@
 
 echo "🚀 Building optimized static site for deployment..."
 
-# Build the site
+# Build the site with static config
 echo "Building with Vite..."
-vite build
+vite build --config vite.config.static.ts
 
-# Optimize the HTML
+# Optimize the HTML to eliminate render blocking
 echo "Optimizing HTML to eliminate render blocking..."
-node scripts/optimize-html.mjs
-
-# Copy static files
-echo "Copying static files..."
-cp public/robots.txt dist/public/robots.txt
-cp public/sitemap.xml dist/public/sitemap.xml
-cp public/_headers dist/public/_headers
-cp public/_redirects dist/public/_redirects
+node optimize-netlify.cjs
 
 echo "✅ Build complete! Static files ready in dist/public/"
 echo ""

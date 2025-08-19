@@ -3,14 +3,28 @@
 const fs = require('fs');
 const path = require('path');
 
-const htmlPath = path.resolve('dist/public/index.html');
+// Check multiple possible locations for the built HTML
+const possiblePaths = [
+  path.resolve('dist/public/index.html'),
+  path.resolve('dist/index.html'),
+  path.resolve('build/index.html'),
+];
+
+let htmlPath = null;
+for (const testPath of possiblePaths) {
+  if (fs.existsSync(testPath)) {
+    htmlPath = testPath;
+    break;
+  }
+}
 
 console.log('=== NETLIFY BUILD OPTIMIZATION ===');
 console.log('Looking for HTML at:', htmlPath);
 
 try {
-  if (!fs.existsSync(htmlPath)) {
-    console.error('HTML not found, skipping optimization');
+  if (!htmlPath) {
+    console.error('HTML not found in any expected location, skipping optimization');
+    console.log('Searched paths:', possiblePaths);
     process.exit(0);
   }
 
