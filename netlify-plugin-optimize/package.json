@@ -1,0 +1,5 @@
+{
+  "name": "netlify-plugin-optimize",
+  "version": "1.0.0",
+  "main": "index.cjs"
+}

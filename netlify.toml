@@ -1,9 +1,12 @@
 [build]
-  command = "vite build && node scripts/optimize-html.mjs && cp public/robots.txt dist/public/robots.txt && cp public/sitemap.xml dist/public/sitemap.xml && cp public/_headers dist/public/_headers && cp public/_redirects dist/public/_redirects"
+  command = "npm run build"
   publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
+
+[[plugins]]
+  package = "./netlify-plugin-optimize"
 
 # SPA fallback with exceptions for SEO files
 [[redirects]]
