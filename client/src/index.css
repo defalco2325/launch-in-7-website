@@ -1,4 +1,5 @@
 /* Self-hosted fonts - no external Google Fonts requests */
+/* Preload critical fonts to prevent layout shift */
 @font-face {
   font-family: 'Poppins';
   font-style: normal;
@@ -6,6 +7,7 @@
   font-display: swap;
   src: url('/assets/poppins-latin-700-normal-Qrb0O0WB.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  size-adjust: 100%;
 }
 
 @font-face {
@@ -15,6 +17,7 @@
   font-display: swap;
   src: url('/assets/inter-latin-400-normal-C38fXH4l.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  size-adjust: 100%;
 }
 
 /* Enhanced focus styles for accessibility */
@@ -48,6 +51,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Font fallback system to prevent layout shift */
+.font-poppins {
+  font-family: 'Poppins', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Prevent layout shift during font loading */
+.font-loading-fallback {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
 
 /* CSS Animations for Hero Section */
 @keyframes float-slow {
