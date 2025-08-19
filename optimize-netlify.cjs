@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Optimization script for Netlify - handles assets paths correctly
+// Simple optimization script for Netlify - uses CommonJS
 const fs = require('fs');
 const path = require('path');
 
@@ -20,7 +20,7 @@ try {
   // Remove CSS from head and collect them
   const cssLinks = [];
   html = html.replace(/<link[^>]*rel="stylesheet"[^>]*>/gi, (match) => {
-    if (match.includes('/assets/') || match.includes('/chunks/') || match.includes('/entries/')) {
+    if (match.includes('/assets/')) {
       cssLinks.push(match);
       modified = true;
       return ''; // Remove from original position
@@ -31,7 +31,7 @@ try {
   // Remove JS modules from head and collect them
   const jsScripts = [];
   html = html.replace(/<script[^>]*type="module"[^>]*><\/script>/gi, (match) => {
-    if (match.includes('/assets/') || match.includes('/chunks/') || match.includes('/entries/')) {
+    if (match.includes('/assets/')) {
       jsScripts.push(match);
       modified = true;
       return ''; // Remove from original position
