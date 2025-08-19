@@ -30,7 +30,7 @@ try {
   
   // Remove JS modules from head and collect them
   const jsScripts = [];
-  html = html.replace(/<script[^>]*type="module"[^>]*>/gi, (match) => {
+  html = html.replace(/<script[^>]*type="module"[^>]*><\/script>/gi, (match) => {
     if (match.includes('/assets/')) {
       jsScripts.push(match);
       modified = true;
