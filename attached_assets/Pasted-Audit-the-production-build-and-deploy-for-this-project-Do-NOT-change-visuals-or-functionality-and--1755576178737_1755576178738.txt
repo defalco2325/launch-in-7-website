@@ -1,0 +1,39 @@
+Audit the production build and deploy for this project. Do NOT change visuals or functionality, and do NOT paste code—return clear findings, tables, and paths.
+
+Scope
+1) Build/Deploy Chain
+   • Read netlify.toml and package.json scripts. State the effective build command and publish directory.
+   • Confirm from the latest Netlify deploy log that these are used (quote the exact lines).
+   • Identify and summarize what optimize-netlify.cjs is intended to do (in plain English).
+
+2) Prove what actually shipped
+   • List the top-level files and hashed assets in the published directory (dist/public).
+   • Check if Google Fonts are still requested at runtime. If yes, list the exact requests; if self-hosted, list the local .woff2 paths.
+   • Verify presence and contents of: public/_headers, public/_redirects, robots.txt, sitemap.xml.
+
+3) Before/After impact of the optimize step
+   • Build once WITHOUT running optimize-netlify.cjs and once WITH it (local dry run).
+   • For each, report:
+       - Initial HTML size (index.html) and whether CSS/JS moved to end of body.
+       - Initial JS transferred (gz/br), list top 10 chunks with sizes.
+       - CSS total (minified) and count of CSS files.
+       - LCP/FCP/TBT/CLS from Lighthouse (mobile), 1 run each, with deltas.
+   • State clearly which changes the optimize step actually applied to the final files.
+
+4) Fonts & LCP
+   • Identify the LCP element on / (text or image).
+   • List all font files used above the fold: family, weight, file path, bytes, preload yes/no, font-display value.
+   • Say whether fallback text paints before swap and whether swap causes reflow.
+
+5) Remaining bottlenecks mapped to files
+   • From the latest Lighthouse (mobile), list all failing audits for:
+       - Reduce unused JavaScript
+       - Eliminate render-blocking resources
+       - Serve images in next-gen formats
+       - Reduce CLS
+     For each, map to specific files/components in the repo and the exact asset URLs.
+
+6) Deliverables (plain English, no code)
+   • A table comparing “Before optimize” vs “After optimize” for: Initial JS (gz/br), Largest chunk, CSS total, HTML inlining, FCP/LCP/TBT/CLS.
+   • A bullet list: “What changed and is in production” vs “Configured but not taking effect (and why)”.
+   • A prioritized action plan to reach: Performance ≥95 (mobile), A11y ≥95, Best Practices ≥95, SEO = 100—while keeping the site static and visually identical. For each action, include: file(s) to edit, expected Lighthouse points/ms saved, and risk level.
