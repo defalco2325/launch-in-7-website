@@ -30,76 +30,21 @@ try {
 
   let html = fs.readFileSync(htmlPath, 'utf-8');
   let modified = false;
-
-  // CRITICAL: Inline above-the-fold CSS directly into HTML for FCP optimization
-  const criticalCSS = `
-    <style>
-      /* Critical path CSS for instant FCP */
-      body { 
-        font-family: Arial, sans-serif; 
-        margin: 0; 
-        padding: 0;
-        font-display: swap;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeSpeed;
-      }
-      .hero-section { 
-        min-height: 100vh; 
-        background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
-        color: white;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        position: relative;
-        contain: layout style paint;
-        transform: translateZ(0);
-      }
-      .hero-title {
-        font-size: clamp(2.5rem, 8vw, 4rem);
-        font-weight: 900;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
-        margin: 0;
-        font-family: Arial, sans-serif;
-      }
-      .gradient-text {
-        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        display: inline-block;
-      }
-      .container { 
-        max-width: 1200px; 
-        margin: 0 auto; 
-        padding: 0 1rem; 
-        width: 100%;
-      }
-      /* Prevent layout shift */
-      * { box-sizing: border-box; font-kerning: none; }
-      #root { min-height: 100vh; width: 100%; }
-      footer { min-height: 400px; width: 100%; }
-      img { max-width: 100%; height: auto; }
-    </style>
-  `;
-
-  // Insert critical CSS immediately after <head>
-  html = html.replace('<head>', '<head>' + criticalCSS);
-  modified = true;
   
-  // Convert CSS to non-blocking pattern with preload for aggressive optimization
+  // Convert CSS to non-blocking pattern with preload
   const cssLinks = [];
   html = html.replace(/<link[^>]*rel="stylesheet"[^>]*>/gi, (match) => {
     if (match.includes('/assets/')) {
+      // Extract href from the link tag
       const hrefMatch = match.match(/href="([^"]+)"/);
       if (hrefMatch) {
         const href = hrefMatch[1];
-        // Advanced non-blocking CSS with faster loading
-        const nonBlockingCss = `<link rel="preload" as="style" href="${href}" onload="this.onload=null;this.rel='stylesheet'" media="print" onload="this.media='all'; this.onload=null;">
+        // Create non-blocking CSS pattern
+        const nonBlockingCss = `<link rel="preload" as="style" href="${href}" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="${href}"></noscript>`;
         cssLinks.push(nonBlockingCss);
         modified = true;
-        return '';
+        return ''; // Remove original blocking CSS
       }
     }
     return match;
