@@ -1,0 +1,247 @@
+If your robots.txt file is malformed, crawlers may not be able to understand how you want your website to be crawled or indexed. Learn more about robots.txt.
+Line #
+Content
+Error
+1
+<!DOCTYPE html>
+Syntax not understood
+2
+<html lang="en">
+Syntax not understood
+3
+<head>
+Syntax not understood
+4
+<meta charset="UTF-8" />
+Syntax not understood
+5
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+Syntax not understood
+6
+<!-- Critical font preloading for LCP optimization -->
+Syntax not understood
+7
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+Unknown directive
+8
+<link rel="preload" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDD4Z1xlFQ.woff2" as="font" type="font/woff2" crossorigin>
+Unknown directive
+9
+<link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+Unknown directive
+11
+<!-- Critical CSS for hero section -->
+Syntax not understood
+12
+<style>
+Syntax not understood
+13
+.hero-critical {
+Syntax not understood
+14
+min-height: 100vh;
+Unknown directive
+15
+background: linear-gradient(to bottom right, hsl(217, 33%, 8%), hsl(230, 25%, 12%), hsl(217, 33%, 8%));
+Unknown directive
+16
+color: white;
+Unknown directive
+17
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+Unknown directive
+18
+}
+Syntax not understood
+19
+.hero-title {
+Syntax not understood
+20
+font-size: clamp(2.5rem, 8vw, 4rem);
+Unknown directive
+21
+font-weight: 700;
+Unknown directive
+22
+line-height: 1.1;
+Unknown directive
+23
+letter-spacing: -0.02em;
+Unknown directive
+24
+}
+Syntax not understood
+25
+/* Prevent layout shift during font swap */
+Syntax not understood
+26
+@media (prefers-reduced-motion: reduce) {
+Unknown directive
+27
+* { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+Unknown directive
+28
+}
+Syntax not understood
+29
+</style>
+Syntax not understood
+30
+<!-- SEO and performance meta tags -->
+Syntax not understood
+31
+<meta name="description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development for your business.">
+Syntax not understood
+32
+<meta name="keywords" content="website development, web design, 7 day delivery, mobile optimization, professional websites">
+Syntax not understood
+34
+<!-- Open Graph tags -->
+Syntax not understood
+35
+<meta property="og:title" content="Launch in 7 - Professional Website Development">
+Unknown directive
+36
+<meta property="og:description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development.">
+Unknown directive
+37
+<meta property="og:type" content="website">
+Unknown directive
+39
+<!-- Canonical URL -->
+Syntax not understood
+40
+<link rel="canonical" href="https://your-domain.netlify.app/">
+Unknown directive
+42
+<!-- JSON-LD Structured Data -->
+Syntax not understood
+43
+<script type="application/ld+json">
+Syntax not understood
+44
+{
+Syntax not understood
+45
+"@context": "https://schema.org",
+Unknown directive
+46
+"@type": "Organization",
+Unknown directive
+47
+"name": "Launch in 7",
+Unknown directive
+48
+"description": "Professional website development with 7-day guaranteed delivery",
+Unknown directive
+49
+"url": "https://your-domain.netlify.app",
+Unknown directive
+50
+"logo": "https://your-domain.netlify.app/logo.png",
+Unknown directive
+51
+"contactPoint": {
+Unknown directive
+52
+"@type": "ContactPoint",
+Unknown directive
+53
+"contactType": "customer service",
+Unknown directive
+54
+"availableLanguage": "English"
+Unknown directive
+55
+},
+Syntax not understood
+56
+"address": {
+Unknown directive
+57
+"@type": "PostalAddress",
+Unknown directive
+58
+"addressCountry": "US"
+Unknown directive
+59
+}
+Syntax not understood
+60
+}
+Syntax not understood
+61
+</script>
+Syntax not understood
+63
+<script type="application/ld+json">
+Syntax not understood
+64
+{
+Syntax not understood
+65
+"@context": "https://schema.org",
+Unknown directive
+66
+"@type": "WebSite",
+Unknown directive
+67
+"name": "Launch in 7",
+Unknown directive
+68
+"url": "https://your-domain.netlify.app",
+Unknown directive
+69
+"description": "Professional website development with guaranteed 7-day delivery",
+Unknown directive
+70
+"potentialAction": {
+Unknown directive
+71
+"@type": "SearchAction",
+Unknown directive
+72
+"target": "https://your-domain.netlify.app/?q={search_term_string}",
+Unknown directive
+73
+"query-input": "required name=search_term_string"
+Unknown directive
+74
+}
+Syntax not understood
+75
+}
+Syntax not understood
+76
+</script>
+Syntax not understood
+78
+<title>Launch in 7 - Professional Website Development</title>
+Syntax not understood
+79
+<script type="module" crossorigin src="/assets/index-I4iZnFOo.js"></script>
+Syntax not understood
+80
+<link rel="stylesheet" crossorigin href="/assets/index-BzfZKqJh.css">
+Syntax not understood
+81
+</head>
+Syntax not understood
+82
+<body>
+Syntax not understood
+83
+<div id="root" role="main"></div>
+Syntax not understood
+84
+<!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+Syntax not understood
+85
+<script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+Unknown directive
+86
+</body>
+Syntax not understood
+87
+</html>
+Syntax not understood
