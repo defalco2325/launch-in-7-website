@@ -17,13 +17,21 @@ try {
   let html = fs.readFileSync(htmlPath, 'utf-8');
   let modified = false;
   
-  // Remove CSS from head and collect them
+  // Convert CSS to non-blocking pattern with preload
   const cssLinks = [];
   html = html.replace(/<link[^>]*rel="stylesheet"[^>]*>/gi, (match) => {
     if (match.includes('/assets/')) {
-      cssLinks.push(match);
-      modified = true;
-      return ''; // Remove from original position
+      // Extract href from the link tag
+      const hrefMatch = match.match(/href="([^"]+)"/);
+      if (hrefMatch) {
+        const href = hrefMatch[1];
+        // Create non-blocking CSS pattern
+        const nonBlockingCss = `<link rel="preload" as="style" href="${href}" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="${href}"></noscript>`;
+        cssLinks.push(nonBlockingCss);
+        modified = true;
+        return ''; // Remove original blocking CSS
+      }
     }
     return match;
   });
@@ -40,16 +48,21 @@ try {
   });
   
   if (modified) {
-    // Add to end of body
-    const injection = `
-    <!-- Resources moved to end of body for performance -->
-    ${cssLinks.join('\n    ')}
+    // Add non-blocking CSS to head (after existing preloads) and JS to end of body
+    if (cssLinks.length > 0) {
+      // Insert non-blocking CSS in head after font preloads
+      html = html.replace('</head>', `    ${cssLinks.join('\n    ')}\n  </head>`);
+    }
+    
+    // Add JS to end of body
+    const jsInjection = `
+    <!-- JavaScript moved to end of body for performance -->
     ${jsScripts.join('\n    ')}
   </body>`;
     
-    html = html.replace('</body>', injection);
+    html = html.replace('</body>', jsInjection);
     fs.writeFileSync(htmlPath, html);
-    console.log(`✅ Optimization complete: Moved ${cssLinks.length} CSS and ${jsScripts.length} JS files`);
+    console.log(`✅ Optimization complete: Made ${cssLinks.length} CSS non-blocking, moved ${jsScripts.length} JS files`);
   } else {
     console.log('No resources to optimize');
   }
