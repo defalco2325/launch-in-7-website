@@ -38,27 +38,27 @@
 
       rollupOptions: {
         output: {
-          // Split big deps so the home route ships less JS
+          // Splitting dependencies efficiently
           manualChunks(id) {
             if (!id.includes("node_modules")) return;
 
-            // React core grouped for cacheability
+            // Grouping React core for better caching
             if (
               id.includes("/react/") ||
               id.includes("/react-dom/") ||
               id.includes("scheduler") ||
               id.includes("object-assign")
             ) {
-              return "react-vendor";
+              return "react-core";
             }
 
-            // Framer Motion isolated (lazy-load where possible)
-            if (id.includes("framer-motion")) return "motion";
+            // Framer Motion in a separate chunk to lazy load only when needed
+            if (id.includes("framer-motion")) return "motion-chunk";
 
-            // All Radix UI packages grouped (lazy-load when used)
-            if (id.includes("@radix-ui")) return "radix";
+            // Grouping Radix UI components together
+            if (id.includes("@radix-ui")) return "radix-ui-group";
 
-            // Common utilities (optional bucket)
+            // Utility libraries grouped
             if (
               id.includes("lodash") ||
               id.includes("lodash-es") ||
@@ -66,37 +66,37 @@
               id.includes("date-fns") ||
               id.includes("clsx")
             ) {
-              return "utils";
+              return "utility-package";
             }
 
-            // Icon libraries (optional)
+            // Icon libraries placed together
             if (id.includes("lucide-react") || id.includes("@heroicons")) {
-              return "icons";
+              return "icon-packages";
             }
 
-            // Everything else from node_modules
-            return "vendor";
+            // All other modules
+            return "other-vendors";
           },
 
-          // Cache-friendly filenames
-          chunkFileNames: "assets/chunks/[name]-[hash].js",
-          entryFileNames: "assets/entry/[name]-[hash].js",
+          // Cache-friendly filenames structure
+          chunkFileNames: "chunks/[name]-[hash].js",
+          entryFileNames: "entries/[name]-[hash].js",
           assetFileNames: ({ name }) => {
             if (/\.(woff2?|ttf|otf)$/.test(name ?? "")) {
-              return "assets/fonts/[name]-[hash][extname]";
+              return "fonts/[name]-[hash][extname]";
             }
             if (/\.(png|jpe?g|webp|avif|gif|svg)$/.test(name ?? "")) {
-              return "assets/img/[name]-[hash][extname]";
+              return "images/[name]-[hash][extname]";
             }
             return "assets/[name]-[hash][extname]";
           },
         },
 
-        // Stricter tree-shaking
+        // Enhanced tree-shaking settings
         treeshake: {
-          moduleSideEffects: false,
-          propertyReadSideEffects: false,
-          tryCatchDeoptimization: false,
+          moduleSideEffects: "no-external",
+          propertyReadSideEffects: "false",
+          tryCatchDeoptimization: "disabled",
         },
       },
     },
