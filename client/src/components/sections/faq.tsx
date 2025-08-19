@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { addStructuredData } from "@/lib/seo";
 
@@ -86,25 +85,21 @@ export default function FAQ() {
                       {faq.question}
                     </h3>
                     <div
-                      animate={{ rotate: openIndex === index ? 180 : 0 }}
+                      className={`transition-transform duration-300 ${openIndex === index ? 'rotate-180' : 'rotate-0'}`}
                     >
                       <ChevronDown className="w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                 </button>
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <div
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="px-6 pb-6"
-                    >
-                      <p className="text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  )}
-                </AnimatePresence>
+                {openIndex === index && (
+                  <div
+                    className="px-6 pb-6 animate-fade-in-up"
+                  >
+                    <p className="text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
