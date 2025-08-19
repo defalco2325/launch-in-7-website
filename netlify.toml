@@ -1,12 +1,9 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && node optimize-netlify.cjs"
   publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
-
-[[plugins]]
-  package = "./netlify-plugin-optimize"
 
 # SPA fallback with exceptions for SEO files
 [[redirects]]
