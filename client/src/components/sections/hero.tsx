@@ -76,6 +76,8 @@ const HeroSection = memo(function HeroSection() {
       ref={heroRef}
       className="relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden"
       style={{ minHeight: '100vh' }}
+      role="banner"
+      aria-label="Hero section"
     >
       {/* Advanced Background Effects */}
       <div className="absolute inset-0">
@@ -185,7 +187,7 @@ const HeroSection = memo(function HeroSection() {
                 transition={{ delay: 0.2 }}
                 className="space-y-6"
               >
-                <h1 className="font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight">
+                <h1 className="font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
                   <span className="block text-white">Your Website,</span>
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
@@ -228,8 +230,10 @@ const HeroSection = memo(function HeroSection() {
               >
                 <Button 
                   onClick={handleStartBuild}
-                  className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect group"
+                  className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect group focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
                   data-testid="button-hero-start-build"
+                  style={{ minHeight: '44px', fontSize: '18px' }}
+                  aria-label="Start your 7-day website build process"
                 >
                   <span>Start Your 7-Day Build</span>
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -237,8 +241,10 @@ const HeroSection = memo(function HeroSection() {
                 <Button 
                   onClick={handleFreeAudit}
                   variant="outline"
-                  className="bg-white text-deep-navy px-8 py-4 rounded-2xl font-semibold text-lg border-white shadow-lg"
+                  className="bg-white text-deep-navy px-8 py-4 rounded-2xl font-semibold text-lg border-white shadow-lg focus:outline-none focus:ring-2 focus:ring-deep-navy focus:ring-offset-2"
                   data-testid="button-hero-free-audit"
+                  style={{ minHeight: '44px', fontSize: '18px' }}
+                  aria-label="Get a free website audit"
                 >
                   <Sparkles className="mr-2 w-5 h-5 text-electric-blue" />
                   Free Website Audit

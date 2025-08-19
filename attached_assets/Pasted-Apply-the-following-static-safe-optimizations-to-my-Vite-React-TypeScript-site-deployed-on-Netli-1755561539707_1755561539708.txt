@@ -1,0 +1,95 @@
+Apply the following static-safe optimizations to my Vite + React + TypeScript site deployed on Netlify. Do not change visual design or functionality. Do not show code. Implement, redeploy, and then run Lighthouse (mobile & desktop) 3× and report scores plus key metrics (FCP, LCP, TBT, CLS).
+
+GOALS
+
+SEO = 100
+
+Performance ≥ 95 (mobile & desktop)
+
+Accessibility ≥ 95
+
+Best Practices ≥ 95
+
+SCOPE & CONSTRAINTS
+
+Keep the site fully static (no SSR, no serverless).
+
+Maintain exact visuals; only adjust loading, semantics, headers, and files in public/ or build config.
+
+Keep initial JS for / ≤ 150 KB (gz/br).
+
+IMPLEMENT EXACTLY
+1) SEO (to 100)
+
+Ensure <html lang="en">, unique <title> and <meta name="description"> per route.
+
+Add canonical link on each route pointing to its final URL.
+
+Create robots.txt in public/ allowing crawl and referencing sitemap.
+
+Create sitemap.xml in public/ listing /, /about, /contact (and any other live routes).
+
+Add Organization and WebSite JSON-LD on the homepage (accurate name/logo/URL). If an FAQ section exists, include FAQPage JSON-LD there.
+
+Ensure font sizes & tap targets meet mobile legibility checks (≥16px, ≥44px touch).
+
+2) Performance (95+ without changing visuals)
+
+Hero/LCP: Preload the existing hero font (subset woff2) with font-display: swap; inline a tiny critical CSS block for header/hero; if a hero image exists, export AVIF/WebP ≤ 60–80 KB, set explicit width/height (or aspect-ratio), and mark only that image with high fetch priority (not lazy).
+
+JS budget: Enforce route-level code splitting; lazy-load forms/validators/analytics and below-the-fold sections. Replace heavy libs (moment→dayjs/luxon; lodash→per-function lodash-es; icon packs→per-icon imports). Strip dev/debug and sourcemaps in production. Target ≤150 KB gz/br for the / route.
+
+Animations: Keep existing motion but ensure animations use transform/opacity only; start after IntersectionObserver visibility + requestAnimationFrame. Respect prefers-reduced-motion.
+
+Main thread/TBT: Break any long tasks >50 ms, defer non-critical scripts to idle, move heavy parsing/formatting to a worker or idle time. Memoize expensive hero subtrees to reduce hydration work.
+
+Netlify caching: In public/_headers, set immutable caching for hashed assets; keep index.html no-cache. Confirm Brotli/gzip and HTTP/2 via Netlify.
+
+3) Accessibility (≥95)
+
+One <h1> per page; logical <h2> structure; landmarks <header> <nav> <main> <footer>.
+
+Ensure visible focus on all interactive elements (CTA, links, buttons).
+
+All inputs have <label for>; connect helper/error text with aria-describedby; success/error messages announce with aria-live="polite".
+
+Provide alt text for meaningful images; use alt="" + role="presentation" for decorative ones.
+
+Progress bar in hero uses semantic roles/values (role=progressbar with aria-valuenow/min/max).
+
+Add @media (prefers-reduced-motion: reduce) to stop non-essential motion.
+
+4) Best Practices (≥95)
+
+In public/_headers, add:
+X-Content-Type-Options: nosniff, X-Frame-Options: SAMEORIGIN, Referrer-Policy: strict-origin-when-cross-origin, and a pared-down Permissions-Policy (disable camera/mic/geo unless needed).
+
+Ensure all external links with target="_blank" also set rel="noopener".
+
+Confirm HTTPS-only assets (no mixed content) and up-to-date dependencies.
+
+5) SPA Routing
+
+Ensure public/_redirects contains /* /index.html 200.
+
+AFTER IMPLEMENTATION
+
+Redeploy on Netlify (clear cache & deploy).
+
+Run Lighthouse mobile & desktop 3× and provide:
+
+Final category scores (Perf, A11y, Best Practices, SEO).
+
+Core Web Vitals: FCP, LCP, TBT, CLS with before/after deltas.
+
+If any category <95 (SEO <100), list top 3 remaining issues with exact file/selector and estimated ms/points gained by fixing.
+
+ACCEPTANCE CRITERIA
+
+SEO = 100
+
+Performance (mobile & desktop) ≥ 95 with FCP < 1.8s, LCP < 2.5s, TBT < 200ms, CLS < 0.1
+
+Accessibility & Best Practices ≥ 95
+
+Site remains static and visually identical.”
