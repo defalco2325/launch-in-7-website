@@ -92,13 +92,13 @@ export default function Footer() {
                   </button>
                 </li>
                 <li>
-                  <span className="text-gray-500 cursor-not-allowed">Blog (Coming Soon)</span>
+                  <span className="text-gray-400 cursor-not-allowed">Blog (Coming Soon)</span>
                 </li>
                 <li>
-                  <span className="text-gray-500 cursor-not-allowed">Case Studies (Coming Soon)</span>
+                  <span className="text-gray-400 cursor-not-allowed">Case Studies (Coming Soon)</span>
                 </li>
                 <li>
-                  <span className="text-gray-500 cursor-not-allowed">Support (Coming Soon)</span>
+                  <span className="text-gray-400 cursor-not-allowed">Support (Coming Soon)</span>
                 </li>
               </ul>
             </div>
@@ -110,9 +110,9 @@ export default function Footer() {
               &copy; 2024 Launch in 7. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
-              <span className="text-gray-500 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
-              <span className="text-gray-500 cursor-not-allowed">Terms of Service (Coming Soon)</span>
-              <span className="text-gray-500 cursor-not-allowed">Cookie Policy (Coming Soon)</span>
+              <span className="text-gray-400 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
+              <span className="text-gray-400 cursor-not-allowed">Terms of Service (Coming Soon)</span>
+              <span className="text-gray-400 cursor-not-allowed">Cookie Policy (Coming Soon)</span>
             </div>
           </div>
         </div>
