@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+// Post-build script to eliminate render blocking by moving CSS to end of body
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Post-build script to eliminate render blocking by moving CSS to end of body
-const htmlPath = path.resolve('dist/public/index.html');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const htmlPath = path.resolve(__dirname, '../dist/public/index.html');
 
 if (fs.existsSync(htmlPath)) {
   let html = fs.readFileSync(htmlPath, 'utf-8');
@@ -39,4 +41,5 @@ if (fs.existsSync(htmlPath)) {
   console.log('✅ Build optimized: CSS and JS moved to end of body to eliminate render blocking');
 } else {
   console.error('❌ HTML file not found at:', htmlPath);
+  process.exit(1);
 }

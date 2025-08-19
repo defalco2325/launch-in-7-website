@@ -8,7 +8,7 @@ vite build
 
 # Optimize the HTML
 echo "Optimizing HTML to eliminate render blocking..."
-node scripts/optimize-build.js
+node scripts/optimize-html.mjs
 
 # Copy static files
 echo "Copying static files..."
