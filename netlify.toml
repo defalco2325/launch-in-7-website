@@ -1,5 +1,5 @@
 [build]
-  command = "./build-static.sh"
+  command = "vite build && node scripts/optimize-build.js && cp public/robots.txt dist/public/robots.txt && cp public/sitemap.xml dist/public/sitemap.xml && cp public/_headers dist/public/_headers && cp public/_redirects dist/public/_redirects"
   publish = "dist/public"
 
 [build.environment]
