@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "./build-static.sh"
   publish = "dist/public"
 
 [build.environment]
