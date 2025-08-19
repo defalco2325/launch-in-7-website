@@ -34,8 +34,8 @@
 
 **Build Settings:**
 - Base directory: `/`
-- Build command: `npm run build:static`  
-- Publish directory: `dist`
+- Build command: `./build-static.sh` (or `vite build && node scripts/optimize-build.js`)
+- Publish directory: `dist/public`
 
 ### Option 2: Netlify CLI
 ```bash
@@ -46,13 +46,13 @@ npm install -g netlify-cli
 netlify login
 
 # Deploy (from project root)
-npm run build:static
-netlify deploy --prod --dir=dist
+./build-static.sh
+netlify deploy --prod --dir=dist/public
 ```
 
 ### Option 3: Manual Upload
-1. Run `npm run build:static`
-2. Upload the `dist` folder contents to Netlify
+1. Run `./build-static.sh`
+2. Upload the `dist/public` folder contents to Netlify
 
 ## Form Data Collection
 
