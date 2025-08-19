@@ -9,7 +9,7 @@ import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
 
-// Lazy load pages to reduce initial bundle size
+// Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
 const Contact = lazy(() => import("@/pages/contact"));

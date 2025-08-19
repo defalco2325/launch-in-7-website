@@ -40,6 +40,18 @@ try {
   const jsScripts = [];
   html = html.replace(/<script[^>]*type="module"[^>]*><\/script>/gi, (match) => {
     if (match.includes('/assets/')) {
+      // Add modulepreload for critical chunks
+      const srcMatch = match.match(/src="([^"]+)"/);
+      if (srcMatch && srcMatch[1]) {
+        const jsPath = srcMatch[1];
+        if (jsPath.includes('index-')) {
+          // Add modulepreload before collecting script
+          const modulePreload = `<link rel="modulepreload" href="${jsPath}">`;
+          if (!html.includes(modulePreload)) {
+            html = html.replace('</head>', `    ${modulePreload}\n  </head>`);
+          }
+        }
+      }
       jsScripts.push(match);
       modified = true;
       return ''; // Remove from original position
