@@ -43,9 +43,9 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null);
   const auditRef = useRef<HTMLDivElement>(null);
   
-  const guaranteeInView = useInViewport(guaranteeRef);
-  const servicesInView = useInViewport(servicesRef);
-  const auditInView = useInViewport(auditRef);
+  const guaranteeInView = useInViewport(guaranteeRef, '50px');
+  const servicesInView = useInViewport(servicesRef, '100px');
+  const auditInView = useInViewport(auditRef, '150px');
 
   useEffect(() => {
     updateSEO({
