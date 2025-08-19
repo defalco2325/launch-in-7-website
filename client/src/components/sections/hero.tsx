@@ -293,20 +293,7 @@ const HeroSection = memo(function HeroSection() {
             </div>
           </div>
         </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in-up-delay-scroll">
-          <button
-            onClick={scrollToNext}
-            className="flex flex-col items-center justify-center space-y-2 text-gray-400 hover:text-white transition-colors text-center"
-            data-testid="button-scroll-indicator"
-          >
-            <span className="text-sm text-center">Scroll to explore</span>
-            <div className="animate-bounce-soft flex items-center justify-center">
-              <ChevronDown className="w-5 h-5 mx-auto" />
-            </div>
-          </button>
-        </div>
+
       </div>
     </section>
   );
