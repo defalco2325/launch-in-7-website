@@ -1,0 +1,54 @@
+Goal: Fix Lighthouse issues
+- Remove render-blocking CSS (~1,050 ms)
+- Eliminate any remaining Google Fonts requests (fonts.gstatic.com)
+- Preload self-hosted fonts correctly
+- Reduce forced reflow from JS
+- Keep site static and visuals identical
+
+Make the following code changes safely and atomically:
+
+1) Kill all Google Fonts references
+   - Search ALL files for "fonts.googleapis.com", "fonts.gstatic.com", "@import url(" and any <link rel="preconnect" href="https://fonts.gstatic.com">.
+   - Remove those lines and any Google Fonts CSS imports.
+   - Ensure our font-face is self-hosted only (we already have Inter and Poppins in assets/*.woff2). Do not change font families used in CSS.
+
+2) Add proper self-hosted font-face + preload
+   - In client/index.html <head>, add preload tags for the two critical fonts actually used above the fold:
+     <link rel="preload" href="/assets/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+     <link rel="preload" href="/assets/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+   - Ensure our CSS defines:
+     font-display: swap;
+     and (if present) unicode-range remains as-is.
+   - Remove any remaining preconnect/dns-prefetch to Google Fonts.
+
+3) Make the page CSS non-blocking (keep visuals identical)
+   - In client/index.html replace the blocking stylesheet tag for the built CSS with a non-blocking pattern:
+     BEFORE:
+       <link rel="stylesheet" href="/assets/index-*.css">
+     AFTER:
+       <link rel="preload" as="style" href="/assets/index-*.css" onload="this.onload=null;this.rel='stylesheet'">
+       <noscript><link rel="stylesheet" href="/assets/index-*.css"></noscript>
+   - If the CSS file name is hashed at build, add a tiny post-build step in optimize-netlify.cjs that finds the CSS link in dist/public/index.html and rewrites it to the preload+onload pattern above (preserve integrity of the file). Keep this logic idempotent.
+
+4) Prevent layout thrash / forced reflow (~41ms)
+   - Search src for layout reads inside animation/scroll/resize loops: getBoundingClientRect, offsetWidth/offsetHeight, scrollHeight, clientWidth, etc.
+   - Where found:
+       • Batch reads before writes using requestAnimationFrame.
+       • Debounce resize/scroll handlers to 100–150ms with requestAnimationFrame or a small debounce util.
+       • If an element’s size is read and then its class/style is toggled, split into two rAF ticks: one read frame, one write frame.
+   - Do not alter animation timing or visual effects.
+
+5) Keep headers & caching
+   - Ensure _headers keeps immutable caching for hashed assets and no-cache for index.html.
+   - Do not change redirects; SPA fallback must remain.
+
+6) Verify by running:
+   - npm run build
+   - Print confirmation:
+       • No "fonts.gstatic.com" in dist/public/**/*.html or CSS
+       • index.html uses the preload+onload stylesheet pattern with a matching hashed CSS path
+       • Preload tags for the two critical .woff2 files exist
+       • List JS/CSS critical chain improvements (show that the CSS is no longer render-blocking)
+   - Report any JS files where you batched read/write to reduce reflow.
+
+Do not change any copy, layout, or colors. Return a summary of edits (files & lines) and the diff snippets applied.
