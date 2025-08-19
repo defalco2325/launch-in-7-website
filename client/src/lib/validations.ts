@@ -28,6 +28,15 @@ export const auditFormSchema = z.object({
     "this-quarter",
     "exploring"
   ]),
+  budget: z.enum([
+    "200-500",
+    "500-1000",
+    "1000-2000",
+    "2000-3000",
+    "3000-4000",
+    "4000-5000",
+    "5000-plus"
+  ]),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;

@@ -22,6 +22,7 @@ export default function AuditForm() {
       website: "",
       goal: undefined,
       timeline: undefined,
+      budget: undefined,
     },
   });
 
@@ -179,7 +180,7 @@ export default function AuditForm() {
           )}
         </div>
 
-        <div className="md:col-span-2">
+        <div>
           <Label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
             Timeline *
           </Label>
@@ -200,6 +201,32 @@ export default function AuditForm() {
           </Select>
           {form.formState.errors.timeline && (
             <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.timeline.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
+            Budget *
+          </Label>
+          <Select onValueChange={(value) => form.setValue("budget", value as any)} data-testid="select-audit-budget">
+            <SelectTrigger 
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              aria-label="Select your project budget range"
+            >
+              <SelectValue placeholder="Select budget" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="200-500">$200+</SelectItem>
+              <SelectItem value="500-1000">$500+</SelectItem>
+              <SelectItem value="1000-2000">$1,000+</SelectItem>
+              <SelectItem value="2000-3000">$2,000+</SelectItem>
+              <SelectItem value="3000-4000">$3,000+</SelectItem>
+              <SelectItem value="4000-5000">$4,000+</SelectItem>
+              <SelectItem value="5000-plus">$5,000+</SelectItem>
+            </SelectContent>
+          </Select>
+          {form.formState.errors.budget && (
+            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.budget.message}</p>
           )}
         </div>
       </div>
