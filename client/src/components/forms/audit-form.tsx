@@ -159,7 +159,10 @@ export default function AuditForm() {
             Primary Goal *
           </Label>
           <Select onValueChange={(value) => form.setValue("goal", value as any)} data-testid="select-audit-goal">
-            <SelectTrigger className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+            <SelectTrigger 
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              aria-label="Select your primary goal for the website audit"
+            >
               <SelectValue placeholder="Select your goal" />
             </SelectTrigger>
             <SelectContent>
@@ -181,7 +184,10 @@ export default function AuditForm() {
             Timeline *
           </Label>
           <Select onValueChange={(value) => form.setValue("timeline", value as any)} data-testid="select-audit-timeline">
-            <SelectTrigger className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+            <SelectTrigger 
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              aria-label="Select your project timeline for website development"
+            >
               <SelectValue placeholder="Select timeline" />
             </SelectTrigger>
             <SelectContent>

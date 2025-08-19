@@ -1,0 +1,292 @@
+f your robots.txt file is malformed, crawlers may not be able to understand how you want your website to be crawled or indexed. Learn more about robots.txt.
+Line #
+Content
+Error
+1
+<!DOCTYPE html>
+Syntax not understood
+2
+<html lang="en">
+Syntax not understood
+3
+<head>
+Syntax not understood
+4
+<meta charset="UTF-8" />
+Syntax not understood
+5
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+Syntax not understood
+6
+<!-- High priority resource hints for critical path optimization -->
+Syntax not understood
+7
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+Unknown directive
+8
+<link rel="preload" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDD4Z1xlFQ.woff2" as="font" type="font/woff2" crossorigin>
+Unknown directive
+9
+<link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+Unknown directive
+11
+<!-- Critical CSS for hero section - inline for LCP -->
+Syntax not understood
+12
+<style>
+Syntax not understood
+13
+/* Critical above-the-fold styles */
+Syntax not understood
+14
+.hero-critical {
+Syntax not understood
+15
+min-height: 100vh;
+Unknown directive
+16
+background: linear-gradient(135deg, hsl(217, 33%, 8%) 0%, hsl(230, 25%, 12%) 50%, hsl(217, 33%, 8%) 100%);
+Unknown directive
+17
+color: white;
+Unknown directive
+18
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+Unknown directive
+19
+display: flex;
+Unknown directive
+20
+align-items: center;
+Unknown directive
+21
+}
+Syntax not understood
+22
+.hero-title {
+Syntax not understood
+23
+font-size: clamp(2.5rem, 8vw, 4rem);
+Unknown directive
+24
+font-weight: 700;
+Unknown directive
+25
+line-height: 1.1;
+Unknown directive
+26
+letter-spacing: -0.02em;
+Unknown directive
+27
+margin: 0;
+Unknown directive
+28
+}
+Syntax not understood
+29
+.gradient-text {
+Syntax not understood
+30
+background: linear-gradient(135deg, hsl(203.9, 88.3%, 53.1%) 0%, hsl(178, 100%, 50%) 100%);
+Unknown directive
+31
+-webkit-background-clip: text;
+Unknown directive
+32
+-webkit-text-fill-color: transparent;
+Unknown directive
+33
+background-clip: text;
+Unknown directive
+34
+}
+Syntax not understood
+35
+/* Prevent layout shift during font swap */
+Syntax not understood
+36
+@media (prefers-reduced-motion: reduce) {
+Unknown directive
+37
+*, *::before, *::after {
+Unknown directive
+38
+animation-duration: 0.01ms !important;
+Unknown directive
+39
+animation-iteration-count: 1 !important;
+Unknown directive
+40
+transition-duration: 0.01ms !important;
+Unknown directive
+41
+scroll-behavior: auto !important;
+Unknown directive
+42
+}
+Syntax not understood
+43
+}
+Syntax not understood
+44
+/* Immediate layout stability */
+Syntax not understood
+46
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+Unknown directive
+47
+</style>
+Syntax not understood
+48
+<!-- SEO and performance meta tags -->
+Syntax not understood
+49
+<meta name="description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development for your business.">
+Syntax not understood
+50
+<meta name="keywords" content="website development, web design, 7 day delivery, mobile optimization, professional websites">
+Syntax not understood
+52
+<!-- Open Graph tags -->
+Syntax not understood
+53
+<meta property="og:title" content="Launch in 7 - Professional Website Development">
+Unknown directive
+54
+<meta property="og:description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development.">
+Unknown directive
+55
+<meta property="og:type" content="website">
+Unknown directive
+57
+<!-- Canonical URL -->
+Syntax not understood
+58
+<link rel="canonical" href="https://your-domain.netlify.app/">
+Unknown directive
+60
+<!-- JSON-LD Structured Data -->
+Syntax not understood
+61
+<script type="application/ld+json">
+Syntax not understood
+62
+{
+Syntax not understood
+63
+"@context": "https://schema.org",
+Unknown directive
+64
+"@type": "Organization",
+Unknown directive
+65
+"name": "Launch in 7",
+Unknown directive
+66
+"description": "Professional website development with 7-day guaranteed delivery",
+Unknown directive
+67
+"url": "https://your-domain.netlify.app",
+Unknown directive
+68
+"logo": "https://your-domain.netlify.app/logo.png",
+Unknown directive
+69
+"contactPoint": {
+Unknown directive
+70
+"@type": "ContactPoint",
+Unknown directive
+71
+"contactType": "customer service",
+Unknown directive
+72
+"availableLanguage": "English"
+Unknown directive
+73
+},
+Syntax not understood
+74
+"address": {
+Unknown directive
+75
+"@type": "PostalAddress",
+Unknown directive
+76
+"addressCountry": "US"
+Unknown directive
+77
+}
+Syntax not understood
+78
+}
+Syntax not understood
+79
+</script>
+Syntax not understood
+81
+<script type="application/ld+json">
+Syntax not understood
+82
+{
+Syntax not understood
+83
+"@context": "https://schema.org",
+Unknown directive
+84
+"@type": "WebSite",
+Unknown directive
+85
+"name": "Launch in 7",
+Unknown directive
+86
+"url": "https://your-domain.netlify.app",
+Unknown directive
+87
+"description": "Professional website development with guaranteed 7-day delivery",
+Unknown directive
+88
+"potentialAction": {
+Unknown directive
+89
+"@type": "SearchAction",
+Unknown directive
+90
+"target": "https://your-domain.netlify.app/?q={search_term_string}",
+Unknown directive
+91
+"query-input": "required name=search_term_string"
+Unknown directive
+92
+}
+Syntax not understood
+93
+}
+Syntax not understood
+94
+</script>
+Syntax not understood
+96
+<title>Launch in 7 - Professional Website Development</title>
+Syntax not understood
+97
+<script type="module" crossorigin src="/assets/index-D68PK7Xd.js"></script>
+Syntax not understood
+98
+<link rel="stylesheet" crossorigin href="/assets/index-DJpTNqbk.css">
+Syntax not understood
+99
+</head>
+Syntax not understood
+100
+<body>
+Syntax not understood
+101
+<div id="root" role="main"></div>
+Syntax not understood
+102
+</body>
+Syntax not understood
+103
+</html>
+Syntax not understood
