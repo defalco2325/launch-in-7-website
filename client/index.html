@@ -127,9 +127,13 @@
     </script>
     
     <title>Launch in 7 - Professional Website Development</title>
+    <!-- Optimized resource loading to eliminate render blocking -->
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'; this.onload=null;">
+    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
+    <script type="module" src="/src/main.tsx" defer></script>
   </head>
   <body>
     <div id="root" role="main"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
