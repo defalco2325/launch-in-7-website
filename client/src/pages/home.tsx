@@ -102,47 +102,57 @@ export default function Home() {
       }
     };
 
+    const scrollToNext = () => {
+      const nextSection = document.querySelector('#guarantee-section');
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
     return (
-      <section ref={heroRef} className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden flex items-center">
+      <section ref={heroRef} className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute inset-0 tech-grid-bg"></div>
         </div>
 
-        {/* Floating Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-electric-blue/30 to-neon-cyan/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-gradient-to-l from-accent-purple/25 to-success-green/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        {/* Floating Gradient Orbs with proper animation */}
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-electric-blue/30 to-neon-cyan/20 rounded-full blur-3xl animate-float-slow"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-gradient-to-l from-accent-purple/25 to-success-green/15 rounded-full blur-3xl animate-float-slow" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Content Container with proper centering */}
+        <div className="relative h-screen flex items-center justify-center">
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              {/* Left Column - Main Content */}
-              <div className="space-y-10">
-                {/* Badge */}
-                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full border border-electric-blue/20">
-                  <Sparkles className="w-4 h-4 text-electric-blue mr-2" />
-                  <span className="text-sm font-semibold text-electric-blue">7-Day Launch Guarantee</span>
-                </div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid lg:grid-cols-2 gap-16 items-center">
+                {/* Left Column - Main Content */}
+                <div className="space-y-10">
+                  {/* Badge with animation */}
+                  <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full border border-electric-blue/20 animate-fade-in-up">
+                    <Sparkles className="w-4 h-4 text-electric-blue mr-2" />
+                    <span className="text-sm font-semibold text-electric-blue">7-Day Launch Guarantee</span>
+                  </div>
 
-                {/* Headline */}
-                <div>
-                  <h1 className="font-poppins font-black text-5xl lg:text-7xl text-deep-navy leading-tight mb-8">
+                  {/* Headline with staggered animation */}
+                  <div>
+                    <h1 className="font-poppins font-black text-5xl lg:text-7xl text-deep-navy leading-tight mb-8 animate-fade-in-up-delay">
                     Launch in{" "}
                     <span className="relative">
                       <span className="gradient-text">7 Days</span>
                       <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-electric-blue via-neon-cyan to-accent-purple rounded-full"></div>
                     </span>
                   </h1>
-                  
-                  <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed mb-10">
+                    
+                    <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed mb-10 animate-fade-in-up-delay-2">
                     Professional, conversion-focused websites delivered with{" "}
                     <span className="text-electric-blue font-semibold">guaranteed 7-day turnaround</span>.
-                    From concept to live site, we make it happen fast.
-                  </p>
-                </div>
+                      From concept to live site, we make it happen fast.
+                    </p>
+                  </div>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* CTA Buttons with animation */}
+                  <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up-delay-3">
                   <Button 
                     size="lg"
                     onClick={handleStartBuild}
@@ -167,10 +177,10 @@ export default function Home() {
                   >
                     Learn More
                   </Button>
-                </div>
+                  </div>
 
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center gap-8 pt-8">
+                  {/* Trust Indicators with animation */}
+                  <div className="flex flex-wrap items-center gap-8 pt-8 animate-fade-in-up-delay-4">
                   <div className="flex items-center">
                     <ShieldCheck className="w-6 h-6 text-success-green mr-3" />
                     <span className="text-gray-700 font-medium">Money-back guarantee</span>
@@ -183,11 +193,11 @@ export default function Home() {
                     <Code2 className="w-6 h-6 text-electric-blue mr-3" />
                     <span className="text-gray-700 font-medium">Production-ready code</span>
                   </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Right Column - 7-Day Process Visualization */}
-              <div className="relative">
+                {/* Right Column - 7-Day Process Visualization with animation */}
+                <div className="relative animate-fade-in-right">
                 {/* Process Card */}
                 <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-100 p-8 lg:p-10">
                   {/* Header */}
@@ -267,17 +277,27 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Floating Elements */}
-                <div className="absolute -top-4 -left-4 w-8 h-8 bg-gradient-to-r from-electric-blue to-neon-cyan rounded-lg shadow-lg animate-bounce delay-200"></div>
-                <div className="absolute -bottom-4 -right-4 w-6 h-6 bg-gradient-to-r from-accent-purple to-tech-orange rounded-full shadow-lg animate-bounce delay-500"></div>
+                  {/* Floating Elements with enhanced animation */}
+                  <div className="absolute -top-4 -left-4 w-8 h-8 bg-gradient-to-r from-electric-blue to-neon-cyan rounded-lg shadow-lg animate-bounce delay-200"></div>
+                  <div className="absolute -bottom-4 -right-4 w-6 h-6 bg-gradient-to-r from-accent-purple to-tech-orange rounded-full shadow-lg animate-bounce delay-500"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-gray-400" />
+        {/* Enhanced Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in-up-delay-scroll">
+          <button
+            onClick={scrollToNext}
+            className="flex flex-col items-center space-y-2 text-gray-400 hover:text-gray-600 transition-colors group"
+            data-testid="button-scroll-indicator"
+          >
+            <span className="text-sm opacity-80">Scroll to explore</span>
+            <div className="animate-bounce-soft group-hover:animate-pulse">
+              <ChevronDown className="w-5 h-5" />
+            </div>
+          </button>
         </div>
       </section>
     );
