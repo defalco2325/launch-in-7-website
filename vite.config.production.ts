@@ -79,8 +79,8 @@ export default defineConfig({
         },
 
         // Cache-friendly filenames structure
-        chunkFileNames: "chunks/[name]-[hash].js",
-        entryFileNames: "entries/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
         assetFileNames: ({ name }) => {
           if (/\.(woff2?|ttf|otf)$/.test(name ?? "")) {
             return "fonts/[name]-[hash][extname]";
