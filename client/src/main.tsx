@@ -11,26 +11,20 @@ import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
 import "./index.css";
 
-// Keep home page immediate, defer others for performance
+// Direct imports instead of lazy loading to avoid import errors
 import Home from "@/pages/home";
-const About = lazy(() => import("@/pages/about"));
-const Contact = lazy(() => import("@/pages/contact"));
-const NotFound = lazy(() => import("@/pages/not-found"));
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <Suspense fallback={
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-electric-blue"></div>
-      </div>
-    }>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
