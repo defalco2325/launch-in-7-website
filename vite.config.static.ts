@@ -31,55 +31,47 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // MAXIMUM chunking for minimal TBT
+        // Optimized chunking for TBT reduction while maintaining functionality
         manualChunks(id) {
-          // CRITICAL: Only bare minimum in main bundle
-          if (id.includes('main.tsx') || id.includes('App.tsx')) {
-            return undefined; // Main entry only
-          }
-          
-          // Defer EVERYTHING from hero section  
-          if (id.includes('hero.tsx') || id.includes('sections/')) {
-            return 'hero-deferred';
-          }
-          if (id.includes('home.tsx') || id.includes('pages/')) {
-            return 'pages-deferred';
+          // Keep hero and core in main bundle for functionality
+          if (id.includes('home.tsx') || id.includes('hero.tsx') || id.includes('App.tsx')) {
+            return undefined; // Main bundle
           }
           
           // Micro React chunks
           if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
-            return 'react-micro';
+            return 'react';
           }
           if (id.includes('react-dom')) {
-            return 'react-dom-defer';
+            return 'react-dom';
           }
           if (id.includes('wouter')) {
-            return 'router-defer';
+            return 'router';
           }
           
-          // Defer ALL UI completely
-          if (id.includes('@radix-ui') || id.includes('lucide-react') || id.includes('ui/')) {
-            return 'ui-complete-defer';
+          // Defer heavy UI libraries
+          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+            return 'ui-deferred';
           }
           
-          // Defer ALL motion completely
+          // Defer motion library completely
           if (id.includes('framer-motion')) {
-            return 'motion-complete-defer';
+            return 'motion-deferred';
           }
           
-          // Defer ALL forms completely
+          // Defer forms when not needed initially
           if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-            return 'forms-complete-defer';
+            return 'forms-deferred';
           }
           
-          // Defer ALL utilities
+          // Defer utility libraries
           if (id.includes('@tanstack') || id.includes('clsx') || id.includes('tailwind-merge')) {
-            return 'utils-defer';
+            return 'vendor-deferred';
           }
           
-          // Everything else deferred
+          // Defer other node modules
           if (id.includes('node_modules')) {
-            return 'vendor-complete-defer';
+            return 'vendor-deferred';
           }
         },
         // Optimize asset naming
