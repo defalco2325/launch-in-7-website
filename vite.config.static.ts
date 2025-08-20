@@ -31,13 +31,40 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Simple chunking - prioritize functionality over optimization
-        manualChunks: {
-          'react': ['react', 'react-dom'],
-          'vendor': ['wouter', '@tanstack/react-query'],
-          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-slot', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'motion': ['framer-motion']
+        // Optimized chunking to eliminate unused JS
+        manualChunks(id) {
+          // Core React - always needed
+          if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
+            return 'react-core';
+          }
+          if (id.includes('react-dom')) {
+            return 'react-dom';
+          }
+          
+          // Essential routing and state
+          if (id.includes('wouter') || id.includes('@tanstack/react-query')) {
+            return 'core-vendor';
+          }
+          
+          // Motion library - only load when needed (deferred)
+          if (id.includes('framer-motion')) {
+            return 'motion-lazy';
+          }
+          
+          // UI components - only load when needed (deferred)
+          if (id.includes('@radix-ui') || id.includes('ui/tooltip') || id.includes('ui/toaster')) {
+            return 'ui-lazy';
+          }
+          
+          // Forms - only load when form components are used
+          if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+            return 'forms-lazy';
+          }
+          
+          // Other vendor libraries
+          if (id.includes('node_modules')) {
+            return 'vendor-utils';
+          }
         },
         // Optimize asset naming
         entryFileNames: '[name]-[hash].js',
