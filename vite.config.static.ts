@@ -31,47 +31,55 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Ultra-aggressive chunking for critical path optimization
+        // MAXIMUM chunking for minimal TBT
         manualChunks(id) {
-          // Keep ONLY hero section in main bundle
-          if (id.includes('home.tsx') || id.includes('hero.tsx')) {
-            return undefined; // Main bundle
+          // CRITICAL: Only bare minimum in main bundle
+          if (id.includes('main.tsx') || id.includes('App.tsx')) {
+            return undefined; // Main entry only
           }
           
-          // Micro-chunk critical dependencies  
-          if (id.includes('react/') && !id.includes('react-dom')) {
-            return 'react';
+          // Defer EVERYTHING from hero section  
+          if (id.includes('hero.tsx') || id.includes('sections/')) {
+            return 'hero-deferred';
+          }
+          if (id.includes('home.tsx') || id.includes('pages/')) {
+            return 'pages-deferred';
+          }
+          
+          // Micro React chunks
+          if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
+            return 'react-micro';
           }
           if (id.includes('react-dom')) {
-            return 'react-dom';
+            return 'react-dom-defer';
           }
           if (id.includes('wouter')) {
-            return 'router';
+            return 'router-defer';
           }
           
-          // Defer ALL non-critical libraries
-          if (id.includes('@radix-ui/')) {
-            return 'ui';
+          // Defer ALL UI completely
+          if (id.includes('@radix-ui') || id.includes('lucide-react') || id.includes('ui/')) {
+            return 'ui-complete-defer';
           }
+          
+          // Defer ALL motion completely
           if (id.includes('framer-motion')) {
-            return 'motion-deferred'; // Explicitly defer
-          }
-          if (id.includes('react-hook-form') || id.includes('zod')) {
-            return 'forms-lazy';
-          }
-          if (id.includes('lucide-react')) {
-            return 'icons-lazy';
-          }
-          if (id.includes('@tanstack/react-query')) {
-            return 'query-lazy';
-          }
-          if (id.includes('lazy')) {
-            return 'lazy-components';
+            return 'motion-complete-defer';
           }
           
-          // Vendor optimization
+          // Defer ALL forms completely
+          if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+            return 'forms-complete-defer';
+          }
+          
+          // Defer ALL utilities
+          if (id.includes('@tanstack') || id.includes('clsx') || id.includes('tailwind-merge')) {
+            return 'utils-defer';
+          }
+          
+          // Everything else deferred
           if (id.includes('node_modules')) {
-            return 'vendor-deferred';
+            return 'vendor-complete-defer';
           }
         },
         // Optimize asset naming
