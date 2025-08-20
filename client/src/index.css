@@ -1,13 +1,12 @@
-/* Self-hosted fonts - no external Google Fonts requests */
-/* Critical font optimization for FCP improvement */
+/* Self-hosted fonts - critical FCP optimization */
 @font-face {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
-  font-display: fallback;
+  font-display: swap;
   src: url('/assets/poppins-latin-700-normal-Qrb0O0WB.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  size-adjust: 105%;
+  size-adjust: 100.06%;
   ascent-override: 105%;
   descent-override: 35%;
   line-gap-override: 10%;
@@ -17,10 +16,10 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-display: fallback;
+  font-display: swap;
   src: url('/assets/inter-latin-400-normal-C38fXH4l.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  size-adjust: 102%;
+  size-adjust: 100.531%;
   ascent-override: 90%;
   descent-override: 25%;
   line-gap-override: 0%;
@@ -82,14 +81,50 @@ footer.bg-deep-navy {
   contain: layout style paint;
   transform: translateZ(0);
   min-height: 384px; /* Explicit height to prevent CLS */
+  height: 384px; /* Fixed height to prevent CLS */
 }
 
-/* Hardware acceleration for critical animations */
+/* Prevent layout shift from dynamic content */
+.glass-card {
+  min-height: 200px;
+  contain: layout;
+}
+
+/* Guarantee section stability */
+#guarantee-section {
+  min-height: 600px;
+  contain: layout style;
+}
+
+/* Services section stability */
+.services-snapshot {
+  min-height: 500px;
+  contain: layout style;
+}
+
+/* Audit form container stability */
+#audit-section {
+  min-height: 800px;
+  contain: layout style;
+}
+
+/* Hardware acceleration for critical animations - prevent blocking */
 .animate-fade-in-up,
 .animate-bounce-soft,
 .animate-fade-in-up-delay-scroll {
   will-change: transform;
   transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+/* Critical performance: Reduce repaints */
+.glass-card,
+.gradient-bg,
+.cutting-edge-gradient {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Prevent reflow during image loads */
@@ -101,6 +136,8 @@ img[loading="lazy"] {
 .hero-section {
   contain: layout style paint;
   transform: translateZ(0);
+  min-height: 100vh;
+  height: 100vh;
 }
 
 /* Optimize gradient animations for 60fps */
@@ -130,10 +167,18 @@ img[loading="lazy"] {
   100% { width: 14.28%; }
 }
 
-/* Text rendering optimization */
+/* Text rendering optimization - reduce blocking */
 h1, h2, h3 {
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Critical above-the-fold text optimization */
+.hero-title {
+  font-optical-sizing: auto;
+  text-size-adjust: 100%;
 }
 
 /* Micro-interactions optimization */

@@ -43,9 +43,9 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null);
   const auditRef = useRef<HTMLDivElement>(null);
   
-  const guaranteeInView = useInViewport(guaranteeRef, '50px');
-  const servicesInView = useInViewport(servicesRef, '100px');
-  const auditInView = useInViewport(auditRef, '150px');
+  const guaranteeInView = useInViewport(guaranteeRef, '300px');
+  const servicesInView = useInViewport(servicesRef, '400px');
+  const auditInView = useInViewport(auditRef, '500px');
 
   useEffect(() => {
     updateSEO({
@@ -58,12 +58,12 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      <div ref={guaranteeRef} id="guarantee-section">
+      <div ref={guaranteeRef} id="guarantee-section" style={{ minHeight: '600px' }}>
         {guaranteeInView && (
           <Suspense fallback={
             <div 
               className="h-96 bg-gradient-to-b from-slate-50 to-white flex items-center justify-center"
-              style={{ minHeight: '384px' }}
+              style={{ minHeight: '600px', height: '600px' }}
             >
               <div className="animate-pulse">Loading...</div>
             </div>
@@ -73,12 +73,12 @@ export default function Home() {
         )}
       </div>
       
-      <div ref={servicesRef}>
+      <div ref={servicesRef} style={{ minHeight: '500px' }}>
         {servicesInView && (
           <Suspense fallback={
             <div 
               className="h-96 bg-white flex items-center justify-center"
-              style={{ minHeight: '384px' }}
+              style={{ minHeight: '500px', height: '500px' }}
             >
               <div className="animate-pulse">Loading...</div>
             </div>

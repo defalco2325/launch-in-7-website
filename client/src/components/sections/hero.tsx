@@ -146,7 +146,7 @@ const HeroSection = memo(function HeroSection() {
               
               {/* Main Headline */}
               <div className="space-y-6 animate-fade-in-up-delay">
-                <h1 className="font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
+                <h1 className="hero-title font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
                   <span className="block text-white">Your Website,</span>
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
