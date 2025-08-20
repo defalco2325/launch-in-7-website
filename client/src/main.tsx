@@ -1,83 +1,51 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Switch, Route } from "wouter";
+import { Suspense, lazy } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import MobileCTA from "@/components/layout/mobile-cta";
+import { SEOProvider } from "@/lib/seo";
 import "./index.css";
 
-// Simple error boundary
-class ErrorBoundary extends React.Component {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+// Direct imports instead of lazy loading to avoid import errors
+import Home from "@/pages/home";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import NotFound from "@/pages/not-found";
 
-  static getDerivedStateFromError(error: any) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error('React Error:', error, errorInfo);
-  }
-
-  render() {
-    if ((this.state as any).hasError) {
-      return (
-        <div style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-          color: 'white',
-          padding: '20px',
-          fontFamily: 'system-ui'
-        }}>
-          <h1>Something went wrong</h1>
-          <p>Error: {(this.state as any).error?.toString()}</p>
-          <button onClick={() => window.location.reload()}>Reload</button>
-        </div>
-      );
-    }
-
-    return (this.props as any).children;
-  }
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route component={NotFound} />
+    </Switch>
+  );
 }
 
-// Lazy load app to isolate errors
-const App = React.lazy(() => import("./App").catch(err => {
-  console.error('App import error:', err);
-  return Promise.resolve({
-    default: () => React.createElement('div', { 
-      style: { 
-        minHeight: '100vh', 
-        background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-        color: 'white',
-        padding: '20px',
-        fontFamily: 'system-ui',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
-      }
-    }, [
-      React.createElement('h1', { key: 'title' }, 'Launch in 7'),
-      React.createElement('p', { key: 'desc' }, 'Your Website, Live in 7 Days'),
-      React.createElement('p', { key: 'error' }, `Import Error: ${err.message}`)
-    ])
-  });
-}));
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <SEOProvider>
+          <div className="min-h-screen bg-background">
+            <Header />
+            <main id="main-content" className="pt-16" role="main">
+              <Router />
+            </main>
+            <Footer />
+            <MobileCTA />
+            <Toaster />
+          </div>
+        </SEOProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
-const root = createRoot(document.getElementById("root")!);
-
-root.render(
-  React.createElement(ErrorBoundary, {}, 
-    React.createElement(React.Suspense, {
-      fallback: React.createElement('div', {
-        style: {
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'system-ui'
-        }
-      }, 'Loading...')
-    }, React.createElement(App))
-  )
-);
+createRoot(document.getElementById("root")!).render(<App />);
