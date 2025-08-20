@@ -82,7 +82,7 @@ const HeroSection = memo(function HeroSection() {
   return (
     <section 
       ref={heroRef}
-      className="hero-section relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden"
+      className="hero-section relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden pt-20"
       style={{ minHeight: '100vh' }}
       role="banner"
       aria-label="Hero section"
