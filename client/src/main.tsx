@@ -3,20 +3,16 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Switch, Route } from "wouter";
 import { Suspense, lazy } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
 import "./index.css";
 
-// Critical components - load immediately
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+// Keep home page immediate, defer others for performance
 import Home from "@/pages/home";
-
-// Defer heavy UI components that aren't critical for FCP
-const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(mod => ({ default: mod.TooltipProvider })));
-const Toaster = lazy(() => import("@/components/ui/toaster").then(mod => ({ default: mod.Toaster })));
-const MobileCTA = lazy(() => import("@/components/layout/mobile-cta"));
-
-// Defer non-home pages
 const About = lazy(() => import("@/pages/about"));
 const Contact = lazy(() => import("@/pages/contact"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -41,23 +37,19 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <SEOProvider>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <main id="main-content" className="pt-16" role="main">
-            <Router />
-          </main>
-          <Footer />
-          
-          {/* Defer non-critical UI components */}
-          <Suspense fallback={null}>
-            <TooltipProvider>
-              <MobileCTA />
-              <Toaster />
-            </TooltipProvider>
-          </Suspense>
-        </div>
-      </SEOProvider>
+      <TooltipProvider>
+        <SEOProvider>
+          <div className="min-h-screen bg-background">
+            <Header />
+            <main id="main-content" className="pt-16" role="main">
+              <Router />
+            </main>
+            <Footer />
+            <MobileCTA />
+            <Toaster />
+          </div>
+        </SEOProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }
