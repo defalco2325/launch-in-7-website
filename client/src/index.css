@@ -81,30 +81,17 @@ footer.bg-deep-navy {
   contain: layout style paint;
   transform: translateZ(0);
   min-height: 384px; /* Explicit height to prevent CLS */
-  height: 384px; /* Fixed height to prevent CLS */
 }
 
 /* Prevent layout shift from dynamic content */
 .glass-card {
-  min-height: 200px;
   contain: layout;
 }
 
-/* Guarantee section stability */
-#guarantee-section {
-  min-height: 600px;
-  contain: layout style;
-}
-
-/* Services section stability */
-.services-snapshot {
-  min-height: 500px;
-  contain: layout style;
-}
-
-/* Audit form container stability */
+/* Critical sections layout containment */
+#guarantee-section,
+.services-snapshot,
 #audit-section {
-  min-height: 800px;
   contain: layout style;
 }
 
@@ -136,8 +123,6 @@ img[loading="lazy"] {
 .hero-section {
   contain: layout style paint;
   transform: translateZ(0);
-  min-height: 100vh;
-  height: 100vh;
 }
 
 /* Optimize gradient animations for 60fps */

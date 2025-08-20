@@ -58,12 +58,12 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      <div ref={guaranteeRef} id="guarantee-section" style={{ minHeight: '600px' }}>
+      <div ref={guaranteeRef} id="guarantee-section">
         {guaranteeInView && (
           <Suspense fallback={
             <div 
               className="h-96 bg-gradient-to-b from-slate-50 to-white flex items-center justify-center"
-              style={{ minHeight: '600px', height: '600px' }}
+              style={{ minHeight: '384px' }}
             >
               <div className="animate-pulse">Loading...</div>
             </div>
@@ -73,12 +73,12 @@ export default function Home() {
         )}
       </div>
       
-      <div ref={servicesRef} style={{ minHeight: '500px' }}>
+      <div ref={servicesRef}>
         {servicesInView && (
           <Suspense fallback={
             <div 
               className="h-96 bg-white flex items-center justify-center"
-              style={{ minHeight: '500px', height: '500px' }}
+              style={{ minHeight: '384px' }}
             >
               <div className="animate-pulse">Loading...</div>
             </div>
