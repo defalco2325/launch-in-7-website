@@ -31,43 +31,39 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // AGGRESSIVE deferred loading - only load what's critical
+        // Optimized chunking to eliminate unused JS
         manualChunks(id) {
-          // Critical path: only React and router
+          // Core React - always needed
           if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
             return 'react-core';
           }
-          
-          // Defer React DOM - not needed for initial render
           if (id.includes('react-dom')) {
-            return 'react-dom-deferred';
+            return 'react-dom';
           }
           
-          // Keep router small and separate
-          if (id.includes('wouter')) {
-            return 'router-minimal';
+          // Essential routing and state
+          if (id.includes('wouter') || id.includes('@tanstack/react-query')) {
+            return 'core-vendor';
           }
           
-          // DEFER ALL heavy libraries
+          // Motion library - only load when needed (deferred)
           if (id.includes('framer-motion')) {
-            return 'motion-completely-deferred';
+            return 'motion-lazy';
           }
           
-          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
-            return 'ui-completely-deferred'; 
+          // UI components - only load when needed (deferred)
+          if (id.includes('@radix-ui') || id.includes('ui/tooltip') || id.includes('ui/toaster')) {
+            return 'ui-lazy';
           }
           
+          // Forms - only load when form components are used
           if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-            return 'forms-completely-deferred';
+            return 'forms-lazy';
           }
           
-          if (id.includes('@tanstack')) {
-            return 'query-completely-deferred';
-          }
-          
-          // Everything else deferred
+          // Other vendor libraries
           if (id.includes('node_modules')) {
-            return 'vendor-completely-deferred';
+            return 'vendor-utils';
           }
         },
         // Optimize asset naming

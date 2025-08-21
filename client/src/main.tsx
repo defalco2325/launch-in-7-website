@@ -11,9 +11,9 @@ import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
 import "./index.css";
 
-// Lazy load pages to defer heavy dependencies
-const Home = lazy(() => import("@/pages/home"));
-const About = lazy(() => import("@/pages/about"));  
+// Keep home page immediate, defer others for performance
+import Home from "@/pages/home";
+const About = lazy(() => import("@/pages/about"));
 const Contact = lazy(() => import("@/pages/contact"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 

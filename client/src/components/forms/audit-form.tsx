@@ -28,18 +28,31 @@ export default function AuditForm() {
 
   const onSubmit = async (data: AuditFormData) => {
     try {
-      // Prepare form data for Netlify
-      const formData = new FormData();
-      formData.append('form-name', 'audit');
+      // Create a form element for Netlify submission
+      const formElement = document.createElement('form');
+      formElement.setAttribute('data-netlify', 'true');
+      formElement.setAttribute('name', 'audit');
+      formElement.style.display = 'none';
+      
+      // Add form fields
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value || '');
+        const input = document.createElement('input');
+        input.name = key;
+        input.value = value || '';
+        formElement.appendChild(input);
       });
       
+      document.body.appendChild(formElement);
+      
       // Submit to Netlify
+      const formData = new FormData(formElement);
       const response = await fetch('/', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
       });
+      
+      document.body.removeChild(formElement);
       
       if (response.ok) {
         setIsSuccess(true);
@@ -48,10 +61,9 @@ export default function AuditForm() {
           description: "We'll review your site and send insights within 24 hours.",
         });
       } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error('Form submission failed');
       }
     } catch (error) {
-      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
