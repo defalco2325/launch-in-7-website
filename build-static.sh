@@ -6,9 +6,9 @@ echo "🚀 Building optimized static site for deployment..."
 echo "Building with Vite..."
 vite build --config vite.config.static.ts
 
-# Optimize the HTML to eliminate render blocking
-echo "Optimizing HTML to eliminate render blocking..."
-node optimize-netlify.cjs
+# Skip optimization - it breaks JavaScript loading
+# echo "Optimizing HTML to eliminate render blocking..."
+# node optimize-netlify.cjs
 
 echo "✅ Build complete! Static files ready in dist/public/"
 echo ""
