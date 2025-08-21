@@ -28,31 +28,18 @@ export default function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // Create a form element for Netlify submission
-      const formElement = document.createElement('form');
-      formElement.setAttribute('data-netlify', 'true');
-      formElement.setAttribute('name', 'contact');
-      formElement.style.display = 'none';
-      
-      // Add form fields
+      // Prepare form data for Netlify
+      const formData = new FormData();
+      formData.append('form-name', 'contact');
       Object.entries(data).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.name = key;
-        input.value = value || '';
-        formElement.appendChild(input);
+        formData.append(key, value || '');
       });
-      
-      document.body.appendChild(formElement);
       
       // Submit to Netlify
-      const formData = new FormData(formElement);
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString()
+        body: formData
       });
-      
-      document.body.removeChild(formElement);
       
       if (response.ok) {
         setIsSuccess(true);
@@ -61,9 +48,10 @@ export default function ContactForm() {
           description: "We'll get back to you within 24 hours.",
         });
       } else {
-        throw new Error('Form submission failed');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
