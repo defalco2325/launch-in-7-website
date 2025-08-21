@@ -26,33 +26,32 @@ export default function ContactForm() {
     },
   });
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData, e?: React.BaseSyntheticEvent) => {
+    // Prevent default form submission initially
+    e?.preventDefault();
+    
+    // Validate the form
+    const isValid = await form.trigger();
+    if (!isValid) {
+      return;
+    }
+    
     try {
-      // Create a form element for Netlify submission
-      const formElement = document.createElement('form');
-      formElement.setAttribute('data-netlify', 'true');
-      formElement.setAttribute('name', 'contact');
-      formElement.style.display = 'none';
+      // Submit to Netlify using fetch
+      const formData = new URLSearchParams();
+      formData.append('form-name', 'contact');
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('phone', data.phone || '');
+      formData.append('website', data.website || '');
+      formData.append('message', data.message);
+      formData.append('type', data.type);
       
-      // Add form fields
-      Object.entries(data).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.name = key;
-        input.value = value || '';
-        formElement.appendChild(input);
-      });
-      
-      document.body.appendChild(formElement);
-      
-      // Submit to Netlify
-      const formData = new FormData(formElement);
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString()
+        body: formData.toString()
       });
-      
-      document.body.removeChild(formElement);
       
       if (response.ok) {
         setIsSuccess(true);
@@ -99,9 +98,11 @@ export default function ContactForm() {
       data-netlify="true"
       name="contact"
       method="POST"
+      data-testid="form-contact"
     >
       {/* Hidden input for Netlify form detection */}
       <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="type" value="contact" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <Label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -116,6 +117,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-describedby={form.formState.errors.name ? "contact-name-error" : undefined}
             {...form.register("name")}
+            name="name"
           />
           {form.formState.errors.name && (
             <p id="contact-name-error" className="text-red-500 text-sm mt-1" role="alert" aria-live="polite">
@@ -135,6 +137,7 @@ export default function ContactForm() {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent"
             data-testid="input-contact-email"
             {...form.register("email")}
+            name="email"
           />
           {form.formState.errors.email && (
             <p className="text-red-500 text-sm mt-1">{form.formState.errors.email.message}</p>
@@ -154,6 +157,7 @@ export default function ContactForm() {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent"
             data-testid="input-contact-phone"
             {...form.register("phone")}
+            name="phone"
           />
         </div>
 
@@ -168,6 +172,7 @@ export default function ContactForm() {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent"
             data-testid="input-contact-website"
             {...form.register("website")}
+            name="website"
           />
         </div>
       </div>
@@ -183,6 +188,7 @@ export default function ContactForm() {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent"
           data-testid="textarea-contact-message"
           {...form.register("message")}
+          name="message"
         />
         {form.formState.errors.message && (
           <p className="text-red-500 text-sm mt-1">{form.formState.errors.message.message}</p>
