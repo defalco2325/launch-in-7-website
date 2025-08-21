@@ -131,6 +131,46 @@
     <title>Launch in 7 - Professional Website Development</title>
   </head>
   <body>
+    <!-- Hidden forms for Netlify Forms detection -->
+    <form name="contact" data-netlify="true" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="url" name="website" />
+      <textarea name="message"></textarea>
+      <input type="hidden" name="type" />
+    </form>
+    
+    <form name="audit" data-netlify="true" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="url" name="website" />
+      <select name="goal">
+        <option value="increase-traffic">Increase Traffic</option>
+        <option value="improve-conversions">Improve Conversions</option>
+        <option value="better-performance">Better Performance</option>
+        <option value="modernize-design">Modernize Design</option>
+        <option value="add-ecommerce">Add E-commerce</option>
+        <option value="mobile-optimization">Mobile Optimization</option>
+      </select>
+      <select name="timeline">
+        <option value="asap">ASAP</option>
+        <option value="this-month">This Month</option>
+        <option value="next-month">Next Month</option>
+        <option value="this-quarter">This Quarter</option>
+        <option value="exploring">Just Exploring</option>
+      </select>
+      <select name="budget">
+        <option value="200-500">$200+</option>
+        <option value="500-1000">$500+</option>
+        <option value="1000-2000">$1,000+</option>
+        <option value="2000-3000">$2,000+</option>
+        <option value="3000-4000">$3,000+</option>
+        <option value="4000-5000">$4,000+</option>
+        <option value="5000-plus">$5,000+</option>
+      </select>
+    </form>
+    
     <div id="root" role="main"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
