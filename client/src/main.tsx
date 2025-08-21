@@ -3,36 +3,32 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Switch, Route } from "wouter";
 import { Suspense, lazy } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import MobileCTA from "@/components/layout/mobile-cta";
+import { SEOProvider } from "@/lib/seo";
 import "./index.css";
 
-// Start with just a simple home page
-function SimpleHome() {
-  return (
-    <div className="min-h-screen bg-white">
-      <header className="py-4 bg-blue-600 text-white">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold">Launch in 7</h1>
-        </div>
-      </header>
-      <main className="py-8">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4">Welcome to Launch in 7</h2>
-          <p className="text-lg text-gray-600">Your website, launched in 7 days!</p>
-        </div>
-      </main>
-    </div>
-  );
-}
+// Lazy load pages to defer heavy dependencies
+const Home = lazy(() => import("@/pages/home"));
+const About = lazy(() => import("@/pages/about"));  
+const Contact = lazy(() => import("@/pages/contact"));
+const NotFound = lazy(() => import("@/pages/not-found"));
 
 function Router() {
   return (
     <Suspense fallback={
       <div className="min-h-[50vh] flex items-center justify-center">
-        <div>Loading...</div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-electric-blue"></div>
       </div>
     }>
       <Switch>
-        <Route path="/" component={SimpleHome} />
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route component={NotFound} />
       </Switch>
     </Suspense>
   );
@@ -41,9 +37,19 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen">
-        <Router />
-      </div>
+      <TooltipProvider>
+        <SEOProvider>
+          <div className="min-h-screen bg-background">
+            <Header />
+            <main id="main-content" className="pt-16" role="main">
+              <Router />
+            </main>
+            <Footer />
+            <MobileCTA />
+            <Toaster />
+          </div>
+        </SEOProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }

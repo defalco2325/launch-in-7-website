@@ -13,8 +13,28 @@
     <link rel="stylesheet" crossorigin href="/assets/index-CkX1339q.css">
   </head>
   <body>
+    <!-- Hidden forms for Netlify Forms detection -->
+    <form name="audit" data-netlify="true" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="url" name="website" />
+      <select name="goal">
+        <option value="increase-traffic">Increase Traffic</option>
+        <option value="improve-conversions">Improve Conversions</option>
+        <option value="better-performance">Better Performance</option>
+        <option value="modernize-design">Modernize Design</option>
+        <option value="add-ecommerce">Add E-commerce</option>
+        <option value="mobile-optimization">Mobile Optimization</option>
+      </select>
+      <select name="timeline">
+        <option value="asap">ASAP</option>
+        <option value="this-month">This Month</option>
+        <option value="next-month">Next Month</option>
+        <option value="this-quarter">This Quarter</option>
+        <option value="exploring">Just Exploring</option>
+      </select>
+    </form>
+    
     <div id="root"></div>
-
-
   </body>
 </html>

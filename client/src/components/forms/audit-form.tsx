@@ -26,31 +26,19 @@ export default function AuditForm() {
     },
   });
 
-  const onSubmit = async (data: AuditFormData, e?: React.BaseSyntheticEvent) => {
-    // Prevent default form submission initially
-    e?.preventDefault();
-    
-    // Validate the form
-    const isValid = await form.trigger();
-    if (!isValid) {
-      return;
-    }
-    
+  const onSubmit = async (data: AuditFormData) => {
     try {
-      // Submit to Netlify using fetch
-      const formData = new URLSearchParams();
+      // Prepare form data for Netlify
+      const formData = new FormData();
       formData.append('form-name', 'audit');
-      formData.append('name', data.name);
-      formData.append('email', data.email);
-      formData.append('website', data.website);
-      formData.append('goal', data.goal || '');
-      formData.append('timeline', data.timeline || '');
-      formData.append('budget', data.budget || '');
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value || '');
+      });
       
+      // Submit to Netlify
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
+        body: formData
       });
       
       if (response.ok) {
@@ -60,9 +48,10 @@ export default function AuditForm() {
           description: "We'll review your site and send insights within 24 hours.",
         });
       } else {
-        throw new Error('Form submission failed');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
@@ -98,7 +87,6 @@ export default function AuditForm() {
       data-netlify="true"
       name="audit"
       method="POST"
-      data-testid="form-audit"
     >
       {/* Hidden input for Netlify form detection */}
       <input type="hidden" name="form-name" value="audit" />
@@ -115,7 +103,6 @@ export default function AuditForm() {
             className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             data-testid="input-audit-name"
             {...form.register("name")}
-            name="name"
           />
           {form.formState.errors.name && (
             <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.name.message}</p>
@@ -133,7 +120,6 @@ export default function AuditForm() {
             className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             data-testid="input-audit-email"
             {...form.register("email")}
-            name="email"
           />
           {form.formState.errors.email && (
             <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.email.message}</p>
@@ -151,7 +137,6 @@ export default function AuditForm() {
             className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             data-testid="input-audit-website"
             {...form.register("website")}
-            name="website"
           />
           {form.formState.errors.website && (
             <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.website.message}</p>
@@ -162,7 +147,7 @@ export default function AuditForm() {
           <Label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
             Primary Goal *
           </Label>
-          <Select onValueChange={(value) => form.setValue("goal", value as any)} name="goal" data-testid="select-audit-goal">
+          <Select onValueChange={(value) => form.setValue("goal", value as any)} data-testid="select-audit-goal">
             <SelectTrigger 
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               aria-label="Select your primary goal for the website audit"
@@ -187,7 +172,7 @@ export default function AuditForm() {
           <Label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
             Timeline *
           </Label>
-          <Select onValueChange={(value) => form.setValue("timeline", value as any)} name="timeline" data-testid="select-audit-timeline">
+          <Select onValueChange={(value) => form.setValue("timeline", value as any)} data-testid="select-audit-timeline">
             <SelectTrigger 
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               aria-label="Select your project timeline for website development"
@@ -211,7 +196,7 @@ export default function AuditForm() {
           <Label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
             Budget *
           </Label>
-          <Select onValueChange={(value) => form.setValue("budget", value as any)} name="budget" data-testid="select-audit-budget">
+          <Select onValueChange={(value) => form.setValue("budget", value as any)} data-testid="select-audit-budget">
             <SelectTrigger 
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               aria-label="Select your project budget range"

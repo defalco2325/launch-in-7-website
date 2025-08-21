@@ -31,39 +31,43 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Optimized chunking to eliminate unused JS
+        // AGGRESSIVE deferred loading - only load what's critical
         manualChunks(id) {
-          // Core React - always needed
+          // Critical path: only React and router
           if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
             return 'react-core';
           }
+          
+          // Defer React DOM - not needed for initial render
           if (id.includes('react-dom')) {
-            return 'react-dom';
+            return 'react-dom-deferred';
           }
           
-          // Essential routing and state
-          if (id.includes('wouter') || id.includes('@tanstack/react-query')) {
-            return 'core-vendor';
+          // Keep router small and separate
+          if (id.includes('wouter')) {
+            return 'router-minimal';
           }
           
-          // Motion library - only load when needed (deferred)
+          // DEFER ALL heavy libraries
           if (id.includes('framer-motion')) {
-            return 'motion-lazy';
+            return 'motion-completely-deferred';
           }
           
-          // UI components - only load when needed (deferred)
-          if (id.includes('@radix-ui') || id.includes('ui/tooltip') || id.includes('ui/toaster')) {
-            return 'ui-lazy';
+          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+            return 'ui-completely-deferred'; 
           }
           
-          // Forms - only load when form components are used
           if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-            return 'forms-lazy';
+            return 'forms-completely-deferred';
           }
           
-          // Other vendor libraries
+          if (id.includes('@tanstack')) {
+            return 'query-completely-deferred';
+          }
+          
+          // Everything else deferred
           if (id.includes('node_modules')) {
-            return 'vendor-utils';
+            return 'vendor-completely-deferred';
           }
         },
         // Optimize asset naming
