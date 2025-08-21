@@ -31,13 +31,44 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Simple chunking - prioritize functionality over optimization
-        manualChunks: {
-          'react': ['react', 'react-dom'],
-          'vendor': ['wouter', '@tanstack/react-query'],
-          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-slot', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'motion': ['framer-motion']
+        // AGGRESSIVE deferred loading - only load what's critical
+        manualChunks(id) {
+          // Critical path: only React and router
+          if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-hook')) {
+            return 'react-core';
+          }
+          
+          // Defer React DOM - not needed for initial render
+          if (id.includes('react-dom')) {
+            return 'react-dom-deferred';
+          }
+          
+          // Keep router small and separate
+          if (id.includes('wouter')) {
+            return 'router-minimal';
+          }
+          
+          // DEFER ALL heavy libraries
+          if (id.includes('framer-motion')) {
+            return 'motion-completely-deferred';
+          }
+          
+          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+            return 'ui-completely-deferred'; 
+          }
+          
+          if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+            return 'forms-completely-deferred';
+          }
+          
+          if (id.includes('@tanstack')) {
+            return 'query-completely-deferred';
+          }
+          
+          // Everything else deferred
+          if (id.includes('node_modules')) {
+            return 'vendor-completely-deferred';
+          }
         },
         // Optimize asset naming
         entryFileNames: '[name]-[hash].js',
