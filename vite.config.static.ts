@@ -16,7 +16,7 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     cssCodeSplit: true,
-    minify: 'esbuild', // Use esbuild instead of terser to avoid babel issues
+    minify: false, // Disable minification completely to avoid issues
     rollupOptions: {
       output: {
         // Simple chunking - keep React together
