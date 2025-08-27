@@ -15,20 +15,8 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    cssCodeSplit: true, // Split CSS for better caching
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
-        unused: true,
-        dead_code: true,
-      },
-      mangle: {
-        safari10: true,
-      },
-    },
+    cssCodeSplit: true,
+    minify: 'esbuild', // Use esbuild instead of terser to avoid babel issues
     rollupOptions: {
       output: {
         // Simple chunking - keep React together
