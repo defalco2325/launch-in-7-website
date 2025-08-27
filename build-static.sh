@@ -6,6 +6,10 @@ echo "🚀 Building optimized static site for deployment..."
 echo "Building with Vite..."
 vite build --config vite.config.static.ts
 
+# Copy font files to dist
+echo "Copying font files..."
+cp client/public/assets/*.woff2 dist/public/assets/ 2>/dev/null || true
+
 # Skip optimization - it breaks JavaScript loading
 # echo "Optimizing HTML to eliminate render blocking..."
 # node optimize-netlify.cjs
