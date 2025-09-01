@@ -404,28 +404,22 @@ body, p, div, span {
     background-size: 40px 40px;
   }
 
-  .glow-effect {
-    /* Extremely visible pulsing glow - impossible to miss */
-    box-shadow: 0 0 20px #0EA5E9;
-    animation: pulse-glow 0.8s ease-in-out infinite !important;
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% { 
-      box-shadow: 0 0 20px #0EA5E9;
-      opacity: 1;
-    }
-    50% { 
-      box-shadow: 0 0 60px #0EA5E9, 0 0 100px rgba(14, 165, 233, 0.7);
-      opacity: 0.95;
-    }
-  }
-
-  /* Force glow effect on specific elements that should definitely pulse */
+  /* Test animation - very obvious background color change */
+  .glow-effect,
   .cutting-edge-gradient,
   .glass-card {
-    animation: pulse-glow 0.8s ease-in-out infinite !important;
-    box-shadow: 0 0 20px #0EA5E9 !important;
+    animation: pulse-test 1s ease-in-out infinite !important;
+  }
+
+  @keyframes pulse-test {
+    0%, 100% { 
+      background-color: rgba(14, 165, 233, 0.1) !important;
+      border: 2px solid #0EA5E9 !important;
+    }
+    50% { 
+      background-color: rgba(14, 165, 233, 0.5) !important;
+      border: 2px solid #FF6B35 !important;
+    }
   }
 
 
