@@ -9,6 +9,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
+import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
 
 // Lazy load all pages to reduce initial JavaScript execution time
@@ -55,6 +56,9 @@ function App() {
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
+
+// Setup Netlify Forms progressive enhancement
+setupNetlifyForms();
 
 // Register service worker for PWA functionality (deferred)
 if ('serviceWorker' in navigator) {

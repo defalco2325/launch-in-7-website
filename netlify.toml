@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Thanks page redirect
+[[redirects]]
+  from = "/thanks"
+  to = "/thanks.html"
+  status = 200
+
 # SPA fallback with exceptions for SEO files
 [[redirects]]
   from = "/robots.txt"
@@ -16,6 +22,7 @@
   to = "/sitemap.xml"
   status = 200
 
+# SPA fallback for all other routes
 [[redirects]]
   from = "/*"
   to = "/index.html"

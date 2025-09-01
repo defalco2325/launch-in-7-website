@@ -27,42 +27,42 @@ export default function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // Create a form element for Netlify submission
-      const formElement = document.createElement('form');
-      formElement.setAttribute('data-netlify', 'true');
-      formElement.setAttribute('name', 'contact');
-      formElement.style.display = 'none';
-      
-      // Add form fields
-      Object.entries(data).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.name = key;
-        input.value = value || '';
-        formElement.appendChild(input);
+      // Prepare data for Netlify Forms submission
+      const formData = {
+        "form-name": "launchin7-contact",
+        "bot-field": "", // Honeypot field (empty for humans)
+        name: data.name,
+        email: data.email,
+        phone: data.phone || "",
+        website: data.website || "",
+        message: data.message
+      };
+
+      // Submit to Netlify Forms
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: Object.keys(formData)
+          .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(formData[key as keyof typeof formData]))
+          .join("&"),
       });
-      
-      document.body.appendChild(formElement);
-      
-      // Submit to Netlify
-      const formData = new FormData(formElement);
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString()
-      });
-      
-      document.body.removeChild(formElement);
-      
+
       if (response.ok) {
         setIsSuccess(true);
         toast({
           title: "Message Sent Successfully!",
           description: "We'll get back to you within 24 hours.",
         });
+        form.reset();
+        // Redirect to thanks page after a short delay
+        setTimeout(() => {
+          window.location.href = "/thanks";
+        }, 2000);
       } else {
         throw new Error('Form submission failed');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
@@ -94,11 +94,17 @@ export default function ContactForm() {
       onSubmit={form.handleSubmit(onSubmit)} 
       className="space-y-6"
       data-netlify="true"
-      name="contact"
+      name="launchin7-contact"
       method="POST"
+      action="/thanks"
+      netlify-honeypot="bot-field"
     >
       {/* Hidden input for Netlify form detection */}
-      <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="form-name" value="launchin7-contact" />
+      {/* Honeypot field (hidden from users) */}
+      <p className="hidden">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <Label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-2">
