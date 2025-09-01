@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function ContactForm() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -27,18 +28,31 @@ export default function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // Prepare form data for Netlify
-      const formData = new FormData();
-      formData.append('form-name', 'contact');
+      // Create a form element for Netlify submission
+      const formElement = document.createElement('form');
+      formElement.setAttribute('data-netlify', 'true');
+      formElement.setAttribute('name', 'contact');
+      formElement.style.display = 'none';
+      
+      // Add form fields
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value || '');
+        const input = document.createElement('input');
+        input.name = key;
+        input.value = value || '';
+        formElement.appendChild(input);
       });
       
+      document.body.appendChild(formElement);
+      
       // Submit to Netlify
+      const formData = new FormData(formElement);
       const response = await fetch('/', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
       });
+      
+      document.body.removeChild(formElement);
       
       if (response.ok) {
         setIsSuccess(true);
@@ -47,10 +61,9 @@ export default function ContactForm() {
           description: "We'll get back to you within 24 hours.",
         });
       } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error('Form submission failed');
       }
     } catch (error) {
-      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
@@ -61,7 +74,11 @@ export default function ContactForm() {
 
   if (isSuccess) {
     return (
-      <div className="text-center py-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center py-8"
+      >
         <div className="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
           <Check className="w-8 h-8 text-white" />
         </div>
@@ -71,7 +88,7 @@ export default function ContactForm() {
         <p className="text-gray-600">
           We'll get back to you within 24 hours.
         </p>
-      </div>
+      </motion.div>
     );
   }
 

@@ -15,41 +15,34 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    cssCodeSplit: true,
-    minify: false, // Disable minification completely to avoid issues
+    cssCodeSplit: true, // Split CSS for better caching
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        unused: true,
+        dead_code: true,
+      },
+      mangle: {
+        safari10: true,
+      },
+    },
     rollupOptions: {
       output: {
-        // Simple chunking - keep React together
-        manualChunks(id) {
-          // Keep all React together for proper loading order
-          if (id.includes('react')) {
-            return 'react';
-          }
-          
-          // UI libraries
-          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
-            return 'ui-libs';
-          }
-          
-          // Forms
-          if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-            return 'forms';
-          }
-          
-          // Motion
-          if (id.includes('framer-motion')) {
-            return 'motion';
-          }
-          
-          // Other vendor libs
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+        // Simple chunking - prioritize functionality over optimization
+        manualChunks: {
+          'react': ['react', 'react-dom'],
+          'vendor': ['wouter', '@tanstack/react-query'],
+          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-slot', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
+          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'motion': ['framer-motion']
         },
         // Optimize asset naming
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        entryFileNames: '[name]-[hash].js',
+        chunkFileNames: '[name]-[hash].js',
+        assetFileNames: '[name]-[hash].[ext]'
       },
     },
   },

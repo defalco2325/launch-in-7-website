@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 export default function TrustCredibility() {
@@ -76,7 +77,7 @@ export default function TrustCredibility() {
                     className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
                   >
                     {tech}
-                  </span>
+                  <span>
                 ))}
               </div>
             </div>
