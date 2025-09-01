@@ -96,25 +96,13 @@ const HeroSection = memo(function HeroSection() {
         {isVisible && (
           <>
             <div 
-              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/20 to-neon-cyan/20 rounded-full blur-3xl animate-float-slow"
-              style={{
-                transform: "translate3d(0,0,0)",
-                willChange: "transform"
-              }}
+              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
             />
             <div 
-              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/20 to-electric-blue/20 rounded-full blur-3xl will-change-transform animate-float-medium"
-              style={{
-                transform: "translateZ(0)",
-                backfaceVisibility: "hidden"
-              }}
+              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
             />
             <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/15 to-neon-cyan/15 rounded-full blur-3xl will-change-transform animate-spin-slow"
-              style={{
-                transform: "translateZ(0)",
-                backfaceVisibility: "hidden"
-              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
             />
           </>
         )}

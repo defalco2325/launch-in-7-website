@@ -41,8 +41,8 @@ export default function ServicesSnapshot() {
       {/* Subtle Background Effects */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0 tech-grid-bg"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-l from-electric-blue/5 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-accent-purple/5 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-l from-electric-blue/3 to-transparent rounded-full"></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-r from-accent-purple/3 to-transparent rounded-full"></div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">

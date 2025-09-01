@@ -17,7 +17,7 @@ export default function GuaranteeExplainer() {
       <div className="absolute inset-0">
         <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
         <div 
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-electric-blue/10 to-transparent rounded-full blur-3xl animate-float-slow"
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-electric-blue/5 to-transparent rounded-full animate-float-slow"
         />
       </div>
 
