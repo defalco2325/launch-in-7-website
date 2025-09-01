@@ -87,10 +87,9 @@ const HeroSection = memo(function HeroSection() {
       role="banner"
       aria-label="Hero section"
     >
-      {/* Background Effects */}
+      {/* Clean Background */}
       <div className="absolute inset-0">
-        {/* Tech grid background only */}
-        <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
+        {/* No background effects - clean slate */}
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
