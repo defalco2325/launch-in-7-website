@@ -82,7 +82,7 @@ const HeroSection = memo(function HeroSection() {
   return (
     <section 
       ref={heroRef}
-      className="hero-section relative h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden"
+      className="hero-section relative h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-x-hidden"
       style={{ height: '100vh' }}
       role="banner"
       aria-label="Hero section"
@@ -92,17 +92,17 @@ const HeroSection = memo(function HeroSection() {
         {/* Tech Grid Background */}
         <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
         
-        {/* Animated Gradient Orbs with CSS animations */}
+        {/* Animated Gradient Orbs with CSS animations - Mobile optimized */}
         {isVisible && (
           <>
             <div 
-              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
+              className="absolute top-20 left-0 md:-left-20 w-60 md:w-80 h-60 md:h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
             />
             <div 
-              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
+              className="absolute bottom-20 right-0 md:-right-20 w-72 md:w-96 h-72 md:h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
             />
             <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
             />
           </>
         )}
@@ -110,7 +110,7 @@ const HeroSection = memo(function HeroSection() {
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left Content */}
             <div className="space-y-8">
               {/* Tech Badge */}
