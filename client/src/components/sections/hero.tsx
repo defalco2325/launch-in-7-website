@@ -95,9 +95,9 @@ const HeroSection = memo(function HeroSection() {
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-6 lg:space-y-8">
               {/* Tech Badge */}
               <div className="inline-flex items-center space-x-2 animate-fade-in-left">
                 <div className="relative">
@@ -129,27 +129,27 @@ const HeroSection = memo(function HeroSection() {
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
                 
-                <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
                   Cutting-edge, conversion-focused websites that launch your business into the future. 
                   <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
                 </p>
               </div>
               
               {/* Stats Row */}
-              <div className="flex items-center space-x-8 animate-fade-in-up-delay-2">
+              <div className="flex items-center space-x-4 sm:space-x-8 animate-fade-in-up-delay-2">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">50+</div>
-                  <div className="text-sm text-gray-400">Sites Launched</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">50+</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Sites Launched</div>
                 </div>
-                <div className="w-px h-12 bg-gray-700"></div>
+                <div className="w-px h-8 sm:h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">7</div>
-                  <div className="text-sm text-gray-400">Day Process</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">7</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Day Process</div>
                 </div>
-                <div className="w-px h-12 bg-gray-700"></div>
+                <div className="w-px h-8 sm:h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">100%</div>
-                  <div className="text-sm text-gray-400">On-Time Rate</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">100%</div>
+                  <div className="text-xs sm:text-sm text-gray-400">On-Time Rate</div>
                 </div>
               </div>
 
