@@ -405,18 +405,27 @@ body, p, div, span {
   }
 
   .glow-effect {
-    /* Pulsing glow animation */
-    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
-    animation: pulse-glow 2s ease-in-out infinite;
+    /* Extremely visible pulsing glow - impossible to miss */
+    box-shadow: 0 0 20px #0EA5E9;
+    animation: pulse-glow 0.8s ease-in-out infinite !important;
   }
 
   @keyframes pulse-glow {
     0%, 100% { 
-      box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 20px #0EA5E9;
+      opacity: 1;
     }
     50% { 
-      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4), 0 0 24px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 60px #0EA5E9, 0 0 100px rgba(14, 165, 233, 0.7);
+      opacity: 0.95;
     }
+  }
+
+  /* Force glow effect on specific elements that should definitely pulse */
+  .cutting-edge-gradient,
+  .glass-card {
+    animation: pulse-glow 0.8s ease-in-out infinite !important;
+    box-shadow: 0 0 20px #0EA5E9 !important;
   }
 
 
