@@ -55,10 +55,8 @@ export default function AuditForm() {
           description: "We'll review your site and send insights within 24 hours.",
         });
         form.reset();
-        // Redirect to thanks page after a short delay
-        setTimeout(() => {
-          window.location.href = "/thanks";
-        }, 2000);
+        // Don't auto-redirect - let the user see the success message
+        // They can manually navigate if needed
       } else {
         throw new Error('Form submission failed');
       }
@@ -95,6 +93,7 @@ export default function AuditForm() {
       onSubmit={form.handleSubmit(onSubmit)} 
       className="space-y-6"
       data-netlify="true"
+      data-react-form="true"
       name="launchin7-audit"
       method="POST"
       action="/thanks"

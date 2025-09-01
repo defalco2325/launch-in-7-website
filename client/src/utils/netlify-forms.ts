@@ -8,13 +8,18 @@ export function encode(data: Record<string, string>) {
 }
 
 // Global form submission handler for progressive enhancement
+// This is disabled because React components handle submissions directly
 export function setupNetlifyForms() {
+  // Only add fallback handling for forms without React handling
   document.addEventListener("submit", async (e) => {
     const form = e.target as HTMLFormElement;
     const formName = form.getAttribute("name");
     
-    // Only handle our Netlify forms
+    // Only handle our Netlify forms that don't have React handlers
     if (!formName?.startsWith("launchin7-")) return;
+    
+    // Check if this form has a React onSubmit handler (skip if it does)
+    if (form.hasAttribute("data-react-form")) return;
     
     // Check if the form has data-netlify attribute
     if (!form.hasAttribute("data-netlify")) return;
