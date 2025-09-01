@@ -5,34 +5,26 @@ interface SEOData {
   description?: string;
   url?: string;
   image?: string;
-  type?: string;
 }
 
 export function updateSEO({
   title = "Launch in 7 - Your New Website, Live in 7 Days",
   description = "Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.",
   url = typeof window !== "undefined" ? window.location.href : "",
-  image = "",
-  type = "website"
+  image = "/og-image.jpg"
 }: SEOData) {
   if (typeof window === "undefined") return;
 
-  // Get the absolute URL for the image
-  const getAbsoluteImageUrl = () => {
-    if (image && image.startsWith("http")) {
-      return image;
-    }
-    // Get the base URL from window.location or use the production URL
+  // Get absolute URL for the image
+  const getAbsoluteUrl = (path: string) => {
+    if (path.startsWith("http")) return path;
     const baseUrl = typeof window !== "undefined" 
       ? `${window.location.protocol}//${window.location.host}`
       : "https://launchin7.netlify.app";
-    
-    // Use the correct og-image.png file
-    const imagePath = image || "/og-image.png";
-    return `${baseUrl}${imagePath}`;
+    return `${baseUrl}${path}`;
   };
 
-  const absoluteImageUrl = getAbsoluteImageUrl();
+  const absoluteImageUrl = getAbsoluteUrl(image);
 
   // Update title
   document.title = title;
@@ -61,23 +53,21 @@ export function updateSEO({
   // Standard meta tags
   updateNameMetaTag("description", description);
 
-  // OpenGraph tags
+  // Open Graph tags for social sharing (iMessage, Facebook, etc.)
   updateMetaTag("og:title", title);
   updateMetaTag("og:description", description);
   updateMetaTag("og:url", url);
   updateMetaTag("og:image", absoluteImageUrl);
-  updateMetaTag("og:image:width", "1024");
-  updateMetaTag("og:image:height", "1024");
-  updateMetaTag("og:image:type", "image/png");
-  updateMetaTag("og:type", type);
+  updateMetaTag("og:image:width", "1200");
+  updateMetaTag("og:image:height", "630");
+  updateMetaTag("og:type", "website");
   updateMetaTag("og:site_name", "Launch in 7");
 
-  // Twitter tags
+  // Twitter Card tags
   updateNameMetaTag("twitter:card", "summary_large_image");
   updateNameMetaTag("twitter:title", title);
   updateNameMetaTag("twitter:description", description);
   updateNameMetaTag("twitter:image", absoluteImageUrl);
-  updateNameMetaTag("twitter:image:alt", "Launch in 7 - Professional Website Development");
 }
 
 export function SEOProvider({ children }: { children: React.ReactNode }) {
