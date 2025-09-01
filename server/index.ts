@@ -50,6 +50,35 @@ app.use((req, res, next) => {
 
   // Add explicit static file routes for development
   if (app.get("env") === "development") {
+    // Serve favicon files with correct MIME types
+    app.get('/favicon.svg', (req, res) => {
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.sendFile(path.resolve(process.cwd(), 'public/favicon.svg'));
+    });
+    
+    app.get('/favicon.ico', (req, res) => {
+      res.setHeader('Content-Type', 'image/x-icon');
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.sendFile(path.resolve(process.cwd(), 'public/favicon.svg'));
+    });
+    
+    app.get('/apple-touch-icon.svg', (req, res) => {
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.sendFile(path.resolve(process.cwd(), 'public/apple-touch-icon.svg'));
+    });
+    
+    // Serve icon files from icons directory
+    app.get('/icons/:filename', (req, res) => {
+      const filename = req.params.filename;
+      if (filename.endsWith('.png')) {
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+        res.sendFile(path.resolve(process.cwd(), `public/icons/${filename}`));
+      }
+    });
+    
     // Serve specific SEO files before catch-all
     app.get('/robots.txt', (req, res) => {
       res.setHeader('Content-Type', 'text/plain');
