@@ -426,6 +426,20 @@ body, p, div, span {
       background: linear-gradient(90deg, #3B82F6 0%, #06B6D4 50%, #10B981 100%);
       transform: translateZ(0);
     }
+    
+    /* Brighter and faster pulsing on mobile */
+    .glow-effect {
+      animation: pulse-glow-shadow-mobile 2s ease-in-out infinite !important;
+    }
+    
+    @keyframes pulse-glow-shadow-mobile {
+      0%, 100% { 
+        box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+      }
+      50% { 
+        box-shadow: 0 0 25px rgba(14, 165, 233, 0.6), 0 0 35px rgba(14, 165, 233, 0.3);
+      }
+    }
   }
   
   /* Reduced motion preference - but keep glow pulse */
