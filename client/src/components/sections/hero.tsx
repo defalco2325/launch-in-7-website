@@ -123,7 +123,7 @@ const HeroSection = memo(function HeroSection() {
               </div>
 
               {/* Guarantee Badge */}
-              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 glow-effect animate-fade-in-up">
+              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 animate-fade-in-up">
                 <div className="relative">
                   <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
                 </div>
@@ -166,7 +166,7 @@ const HeroSection = memo(function HeroSection() {
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up-delay-3">
                 <Button 
                   onClick={handleStartBuild}
-                  className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect group focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
+                  className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
                   data-testid="button-hero-start-build"
                   style={{ minHeight: '44px', fontSize: '18px' }}
                   aria-label="Start your 7-day website build process"

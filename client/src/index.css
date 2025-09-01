@@ -406,20 +406,15 @@ body, p, div, span {
 
   /* Pulsing glow behind cards - shadow only */
   .glow-effect {
-    animation: pulse-glow-shadow 3s ease-in-out infinite !important;
-  }
-
-  .cutting-edge-gradient,
-  .glass-card {
-    animation: pulse-glow-shadow 3s ease-in-out infinite !important;
+    animation: pulse-glow-shadow 4s ease-in-out infinite !important;
   }
 
   @keyframes pulse-glow-shadow {
     0%, 100% { 
-      box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+      box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
     }
     50% { 
-      box-shadow: 0 0 35px rgba(14, 165, 233, 0.7), 0 0 50px rgba(14, 165, 233, 0.4);
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.2), 0 0 25px rgba(14, 165, 233, 0.15);
     }
   }
 
@@ -442,10 +437,8 @@ body, p, div, span {
       transition: none !important;
     }
     /* Keep glow pulse even with reduced motion */
-    .glow-effect,
-    .cutting-edge-gradient,
-    .glass-card {
-      animation: pulse-glow 2s ease-in-out infinite !important;
+    .glow-effect {
+      animation: pulse-glow 4s ease-in-out infinite !important;
     }
   }
 
