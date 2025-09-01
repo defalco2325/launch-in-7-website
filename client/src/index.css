@@ -405,8 +405,18 @@ body, p, div, span {
   }
 
   .glow-effect {
-    /* Simplified single-layer glow to reduce GPU processing */
+    /* Pulsing glow animation */
     box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { 
+      box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+    }
+    50% { 
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4), 0 0 24px rgba(56, 189, 248, 0.2);
+    }
   }
 
 
