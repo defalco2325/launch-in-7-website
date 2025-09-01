@@ -6,7 +6,6 @@ import { Suspense, lazy } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
@@ -45,7 +44,6 @@ function App() {
               <Router />
             </main>
             <Footer />
-            <MobileCTA />
           </div>
         </SEOProvider>
       </TooltipProvider>
