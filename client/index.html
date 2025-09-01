@@ -29,6 +29,10 @@
     
     <!-- Critical CSS for hero section - inline for LCP -->
     <style>
+      /* Optimize critical CSS rendering */
+      @media (max-width: 768px) {
+        .hero-critical { min-height: 70vh; }
+      }
       /* Critical above-the-fold styles with layout shift prevention */
       .hero-critical {
         min-height: 100vh;
@@ -136,6 +140,8 @@
   </head>
   <body>
     <div id="root" role="main"></div>
+    <!-- Preload critical JavaScript -->
+    <link rel="modulepreload" href="/src/main.tsx">
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Clock, Search, Target } from "lucide-react";
 import MetricBadge from "@/components/ui/metric-badge";
 

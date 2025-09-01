@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
-import { MotionDiv } from "@/components/ui/motion-wrapper";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -74,10 +73,8 @@ export default function AuditForm() {
 
   if (isSuccess) {
     return (
-      <MotionDiv
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-8"
+      <div
+        className="text-center py-8 animate-fade-in-up"
       >
         <div className="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
           <Check className="w-8 h-8 text-white" />
@@ -88,7 +85,7 @@ export default function AuditForm() {
         <p className="text-gray-600">
           We'll review your site and send insights within 24 hours.
         </p>
-      </MotionDiv>
+      </div>
     );
   }
 

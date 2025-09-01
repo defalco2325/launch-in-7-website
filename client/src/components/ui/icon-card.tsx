@@ -1,4 +1,3 @@
-import { MotionDiv } from "@/components/ui/motion-wrapper";
 import { LucideIcon } from "lucide-react";
 
 interface IconCardProps {
@@ -15,12 +14,9 @@ export default function IconCard({
   delay = 0 
 }: IconCardProps) {
   return (
-    <MotionDiv
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      className="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg group relative overflow-hidden"
+    <div
+      className="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg group relative overflow-hidden animate-fade-in-up"
+      style={{ animationDelay: `${delay}s` }}
     >
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-electric-blue/5 to-neon-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
@@ -36,6 +32,6 @@ export default function IconCard({
           {description}
         </p>
       </div>
-    </MotionDiv>
+    </div>
   );
 }

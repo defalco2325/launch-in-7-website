@@ -61,6 +61,19 @@ app.use((req, res, next) => {
       res.sendFile(path.resolve(process.cwd(), 'public/sitemap.xml'));
     });
     
+    // Serve service worker with correct MIME type
+    app.get('/service-worker.js', (req, res) => {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.sendFile(path.resolve(process.cwd(), 'public/service-worker.js'));
+    });
+    
+    // Serve manifest.json with correct MIME type
+    app.get('/manifest.json', (req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.sendFile(path.resolve(process.cwd(), 'public/manifest.json'));
+    });
+    
     await setupVite(app, server);
   } else {
     serveStatic(app);
