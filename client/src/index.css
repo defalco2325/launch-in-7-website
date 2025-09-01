@@ -115,10 +115,7 @@ img[loading="lazy"] {
 }
 
 .animate-progress-continuous {
-  /* Pause heavy continuous animations to reduce main-thread work */
-  animation: none;
-  width: 100%;
-  background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
+  animation: progress-continuous 17.5s linear infinite;
 }
 
 @keyframes progress-flow {
@@ -148,15 +145,27 @@ h1, h2, h3 {
   text-size-adjust: 100%;
 }
 
-/* Micro-interactions optimization */
+/* Pulsing glow animations */
 .pulse-ring {
-  animation: pulse-glow 4s infinite;
+  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 1; }
+  0% { 
+    transform: scale(1); 
+    opacity: 1; 
+    filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.3));
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.8; 
+    filter: drop-shadow(0 0 40px rgba(14, 165, 233, 0.6));
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 1; 
+    filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.3));
+  }
 }
 
 /* Force consistent line heights to prevent CLS */

@@ -132,7 +132,7 @@ const HeroSection = memo(function HeroSection() {
               <div className="space-y-6 animate-fade-in-up-delay">
                 <h1 className="hero-title font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
                   <span className="block text-white">Your Website,</span>
-                  <span className="block gradient-text">Live in 7 Days</span>
+                  <span className="block gradient-text pulse-ring">Live in 7 Days</span>
                 </h1>
                 
                 <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
@@ -189,8 +189,8 @@ const HeroSection = memo(function HeroSection() {
             <div className="relative animate-fade-in-right">
               {/* Main Visual Container */}
               <div className="relative">
-                {/* Background Glow - Simplified for performance */}
-                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/10 via-neon-cyan/10 to-accent-purple/10 rounded-3xl"></div>
+                {/* Background Glow with Pulse Animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-3xl pulse-ring"></div>
                 
                 {/* Glass Container */}
                 <div className="relative glass-card rounded-3xl p-8 space-y-6">
@@ -236,10 +236,10 @@ const HeroSection = memo(function HeroSection() {
                     {/* Continuous Progress Bar - Optimized for Performance */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full"
+                        className="cutting-edge-gradient h-3 rounded-full animate-progress-continuous"
                         style={{
-                          width: `${(currentDay / 7) * 100}%`,
-                          transition: "width 0.5s ease-out"
+                          transform: "translateZ(0)",
+                          backfaceVisibility: "hidden"
                         }}
                       ></div>
                     </div>
