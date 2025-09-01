@@ -112,20 +112,26 @@ const HeroSection = memo(function HeroSection() {
             <div className="space-y-8">
               {/* Tech Badge */}
               <div className="inline-flex items-center space-x-2 animate-fade-in-left">
-                <div className="flex items-center space-x-2 glass-card rounded-full px-4 py-2">
-                  <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
-                  <span className="text-sm text-gray-300">Live Development</span>
-                  <Code2 className="w-4 h-4 text-neon-cyan" />
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-full pulse-ring"></div>
+                  <div className="relative flex items-center space-x-2 glass-card rounded-full px-4 py-2">
+                    <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
+                    <span className="text-sm text-gray-300">Live Development</span>
+                    <Code2 className="w-4 h-4 text-neon-cyan" />
+                  </div>
                 </div>
               </div>
 
               {/* Guarantee Badge */}
-              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 animate-fade-in-up">
-                <div className="relative">
-                  <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
+              <div className="relative animate-fade-in-up">
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-full pulse-ring"></div>
+                <div className="relative inline-flex items-center glass-card rounded-full px-6 py-3">
+                  <div className="relative">
+                    <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
+                  </div>
+                  <span className="font-semibold text-success-green">7-Day Guarantee</span>
+                  <span className="text-gray-300 ml-2">— or it's Free</span>
                 </div>
-                <span className="font-semibold text-success-green">7-Day Guarantee</span>
-                <span className="text-gray-300 ml-2">— or it's Free</span>
               </div>
               
               {/* Main Headline */}
