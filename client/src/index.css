@@ -440,11 +440,17 @@ body, p, div, span {
     }
   }
   
-  /* Reduced motion preference */
+  /* Reduced motion preference - but keep glow pulse */
   @media (prefers-reduced-motion: reduce) {
-    * {
+    *:not(.glow-effect):not(.cutting-edge-gradient):not(.glass-card) {
       animation: none !important;
       transition: none !important;
+    }
+    /* Keep glow pulse even with reduced motion */
+    .glow-effect,
+    .cutting-edge-gradient,
+    .glass-card {
+      animation: pulse-glow 0.8s ease-in-out infinite !important;
     }
   }
 
