@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Mail, Phone, MessageSquare } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -24,10 +24,6 @@ export default function Footer() {
                 <p className="text-gray-300 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
                   (555) 123-7777
-                </p>
-                <p className="text-gray-300 flex items-center">
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Text us anytime
                 </p>
               </div>
             </div>
