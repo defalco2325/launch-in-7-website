@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<AuditFormData>({
     resolver: zodResolver(auditFormSchema),
@@ -50,10 +48,6 @@ export default function AuditForm() {
 
       if (response.ok) {
         setIsSuccess(true);
-        toast({
-          title: "Audit Request Submitted!",
-          description: "We'll review your site and send insights within 24 hours.",
-        });
         form.reset();
         // Don't auto-redirect - let the user see the success message
         // They can manually navigate if needed
@@ -62,11 +56,7 @@ export default function AuditForm() {
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      toast({
-        title: "Submission Failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      // Form error will be shown in the UI state
     }
   };
 

@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
 
 export default function ContactForm() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -49,10 +47,6 @@ export default function ContactForm() {
 
       if (response.ok) {
         setIsSuccess(true);
-        toast({
-          title: "Message Sent Successfully!",
-          description: "We'll get back to you within 24 hours.",
-        });
         form.reset();
         // Don't auto-redirect - let the user see the success message
         // They can manually navigate if needed
@@ -61,11 +55,7 @@ export default function ContactForm() {
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      toast({
-        title: "Submission Failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      // Form error will be shown in the UI state
     }
   };
 
