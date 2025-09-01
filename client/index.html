@@ -4,18 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Favicon - Multiple formats for browser compatibility -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    
     <!-- Content Security Policy for PWA -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; manifest-src 'self';">
     
-    
     <!-- PWA Configuration -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0B1A2D">
+    <meta name="theme-color" content="#3B82F6">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="LaunchIn7">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-title" content="Launch in 7">
+    <link rel="apple-touch-icon" href="/favicon.png">
     
     <!-- Preload critical fonts for hero section (LCP optimization) -->
     <link rel="preload" href="/assets/poppins-latin-700-normal-Qrb0O0WB.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -101,10 +105,21 @@
     <meta name="description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development for your business.">
     <meta name="keywords" content="website development, web design, 7 day delivery, mobile optimization, professional websites">
     
-    <!-- Open Graph tags -->
-    <meta property="og:title" content="Launch in 7 - Professional Website Development">
-    <meta property="og:description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development.">
+    <!-- Open Graph tags for social sharing (iMessage, Facebook, etc.) -->
+    <meta property="og:title" content="Launch in 7 - Your Website, Live in 7 Days">
+    <meta property="og:description" content="Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.">
+    <meta property="og:url" content="https://launchin7.netlify.app">
+    <meta property="og:image" content="https://launchin7.netlify.app/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Launch in 7">
+    
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Launch in 7 - Your Website, Live in 7 Days">
+    <meta name="twitter:description" content="Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.">
+    <meta name="twitter:image" content="https://launchin7.netlify.app/og-image.jpg">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://your-domain.netlify.app/">
