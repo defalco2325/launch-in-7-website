@@ -4,9 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Content Security Policy for PWA -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; manifest-src 'self';">
+    
+    
     <!-- PWA Configuration -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0B1A2D">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LaunchIn7">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
     
     <!-- Preload critical fonts for hero section (LCP optimization) -->
     <link rel="preload" href="/assets/poppins-latin-700-normal-Qrb0O0WB.woff2" as="font" type="font/woff2" crossorigin="anonymous">

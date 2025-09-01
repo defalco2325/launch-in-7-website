@@ -1,11 +1,14 @@
 {
-  "name": "LaunchIn7",
-  "short_name": "Launch7",
+  "name": "LaunchIn7 - Professional Website Development",
+  "short_name": "LaunchIn7",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0B1A2D",
   "theme_color": "#0B1A2D",
-  "description": "LaunchIn7 helps businesses get premium websites launched in 7 days.",
+  "description": "LaunchIn7 helps businesses get premium websites launched in 7 days with guaranteed delivery.",
+  "lang": "en-US",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
@@ -14,12 +17,12 @@
       "purpose": "maskable any"
     },
     {
-      "src": "/icons/icon-512x512.png", 
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
     }
   ],
   "categories": ["business", "productivity"],
-  "orientation": "portrait-primary"
+  "orientation": "any"
 }

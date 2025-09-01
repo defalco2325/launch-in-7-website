@@ -1,0 +1,109 @@
+You are a senior web dev. Update my LaunchIn7 site so form submissions go to Netlify Forms.
+
+Requirements:
+- Use Netlify’s static form parsing (no external API).
+- Works for a React/Vite SPA or plain HTML.
+- Includes spam honeypot and optional reCAPTCHA.
+- Has both progressive enhancement (normal POST) and fetch/AJAX option.
+- Adds a hidden form so Netlify can detect the form at build time (for SPAs).
+
+1) Create/modify public/index.html (or root index.html) and add a visible form:
+
+<form
+  name="launchin7-contact"
+  method="POST"
+  action="/thanks"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+>
+  <!-- required hidden input so Netlify knows the form name -->
+  <input type="hidden" name="form-name" value="launchin7-contact" />
+  <!-- honeypot (hidden from users) -->
+  <p class="hidden">
+    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+  </p>
+
+  <label>Name <input type="text" name="name" required /></label>
+  <label>Email <input type="email" name="email" required /></label>
+  <label>Company <input type="text" name="company" /></label>
+  <label>Message <textarea name="message" required></textarea></label>
+
+  <!-- Optional: Netlify reCAPTCHA v2 -->
+  <!-- <div data-netlify-recaptcha="true"></div> -->
+
+  <button type="submit">Send</button>
+</form>
+
+2) For React/Vite SPA detection, ALSO add a HIDDEN copy of the form in index.html
+   (outside the app root). Keep the same `name` and fields but hide it completely:
+
+<form name="launchin7-contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="launchin7-contact" />
+  <input name="name" />
+  <input name="email" />
+  <input name="company" />
+  <textarea name="message"></textarea>
+</form>
+
+3) Create a /thanks page:
+- Add public/thanks.html with a simple confirmation message:
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Thanks</title></head>
+<body><h1>Thanks — we got your message!</h1><p>We’ll reply within 1 business day.</p></body></html>
+
+4) (Optional) Add AJAX submit for nicer UX in src/main.js (or wherever the form renders):
+- Intercept submit, build FormData, POST to "/" with Content-Type 
+  "application/x-www-form-urlencoded", then show success or error without leaving the page.
+
+Example helper:
+function encode(data) {
+  return Object.keys(data)
+    .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+    .join("&");
+}
+
+document.addEventListener("submit", async (e) => {
+  const form = e.target;
+  if (form.getAttribute("name") !== "launchin7-contact") return;
+  e.preventDefault();
+  const data = {
+    "form-name": form.getAttribute("name"),
+    name: form.querySelector('[name="name"]').value,
+    email: form.querySelector('[name="email"]').value,
+    company: form.querySelector('[name="company"]').value,
+    message: form.querySelector('[name="message"]').value,
+  };
+  try {
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode(data),
+    });
+    // TODO: show a success toast/modal or window.location = "/thanks"
+    alert("Thanks! We received your message.");
+    form.reset();
+  } catch (err) {
+    alert("Submission failed. Please try again.");
+    console.error(err);
+  }
+});
+
+5) Add netlify.toml at project root (for SPA redirects + clean thanks page):
+[build]
+  publish = "dist" # change if your build output differs
+
+[[redirects]]
+  from = "/thanks"
+  to = "/thanks.html"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+6) If you allow file uploads, update the form:
+<form ... enctype="multipart/form-data">
+  <input type="file" name="attachment" />
+</form>
