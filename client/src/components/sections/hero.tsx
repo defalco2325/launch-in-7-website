@@ -82,8 +82,8 @@ const HeroSection = memo(function HeroSection() {
   return (
     <section 
       ref={heroRef}
-      className="hero-section relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden pt-20"
-      style={{ minHeight: '100vh' }}
+      className="hero-section relative h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-hidden"
+      style={{ height: '100vh' }}
       role="banner"
       aria-label="Hero section"
     >
@@ -108,9 +108,9 @@ const HeroSection = memo(function HeroSection() {
         )}
       </div>
       
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center min-h-screen">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
+        <div className="max-w-6xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
             <div className="space-y-8">
               {/* Tech Badge */}
