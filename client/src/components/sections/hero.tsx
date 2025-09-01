@@ -87,22 +87,10 @@ const HeroSection = memo(function HeroSection() {
       role="banner"
       aria-label="Hero section"
     >
-      {/* Advanced Background Effects */}
+      {/* Background Effects */}
       <div className="absolute inset-0">
-        {/* Simplified background for performance */}
+        {/* Tech grid background only */}
         <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
-        
-        {/* Simplified background effects - reduced for performance */}
-        {isVisible && (
-          <>
-            <div 
-              className="absolute top-20 -left-20 w-40 h-40 bg-gradient-to-r from-electric-blue/5 to-neon-cyan/5 rounded-full"
-            />
-            <div 
-              className="absolute bottom-20 -right-20 w-48 h-48 bg-gradient-to-r from-accent-purple/5 to-electric-blue/5 rounded-full"
-            />
-          </>
-        )}
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
