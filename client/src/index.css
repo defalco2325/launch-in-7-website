@@ -135,9 +135,11 @@ img[loading="lazy"] {
 /* Text rendering optimization - reduce blocking */
 h1, h2, h3 {
   text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
   font-synthesis: none;
   -webkit-text-size-adjust: 100%;
+  /* Prevent layout calculations */
+  contain: layout style;
 }
 
 /* Critical above-the-fold text optimization */
@@ -173,15 +175,15 @@ body, p, div, span {
 }
 
 /* CSS Animations for Hero Section */
-/* Simplified animations to reduce main-thread work */
+/* Removed float animations for performance */
 @keyframes float-slow {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(0px); }
 }
 
 @keyframes float-medium {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(0px); }
 }
 
 /* Pause spin animation to reduce continuous processing */
@@ -202,11 +204,13 @@ body, p, div, span {
 
 /* Reduce animation frequency to lower CPU usage */
 .animate-float-slow {
-  animation: float-slow 12s ease-in-out infinite;
+  /* Disabled for performance */
+  animation: none;
 }
 
 .animate-float-medium {
-  animation: float-medium 15s ease-in-out 3s infinite;
+  /* Disabled for performance */
+  animation: none;
 }
 
 .animate-spin-slow {
@@ -373,7 +377,8 @@ body, p, div, span {
 
 @layer components {
   .gradient-text {
-    background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan), var(--accent-purple));
+    /* Simplified gradient text for performance */
+    background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -384,7 +389,8 @@ body, p, div, span {
   }
 
   .cutting-edge-gradient {
-    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--accent-purple) 50%, var(--neon-cyan) 100%);
+    /* Simplified gradient for better performance */
+    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--neon-cyan) 100%);
   }
 
   .glass-card {
@@ -398,23 +404,22 @@ body, p, div, span {
   /* Only keeping actively used components */
 
   .tech-grid-bg {
-    background-image: 
-      linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    /* Simplified grid for performance */
+    background: rgba(56, 189, 248, 0.02);
   }
 
-  /* Pulsing glow behind cards - shadow only */
+  /* Simplified glow - no animation for performance */
   .glow-effect {
-    animation: pulse-glow-shadow 4s ease-in-out infinite !important;
+    box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
   }
 
+  /* Removed expensive shadow animation */
   @keyframes pulse-glow-shadow {
     0%, 100% { 
-      box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
+      box-shadow: 0 0 4px rgba(14, 165, 233, 0.1);
     }
     50% { 
-      box-shadow: 0 0 15px rgba(14, 165, 233, 0.2), 0 0 25px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 0 6px rgba(14, 165, 233, 0.15);
     }
   }
 

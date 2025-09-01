@@ -89,20 +89,17 @@ const HeroSection = memo(function HeroSection() {
     >
       {/* Advanced Background Effects */}
       <div className="absolute inset-0">
-        {/* Tech Grid Background */}
-        <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
+        {/* Simplified background for performance */}
+        <div className="absolute inset-0 tech-grid-bg opacity-20"></div>
         
-        {/* Animated Gradient Orbs with CSS animations */}
+        {/* Simplified background effects - reduced for performance */}
         {isVisible && (
           <>
             <div 
-              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
+              className="absolute top-20 -left-20 w-40 h-40 bg-gradient-to-r from-electric-blue/5 to-neon-cyan/5 rounded-full"
             />
             <div 
-              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
-            />
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
+              className="absolute bottom-20 -right-20 w-48 h-48 bg-gradient-to-r from-accent-purple/5 to-electric-blue/5 rounded-full"
             />
           </>
         )}
@@ -192,8 +189,8 @@ const HeroSection = memo(function HeroSection() {
             <div className="relative animate-fade-in-right">
               {/* Main Visual Container */}
               <div className="relative">
-                {/* Background Glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-3xl blur-2xl scale-110"></div>
+                {/* Background Glow - Simplified for performance */}
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/10 via-neon-cyan/10 to-accent-purple/10 rounded-3xl"></div>
                 
                 {/* Glass Container */}
                 <div className="relative glass-card rounded-3xl p-8 space-y-6">
@@ -239,10 +236,10 @@ const HeroSection = memo(function HeroSection() {
                     {/* Continuous Progress Bar - Optimized for Performance */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full will-change-transform animate-progress-continuous"
+                        className="cutting-edge-gradient h-3 rounded-full"
                         style={{
-                          transform: "translateZ(0)",
-                          backfaceVisibility: "hidden"
+                          width: `${(currentDay / 7) * 100}%`,
+                          transition: "width 0.5s ease-out"
                         }}
                       ></div>
                     </div>
