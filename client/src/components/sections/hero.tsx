@@ -126,6 +126,7 @@ const HeroSection = memo(function HeroSection() {
               <div className="inline-flex items-center glass-card rounded-full px-6 py-3 glow-effect animate-fade-in-up">
                 <div className="relative">
                   <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
+                  <div className="absolute inset-0 w-5 h-5 mr-3 pulse-ring bg-success-green/20 rounded-full"></div>
                 </div>
                 <span className="font-semibold text-success-green">7-Day Guarantee</span>
                 <span className="text-gray-300 ml-2">— or it's Free</span>
