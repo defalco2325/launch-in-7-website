@@ -36,8 +36,7 @@ export default defineConfig({
           'react': ['react', 'react-dom'],
           'vendor': ['wouter', '@tanstack/react-query'],
           'ui': ['@radix-ui/react-dialog', '@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-slot', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'motion': ['framer-motion']
+          'forms': ['react-hook-form', '@hookform/resolvers', 'zod']
         },
         // Optimize asset naming
         entryFileNames: '[name]-[hash].js',
