@@ -189,14 +189,14 @@ const HeroSection = memo(function HeroSection() {
             </div>
 
             {/* Right Visual */}
-            <div className="relative animate-fade-in-right">
+            <div className="relative animate-fade-in-right overflow-hidden">
               {/* Main Visual Container */}
               <div className="relative">
                 {/* Background Glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-3xl blur-2xl scale-110"></div>
                 
                 {/* Glass Container */}
-                <div className="relative glass-card rounded-3xl p-8 space-y-6">
+                <div className="relative glass-card rounded-3xl p-4 md:p-8 space-y-6">
                   {/* Top Bar */}
                   <div className="flex items-center justify-between">
                     <div className="flex space-x-2">
@@ -236,13 +236,14 @@ const HeroSection = memo(function HeroSection() {
                       </span>
                     </div>
                     
-                    {/* Continuous Progress Bar - Optimized for Performance */}
+                    {/* Continuous Progress Bar - Mobile optimized */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full will-change-transform animate-progress-continuous"
+                        className="cutting-edge-gradient h-3 rounded-full animate-progress-continuous"
                         style={{
                           transform: "translateZ(0)",
-                          backfaceVisibility: "hidden"
+                          backfaceVisibility: "hidden",
+                          maxWidth: "100%"
                         }}
                       ></div>
                     </div>

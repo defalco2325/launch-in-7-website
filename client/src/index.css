@@ -115,9 +115,7 @@ img[loading="lazy"] {
 }
 
 .animate-progress-continuous {
-  /* Pause heavy continuous animations to reduce main-thread work */
-  animation: none;
-  width: 100%;
+  animation: progress-continuous 17.5s linear infinite;
   background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
 }
 
