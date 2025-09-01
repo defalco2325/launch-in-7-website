@@ -404,21 +404,22 @@ body, p, div, span {
     background-size: 40px 40px;
   }
 
-  /* Test animation - very obvious background color change */
-  .glow-effect,
-  .cutting-edge-gradient,
-  .glass-card {
-    animation: pulse-test 1s ease-in-out infinite !important;
+  /* Pulsing glow behind cards - shadow only */
+  .glow-effect {
+    animation: pulse-glow-shadow 1.5s ease-in-out infinite !important;
   }
 
-  @keyframes pulse-test {
+  .cutting-edge-gradient,
+  .glass-card {
+    animation: pulse-glow-shadow 1.5s ease-in-out infinite !important;
+  }
+
+  @keyframes pulse-glow-shadow {
     0%, 100% { 
-      background-color: rgba(14, 165, 233, 0.1) !important;
-      border: 2px solid #0EA5E9 !important;
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
     }
     50% { 
-      background-color: rgba(14, 165, 233, 0.5) !important;
-      border: 2px solid #FF6B35 !important;
+      box-shadow: 0 0 35px rgba(14, 165, 233, 0.7), 0 0 50px rgba(14, 165, 233, 0.4);
     }
   }
 
