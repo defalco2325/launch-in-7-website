@@ -87,38 +87,48 @@ const HeroSection = memo(function HeroSection() {
       role="banner"
       aria-label="Hero section"
     >
-      {/* Clean Background */}
+      {/* Advanced Background Effects */}
       <div className="absolute inset-0">
-        {/* No background effects - clean slate */}
+        {/* Tech Grid Background */}
+        <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
+        
+        {/* Animated Gradient Orbs with CSS animations */}
+        {isVisible && (
+          <>
+            <div 
+              className="absolute top-20 -left-20 w-80 h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
+            />
+            <div 
+              className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
+            />
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
+            />
+          </>
+        )}
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <div className="space-y-6 lg:space-y-8">
+            <div className="space-y-8">
               {/* Tech Badge */}
               <div className="inline-flex items-center space-x-2 animate-fade-in-left">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-full pulse-ring"></div>
-                  <div className="relative flex items-center space-x-2 glass-card rounded-full px-4 py-2">
-                    <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
-                    <span className="text-sm text-gray-300">Live Development</span>
-                    <Code2 className="w-4 h-4 text-neon-cyan" />
-                  </div>
+                <div className="flex items-center space-x-2 glass-card rounded-full px-4 py-2">
+                  <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-300">Live Development</span>
+                  <Code2 className="w-4 h-4 text-neon-cyan" />
                 </div>
               </div>
 
               {/* Guarantee Badge */}
-              <div className="relative animate-fade-in-up">
-                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-full pulse-ring"></div>
-                <div className="relative inline-flex items-center glass-card rounded-full px-6 py-3">
-                  <div className="relative">
-                    <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
-                  </div>
-                  <span className="font-semibold text-success-green">7-Day Guarantee</span>
-                  <span className="text-gray-300 ml-2">— or it's Free</span>
+              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 animate-fade-in-up">
+                <div className="relative">
+                  <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
                 </div>
+                <span className="font-semibold text-success-green">7-Day Guarantee</span>
+                <span className="text-gray-300 ml-2">— or it's Free</span>
               </div>
               
               {/* Main Headline */}
@@ -128,27 +138,27 @@ const HeroSection = memo(function HeroSection() {
                   <span className="block gradient-text">Live in 7 Days</span>
                 </h1>
                 
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
+                <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
                   Cutting-edge, conversion-focused websites that launch your business into the future. 
                   <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
                 </p>
               </div>
               
               {/* Stats Row */}
-              <div className="flex items-center space-x-4 sm:space-x-8 animate-fade-in-up-delay-2">
+              <div className="flex items-center space-x-8 animate-fade-in-up-delay-2">
                 <div className="text-center">
-                  <div className="text-xl sm:text-2xl font-bold text-white">50+</div>
-                  <div className="text-xs sm:text-sm text-gray-400">Sites Launched</div>
+                  <div className="text-2xl font-bold text-white">50+</div>
+                  <div className="text-sm text-gray-400">Sites Launched</div>
                 </div>
-                <div className="w-px h-8 sm:h-12 bg-gray-700"></div>
+                <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-xl sm:text-2xl font-bold text-white">7</div>
-                  <div className="text-xs sm:text-sm text-gray-400">Day Process</div>
+                  <div className="text-2xl font-bold text-white">7</div>
+                  <div className="text-sm text-gray-400">Day Process</div>
                 </div>
-                <div className="w-px h-8 sm:h-12 bg-gray-700"></div>
+                <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-xl sm:text-2xl font-bold text-white">100%</div>
-                  <div className="text-xs sm:text-sm text-gray-400">On-Time Rate</div>
+                  <div className="text-2xl font-bold text-white">100%</div>
+                  <div className="text-sm text-gray-400">On-Time Rate</div>
                 </div>
               </div>
 
@@ -182,8 +192,8 @@ const HeroSection = memo(function HeroSection() {
             <div className="relative animate-fade-in-right">
               {/* Main Visual Container */}
               <div className="relative">
-                {/* Background Glow - Static */}
-                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/10 via-neon-cyan/10 to-accent-purple/10 rounded-3xl"></div>
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-3xl blur-2xl scale-110"></div>
                 
                 {/* Glass Container */}
                 <div className="relative glass-card rounded-3xl p-8 space-y-6">
@@ -229,7 +239,7 @@ const HeroSection = memo(function HeroSection() {
                     {/* Continuous Progress Bar - Optimized for Performance */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full animate-progress-continuous"
+                        className="cutting-edge-gradient h-3 rounded-full will-change-transform animate-progress-continuous"
                         style={{
                           transform: "translateZ(0)",
                           backfaceVisibility: "hidden"

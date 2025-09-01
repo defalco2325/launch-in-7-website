@@ -115,7 +115,10 @@ img[loading="lazy"] {
 }
 
 .animate-progress-continuous {
-  animation: progress-continuous 17.5s linear infinite;
+  /* Pause heavy continuous animations to reduce main-thread work */
+  animation: none;
+  width: 100%;
+  background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
 }
 
 @keyframes progress-flow {
@@ -132,11 +135,9 @@ img[loading="lazy"] {
 /* Text rendering optimization - reduce blocking */
 h1, h2, h3 {
   text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-font-smoothing: antialiased;
   font-synthesis: none;
   -webkit-text-size-adjust: 100%;
-  /* Prevent layout calculations */
-  contain: layout style;
 }
 
 /* Critical above-the-fold text optimization */
@@ -145,27 +146,15 @@ h1, h2, h3 {
   text-size-adjust: 100%;
 }
 
-/* Pulsing glow animations */
+/* Micro-interactions optimization */
 .pulse-ring {
-  animation: pulse-glow 4s ease-in-out infinite;
+  animation: pulse-glow 4s infinite;
 }
 
 @keyframes pulse-glow {
-  0% { 
-    transform: scale(1); 
-    opacity: 1; 
-    filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.3));
-  }
-  50% { 
-    transform: scale(1.05); 
-    opacity: 0.8; 
-    filter: drop-shadow(0 0 40px rgba(14, 165, 233, 0.6));
-  }
-  100% { 
-    transform: scale(1); 
-    opacity: 1; 
-    filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.3));
-  }
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Force consistent line heights to prevent CLS */
@@ -184,15 +173,15 @@ body, p, div, span {
 }
 
 /* CSS Animations for Hero Section */
-/* Removed float animations for performance */
+/* Simplified animations to reduce main-thread work */
 @keyframes float-slow {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes float-medium {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
 }
 
 /* Pause spin animation to reduce continuous processing */
@@ -213,13 +202,11 @@ body, p, div, span {
 
 /* Reduce animation frequency to lower CPU usage */
 .animate-float-slow {
-  /* Disabled for performance */
-  animation: none;
+  animation: float-slow 12s ease-in-out infinite;
 }
 
 .animate-float-medium {
-  /* Disabled for performance */
-  animation: none;
+  animation: float-medium 15s ease-in-out 3s infinite;
 }
 
 .animate-spin-slow {
@@ -386,8 +373,7 @@ body, p, div, span {
 
 @layer components {
   .gradient-text {
-    /* Simplified gradient text for performance */
-    background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan));
+    background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan), var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -398,8 +384,7 @@ body, p, div, span {
   }
 
   .cutting-edge-gradient {
-    /* Simplified gradient for better performance */
-    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--neon-cyan) 100%);
+    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--accent-purple) 50%, var(--neon-cyan) 100%);
   }
 
   .glass-card {
@@ -413,22 +398,23 @@ body, p, div, span {
   /* Only keeping actively used components */
 
   .tech-grid-bg {
-    /* Simplified grid for performance */
-    background: rgba(56, 189, 248, 0.02);
+    background-image: 
+      linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
-  /* Simplified glow - no animation for performance */
+  /* Pulsing glow behind cards - shadow only */
   .glow-effect {
-    box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
+    animation: pulse-glow-shadow 4s ease-in-out infinite !important;
   }
 
-  /* Removed expensive shadow animation */
   @keyframes pulse-glow-shadow {
     0%, 100% { 
-      box-shadow: 0 0 4px rgba(14, 165, 233, 0.1);
+      box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
     }
     50% { 
-      box-shadow: 0 0 6px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.2), 0 0 25px rgba(14, 165, 233, 0.15);
     }
   }
 
