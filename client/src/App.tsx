@@ -20,20 +20,15 @@ import NotFound from "@/pages/not-found";
 function Router() {
   const [location] = useLocation();
   
-  // Debug current route
-  console.log("Current route:", location);
+  // Direct component rendering based on location
+  if (location === "/privacy-policy") return <PrivacyPolicy />;
+  if (location === "/terms-of-service") return <TermsOfService />;
+  if (location === "/cookie-policy") return <CookiePolicy />;
+  if (location === "/about") return <About />;
+  if (location === "/contact") return <Contact />;
+  if (location === "/") return <Home />;
   
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/terms-of-service" component={TermsOfService} />
-      <Route path="/cookie-policy" component={CookiePolicy} />
-      <Route component={NotFound} />
-    </Switch>
-  );
+  return <NotFound />;
 }
 
 function App() {
