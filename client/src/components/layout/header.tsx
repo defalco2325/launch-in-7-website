@@ -25,21 +25,24 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <button 
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+            <Link 
+              href="/"
               className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent hover:from-neon-cyan hover:to-accent-purple transition-all duration-300"
               data-testid="logo-link"
             >
               Launch<span className="text-deep-navy dark:text-white">in</span>7
-            </button>
+            </Link>
           </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/about"
+              onClick={() => {
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }, 0);
+              }}
               className={`text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group ${
                 location === "/about" ? "text-electric-blue" : ""
               }`}
@@ -101,7 +104,12 @@ export default function Header() {
               <Link 
                 href="/about"
                 className="block text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                  }, 0);
+                }}
                 data-testid="mobile-nav-about"
               >
                 About
