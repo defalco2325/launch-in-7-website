@@ -9,8 +9,8 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     
-    <!-- Content Security Policy for PWA - temporarily disabled for debugging -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; manifest-src 'self';"> -->
+    <!-- Content Security Policy for PWA -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://calendly.com; manifest-src 'self';">
     
     <!-- PWA Configuration -->
     <link rel="manifest" href="/manifest.json">
@@ -21,7 +21,7 @@
     <meta name="apple-mobile-web-app-title" content="Launch in 7">
     <link rel="apple-touch-icon" href="/favicon.png">
     
-    <!-- Fonts are handled by @fontsource packages in main.tsx - no preload needed in dev mode -->
+    <!-- Font preloads will be handled automatically by Vite build process -->
     
     <!-- Fonts are now self-hosted via @fontsource - no external network calls -->
     <style>
