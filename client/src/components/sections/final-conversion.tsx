@@ -1,11 +1,7 @@
-import { useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CalendlyPopup from "@/components/ui/calendly-popup";
 
 export default function FinalConversion() {
-  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
-  
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
     if (auditSection) {
@@ -14,12 +10,11 @@ export default function FinalConversion() {
   };
 
   const handleStrategyCall = () => {
-    setIsCalendlyOpen(true);
+    window.open('https://calendly.com/infolaunchin7/30min', '_blank');
   };
 
   return (
-    <>
-      <section className="py-20 bg-deep-navy text-white">
+    <section className="py-20 bg-deep-navy text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Guarantee Badge */}
@@ -76,13 +71,5 @@ export default function FinalConversion() {
         </div>
       </div>
     </section>
-    
-    {/* Calendly Popup */}
-    <CalendlyPopup
-      isOpen={isCalendlyOpen}
-      onClose={() => setIsCalendlyOpen(false)}
-      url="https://calendly.com/infolaunchin7/30min"
-    />
-  </>
   );
 }

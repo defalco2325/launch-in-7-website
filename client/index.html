@@ -9,8 +9,8 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     
-    <!-- Content Security Policy for PWA - Relaxed for Calendly integration -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; frame-src *;">
+    <!-- Content Security Policy for PWA -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://calendly.com; manifest-src 'self';">
     
     <!-- PWA Configuration -->
     <link rel="manifest" href="/manifest.json">
@@ -21,9 +21,7 @@
     <meta name="apple-mobile-web-app-title" content="Launch in 7">
     <link rel="apple-touch-icon" href="/favicon.png">
     
-    <!-- Preload critical fonts for hero section (LCP optimization) -->
-    <link rel="preload" href="/assets/poppins-latin-700-normal-Qrb0O0WB.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="/assets/inter-latin-400-normal-C38fXH4l.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <!-- Font preloads will be handled automatically by Vite build process -->
     
     <!-- Fonts are now self-hosted via @fontsource - no external network calls -->
     <style>
