@@ -23,10 +23,18 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/terms-of-service" component={TermsOfService} />
-      <Route path="/cookie-policy" component={CookiePolicy} />
-      <Route path="*" component={NotFound} />
+      <Route path="/privacy-policy">
+        <PrivacyPolicy />
+      </Route>
+      <Route path="/terms-of-service">
+        <TermsOfService />
+      </Route>
+      <Route path="/cookie-policy">
+        <CookiePolicy />
+      </Route>
+      <Route>
+        <NotFound />
+      </Route>
     </Switch>
   );
 }
