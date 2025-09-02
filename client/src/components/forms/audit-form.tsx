@@ -254,14 +254,7 @@ export default function AuditForm() {
         <Button
           type="button"
           variant="outline"
-          onClick={() => {
-            if (window.Calendly) {
-              window.Calendly.initPopupWidget({ url: 'https://calendly.com/infolaunchin7/30min' });
-            } else {
-              // Fallback to opening in new tab if Calendly script hasn't loaded
-              window.open('https://calendly.com/infolaunchin7/30min', '_blank');
-            }
-          }}
+          onClick={() => window.open('https://calendly.com/infolaunchin7/30min', '_blank')}
           className="bg-white border-2 border-electric-blue text-electric-blue px-8 py-3 rounded-xl font-semibold hover:bg-electric-blue hover:text-white transition-all duration-300"
           data-testid="button-schedule-call"
         >
