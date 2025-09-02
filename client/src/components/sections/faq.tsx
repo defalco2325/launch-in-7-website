@@ -4,24 +4,28 @@ import { addStructuredData } from "@/lib/seo";
 
 const faqs = [
   {
-    question: "What exactly does LaunchIn7 do?",
-    answer: "We specialize in designing and building modern, mobile-friendly websites for small businesses—delivered in just 7 days. Our sites are optimized for performance, SEO, and conversions so your business looks professional and attracts more customers online."
-  },
-  {
-    question: "How is LaunchIn7 different from other web design agencies?",
-    answer: "• Speed: We deliver your new website in 7 days (most agencies take weeks or months). • Focus on ROI: We don't just design pretty websites—we create sites that convert visitors into paying customers. • All-in-one: We handle design, development, copywriting assistance, and launch. You don't need multiple vendors. • Transparent pricing: No hidden fees or hourly surprises—flat, upfront pricing."
-  },
-  {
-    question: "What types of businesses do you work with?",
-    answer: "We work with small to mid-sized businesses across industries like restaurants, salons, gyms, professional services, healthcare, contractors, and more. If you need a professional online presence that drives leads, we're a fit."
-  },
-  {
     question: "How does the 7-day process work?",
-    answer: "1. Day 1: Kickoff call + intake (goals, branding, content, examples). 2. Day 2-4: Design + build (draft homepage, internal pages, mobile layout). 3. Day 5: Revisions + client feedback. 4. Day 6: Final polish (SEO, integrations, speed optimization). 5. Day 7: Launch (site goes live + training on how to update it)."
+    answer: "Our 7-day process is designed for maximum efficiency. Day 1 focuses on strategy and understanding your goals. Days 2-3 involve UX/UI design and getting your approval. Days 4-6 are dedicated to development and integrations. Day 7 is for quality assurance and launch. You'll receive daily updates and have opportunities for feedback throughout."
   },
   {
-    question: "Do I need to provide all the content?",
-    answer: "If you already have text, images, or branding—we'll use them. If not, we can assist with copywriting, stock images, and branding to make sure your site looks polished and professional."
+    question: "What do you need from me to start?",
+    answer: "We need your business goals, target audience information, any existing brand assets (logo, colors, content), and examples of websites you like. We'll also need access to your domain and hosting if you have them, or we can help set those up. The more information you provide upfront, the smoother the process."
+  },
+  {
+    question: "Can you add online booking or e-commerce?",
+    answer: "Absolutely! We specialize in integrating booking systems for service-based businesses and e-commerce functionality for product sales. We work with leading platforms like Stripe for payments, Calendly for bookings, and can build custom solutions based on your specific needs."
+  },
+  {
+    question: "What's included post-launch?",
+    answer: "Post-launch, you receive complete documentation, training videos, and 30 days of free support for any technical issues. We also offer ongoing maintenance plans that include security updates, content updates, performance monitoring, and priority support."
+  },
+  {
+    question: "Why don't you show pricing?",
+    answer: "Every business has unique needs, and we believe in providing accurate quotes based on your specific requirements. Rather than showing generic pricing that might not apply to your situation, we prefer to understand your goals first and provide a detailed, personalized proposal that ensures you get exactly what you need."
+  },
+  {
+    question: "How do revisions work inside the 7 days?",
+    answer: "We include up to 3 rounds of revisions within the 7-day timeline. These are built into our process - one after the initial design presentation, one during development, and one final review before launch. We work closely with you to ensure we get it right the first time, but revisions are there when you need them."
   },
 ];
 

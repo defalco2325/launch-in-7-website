@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import { Phone } from "lucide-react";
 
 export default function Footer() {
@@ -17,13 +17,10 @@ export default function Footer() {
                 Conversion-focused, SEO-ready websites delivered in 7 days. We help businesses launch faster without compromising on quality.
               </p>
               <div className="space-y-2">
-                <a 
-                  href="tel:7025826584" 
-                  className="text-gray-300 hover:text-white transition-colors flex items-center"
-                >
+                <p className="text-gray-300 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
-                  702-582-6584
-                </a>
+                  7025826584
+                </p>
               </div>
             </div>
             
@@ -33,7 +30,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link 
-                    to="/"
+                    href="/"
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-home"
                   >
@@ -42,7 +39,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    to="/about"
+                    href="/about"
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-about"
                   >
@@ -51,18 +48,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    to="/"
-                    onClick={() => {
-                      if (location === '/') {
-                        const footerSection = document.querySelector('footer');
-                        if (footerSection) {
-                          footerSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      } else {
-                        // Store the target section for after navigation
-                        sessionStorage.setItem('scrollTarget', 'footer');
-                      }
-                    }}
+                    href="/contact"
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-contact"
                   >
@@ -70,24 +56,18 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/"
+                  <button 
                     onClick={() => {
-                      if (location === '/') {
-                        const auditSection = document.querySelector('#audit-section');
-                        if (auditSection) {
-                          auditSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      } else {
-                        // Store the target section for after navigation
-                        sessionStorage.setItem('scrollTarget', 'audit-section');
+                      const auditSection = document.querySelector('#audit-section');
+                      if (auditSection) {
+                        auditSection.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="text-gray-300 hover:text-white transition-colors"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-audit"
                   >
                     Free Audit
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -97,24 +77,18 @@ export default function Footer() {
               <h3 className="font-poppins font-semibold text-lg mb-4">Resources</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link 
-                    to="/"
+                  <button 
                     onClick={() => {
-                      if (location === '/') {
-                        const faqSection = document.querySelector('#faq-section');
-                        if (faqSection) {
-                          faqSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      } else {
-                        // Store the target section for after navigation
-                        sessionStorage.setItem('scrollTarget', 'faq-section');
+                      const faqSection = document.querySelector('#faq-section');
+                      if (faqSection) {
+                        faqSection.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="text-gray-300 hover:text-white transition-colors"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-faq"
                   >
                     FAQ
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <span className="text-gray-400 cursor-not-allowed">Blog (Coming Soon)</span>
@@ -135,15 +109,9 @@ export default function Footer() {
               &copy; 2024 Launch in 7. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
-              <Link to="/privacy-policy" className="text-gray-300 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms-of-service" className="text-gray-300 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-              <Link to="/cookie-policy" className="text-gray-300 hover:text-white transition-colors">
-                Cookie Policy
-              </Link>
+              <span className="text-gray-400 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
+              <span className="text-gray-400 cursor-not-allowed">Terms of Service (Coming Soon)</span>
+              <span className="text-gray-400 cursor-not-allowed">Cookie Policy (Coming Soon)</span>
             </div>
           </div>
         </div>

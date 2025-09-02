@@ -46,19 +46,16 @@ export default function Header() {
               About
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-blue to-neon-cyan group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <button 
-              onClick={() => {
-                const footerSection = document.querySelector('footer');
-                if (footerSection) {
-                  footerSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              className="text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group"
+            <Link 
+              href="/contact"
+              className={`text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group ${
+                location === "/contact" ? "text-electric-blue" : ""
+              }`}
               data-testid="nav-contact"
             >
               Contact
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-blue to-neon-cyan group-hover:w-full transition-all duration-300"></div>
-            </button>
+            </Link>
           </nav>
           
           {/* CTA Button */}
@@ -104,19 +101,14 @@ export default function Header() {
               >
                 About
               </Link>
-              <button 
-                onClick={() => {
-                  const footerSection = document.querySelector('footer');
-                  if (footerSection) {
-                    footerSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block text-left text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg"
+              <Link 
+                href="/contact"
+                className="block text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
                 data-testid="mobile-nav-contact"
               >
                 Contact
-              </button>
+              </Link>
               <Button 
                 onClick={() => {
                   handleStartBuild();
