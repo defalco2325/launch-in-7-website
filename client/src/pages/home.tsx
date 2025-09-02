@@ -52,6 +52,32 @@ export default function Home() {
       title: "Launch in 7 - Your Website Live in 7 Days | Premium Web Development",
       description: "Get your professional, conversion-focused website launched in exactly 7 days. Expert developers, guaranteed delivery, or it's free. Transform your business today."
     });
+
+    // Check for scroll target from footer navigation
+    const scrollTarget = sessionStorage.getItem('scrollTarget');
+    if (scrollTarget) {
+      sessionStorage.removeItem('scrollTarget');
+      
+      // Wait for the page to fully load, then scroll
+      setTimeout(() => {
+        if (scrollTarget === 'footer') {
+          const footerSection = document.querySelector('footer');
+          if (footerSection) {
+            footerSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else if (scrollTarget === 'audit-section') {
+          const auditSection = document.querySelector('#audit-section');
+          if (auditSection) {
+            auditSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else if (scrollTarget === 'faq-section') {
+          const faqSection = document.querySelector('#faq-section');
+          if (faqSection) {
+            faqSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }, 500); // Wait a bit longer for lazy-loaded content
+    }
   }, []);
 
   return (

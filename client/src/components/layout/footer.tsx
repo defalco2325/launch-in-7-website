@@ -57,7 +57,8 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <button 
+                  <Link 
+                    href="/"
                     onClick={() => {
                       if (location === '/') {
                         const footerSection = document.querySelector('footer');
@@ -65,23 +66,19 @@ export default function Footer() {
                           footerSection.scrollIntoView({ behavior: 'smooth' });
                         }
                       } else {
-                        window.location.href = '/#contact';
-                        setTimeout(() => {
-                          const footerSection = document.querySelector('footer');
-                          if (footerSection) {
-                            footerSection.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        }, 100);
+                        // Store the target section for after navigation
+                        sessionStorage.setItem('scrollTarget', 'footer');
                       }
                     }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-contact"
                   >
                     Contact
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button 
+                  <Link 
+                    href="/"
                     onClick={() => {
                       if (location === '/') {
                         const auditSection = document.querySelector('#audit-section');
@@ -89,20 +86,15 @@ export default function Footer() {
                           auditSection.scrollIntoView({ behavior: 'smooth' });
                         }
                       } else {
-                        window.location.href = '/#audit';
-                        setTimeout(() => {
-                          const auditSection = document.querySelector('#audit-section');
-                          if (auditSection) {
-                            auditSection.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        }, 100);
+                        // Store the target section for after navigation
+                        sessionStorage.setItem('scrollTarget', 'audit-section');
                       }
                     }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-audit"
                   >
                     Free Audit
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -112,7 +104,8 @@ export default function Footer() {
               <h3 className="font-poppins font-semibold text-lg mb-4">Resources</h3>
               <ul className="space-y-2">
                 <li>
-                  <button 
+                  <Link 
+                    href="/"
                     onClick={() => {
                       if (location === '/') {
                         const faqSection = document.querySelector('#faq-section');
@@ -120,20 +113,15 @@ export default function Footer() {
                           faqSection.scrollIntoView({ behavior: 'smooth' });
                         }
                       } else {
-                        window.location.href = '/#faq';
-                        setTimeout(() => {
-                          const faqSection = document.querySelector('#faq-section');
-                          if (faqSection) {
-                            faqSection.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        }, 100);
+                        // Store the target section for after navigation
+                        sessionStorage.setItem('scrollTarget', 'faq-section');
                       }
                     }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-faq"
                   >
                     FAQ
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <span className="text-gray-400 cursor-not-allowed">Blog (Coming Soon)</span>
