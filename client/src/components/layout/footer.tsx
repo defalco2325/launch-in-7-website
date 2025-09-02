@@ -1,8 +1,7 @@
-import { Link, useLocation } from "wouter";
+import { Link } from "react-router-dom";
 import { Phone } from "lucide-react";
 
 export default function Footer() {
-  const [location] = useLocation();
   return (
     <footer 
       className="bg-deep-navy text-white py-16"
@@ -33,23 +32,17 @@ export default function Footer() {
               <h3 className="font-poppins font-semibold text-lg mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (location === '/') {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      } else {
-                        window.location.href = '/';
-                      }
-                    }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  <Link 
+                    to="/"
+                    className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-home"
                   >
                     Home
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <Link 
-                    href="/about"
+                    to="/about"
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid="footer-link-about"
                   >
@@ -58,7 +51,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/"
+                    to="/"
                     onClick={() => {
                       if (location === '/') {
                         const footerSection = document.querySelector('footer');
@@ -78,7 +71,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/"
+                    to="/"
                     onClick={() => {
                       if (location === '/') {
                         const auditSection = document.querySelector('#audit-section');
@@ -105,7 +98,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link 
-                    href="/"
+                    to="/"
                     onClick={() => {
                       if (location === '/') {
                         const faqSection = document.querySelector('#faq-section');
@@ -142,13 +135,13 @@ export default function Footer() {
               &copy; 2024 Launch in 7. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
-              <Link href="/privacy-policy" className="text-gray-300 hover:text-white transition-colors">
+              <Link to="/privacy-policy" className="text-gray-300 hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms-of-service" className="text-gray-300 hover:text-white transition-colors">
+              <Link to="/terms-of-service" className="text-gray-300 hover:text-white transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/cookie-policy" className="text-gray-300 hover:text-white transition-colors">
+              <Link to="/cookie-policy" className="text-gray-300 hover:text-white transition-colors">
                 Cookie Policy
               </Link>
             </div>

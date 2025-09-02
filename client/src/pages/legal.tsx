@@ -1,33 +1,33 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
-import { useLocation } from "wouter";
+import { useLocation } from "react-router-dom";
 
 export default function Legal() {
-  const [location] = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
     
-    if (location === '/privacy-policy') {
+    if (location.pathname === '/privacy-policy') {
       updateSEO({
         title: "Privacy Policy | Launch in 7",
         description: "Learn how Launch in 7 protects your privacy and handles your personal information."
       });
-    } else if (location === '/terms-of-service') {
+    } else if (location.pathname === '/terms-of-service') {
       updateSEO({
         title: "Terms of Service | Launch in 7", 
         description: "Read the terms and conditions for using Launch in 7's web design and development services."
       });
-    } else if (location === '/cookie-policy') {
+    } else if (location.pathname === '/cookie-policy') {
       updateSEO({
         title: "Cookie Policy | Launch in 7",
         description: "Learn how Launch in 7 uses cookies to improve your website experience."
       });
     }
-  }, [location]);
+  }, [location.pathname]);
 
   const getContent = () => {
-    if (location === '/privacy-policy') {
+    if (location.pathname === '/privacy-policy') {
       return {
         title: "Privacy Policy",
         content: (
@@ -64,7 +64,7 @@ export default function Legal() {
           </div>
         )
       };
-    } else if (location === '/terms-of-service') {
+    } else if (location.pathname === '/terms-of-service') {
       return {
         title: "Terms of Service",
         content: (
@@ -96,7 +96,7 @@ export default function Legal() {
           </div>
         )
       };
-    } else if (location === '/cookie-policy') {
+    } else if (location.pathname === '/cookie-policy') {
       return {
         title: "Cookie Policy",
         content: (
