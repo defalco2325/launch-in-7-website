@@ -94,9 +94,10 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      const aboutSection = document.querySelector('#about-section');
+                      const aboutSection = document.querySelector('#about-section') as HTMLElement;
                       if (aboutSection) {
-                        aboutSection.scrollIntoView({ behavior: 'smooth' });
+                        const offsetTop = aboutSection.offsetTop - 100;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                       }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"
@@ -108,9 +109,10 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      const contactSection = document.querySelector('#contact-section');
+                      const contactSection = document.querySelector('#contact-section') as HTMLElement;
                       if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' });
+                        const offsetTop = contactSection.offsetTop - 100;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                       }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"

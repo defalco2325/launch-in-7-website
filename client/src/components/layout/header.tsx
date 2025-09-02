@@ -38,9 +38,10 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <button 
               onClick={() => {
-                const aboutSection = document.querySelector('#about-section');
+                const aboutSection = document.querySelector('#about-section') as HTMLElement;
                 if (aboutSection) {
-                  aboutSection.scrollIntoView({ behavior: 'smooth' });
+                  const offsetTop = aboutSection.offsetTop - 100;
+                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
               }}
               className="text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group"
@@ -51,9 +52,10 @@ export default function Header() {
             </button>
             <button 
               onClick={() => {
-                const contactSection = document.querySelector('#contact-section');
+                const contactSection = document.querySelector('#contact-section') as HTMLElement;
                 if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                  const offsetTop = contactSection.offsetTop - 100;
+                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
               }}
               className="text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group"
@@ -101,9 +103,10 @@ export default function Header() {
             <div className="px-4 py-6 space-y-6">
               <button 
                 onClick={() => {
-                  const aboutSection = document.querySelector('#about-section');
+                  const aboutSection = document.querySelector('#about-section') as HTMLElement;
                   if (aboutSection) {
-                    aboutSection.scrollIntoView({ behavior: 'smooth' });
+                    const offsetTop = aboutSection.offsetTop - 100;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                   }
                   setIsMobileMenuOpen(false);
                 }}
@@ -114,9 +117,10 @@ export default function Header() {
               </button>
               <button 
                 onClick={() => {
-                  const contactSection = document.querySelector('#contact-section');
+                  const contactSection = document.querySelector('#contact-section') as HTMLElement;
                   if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                    const offsetTop = contactSection.offsetTop - 100;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                   }
                   setIsMobileMenuOpen(false);
                 }}
