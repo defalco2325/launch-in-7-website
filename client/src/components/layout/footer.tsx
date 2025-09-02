@@ -17,10 +17,14 @@ export default function Footer() {
                 Conversion-focused, SEO-ready websites delivered in 7 days. We help businesses launch faster without compromising on quality.
               </p>
               <div className="space-y-2">
-                <p className="text-gray-300 flex items-center">
+                <a 
+                  href="tel:7025826584" 
+                  className="text-gray-300 hover:text-white transition-colors flex items-center"
+                  data-testid="footer-phone-link"
+                >
                   <Phone className="w-4 h-4 mr-2" />
                   702-582-6584
-                </p>
+                </a>
               </div>
             </div>
             
