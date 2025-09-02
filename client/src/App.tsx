@@ -31,7 +31,7 @@ function Router() {
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
         <Route path="/cookie-policy" component={CookiePolicy} />
-        <Route component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </Suspense>
   );
