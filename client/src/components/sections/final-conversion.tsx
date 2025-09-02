@@ -10,7 +10,7 @@ export default function FinalConversion() {
   };
 
   const handleStrategyCall = () => {
-    window.location.href = "/contact";
+    window.open('https://calendly.com/infolaunchin7/30min', '_blank');
   };
 
   return (
