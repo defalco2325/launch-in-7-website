@@ -8,14 +8,10 @@ export default function Header() {
   const [location] = useLocation();
 
   const handleStartBuild = () => {
-    // Scroll to contact section or navigate to contact page
-    if (location === "/") {
-      const auditSection = document.querySelector('#audit-section');
-      if (auditSection) {
-        auditSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      window.location.href = "/contact";
+    // Scroll to audit section
+    const auditSection = document.querySelector('#audit-section');
+    if (auditSection) {
+      auditSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -34,37 +30,7 @@ export default function Header() {
             </Link>
           </div>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => {
-                const aboutSection = document.querySelector('#about-section') as HTMLElement;
-                if (aboutSection) {
-                  const offsetTop = aboutSection.offsetTop - 100;
-                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                }
-              }}
-              className="text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group"
-              data-testid="nav-about"
-            >
-              About
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-blue to-neon-cyan group-hover:w-full transition-all duration-300"></div>
-            </button>
-            <button 
-              onClick={() => {
-                const contactSection = document.querySelector('#contact-section') as HTMLElement;
-                if (contactSection) {
-                  const offsetTop = contactSection.offsetTop - 100;
-                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                }
-              }}
-              className="text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group"
-              data-testid="nav-contact"
-            >
-              Contact
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-blue to-neon-cyan group-hover:w-full transition-all duration-300"></div>
-            </button>
-          </nav>
+          {/* Desktop Navigation - Removed About and Contact buttons */}
           
           {/* CTA Button */}
           <div className="flex items-center space-x-4">
@@ -101,34 +67,6 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-200 shadow-sm">
             <div className="px-4 py-6 space-y-6">
-              <button 
-                onClick={() => {
-                  const aboutSection = document.querySelector('#about-section') as HTMLElement;
-                  if (aboutSection) {
-                    const offsetTop = aboutSection.offsetTop - 100;
-                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                  }
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg text-left w-full"
-                data-testid="mobile-nav-about"
-              >
-                About
-              </button>
-              <button 
-                onClick={() => {
-                  const contactSection = document.querySelector('#contact-section') as HTMLElement;
-                  if (contactSection) {
-                    const offsetTop = contactSection.offsetTop - 100;
-                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                  }
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg text-left w-full"
-                data-testid="mobile-nav-contact"
-              >
-                Contact
-              </button>
               <Button 
                 onClick={() => {
                   handleStartBuild();

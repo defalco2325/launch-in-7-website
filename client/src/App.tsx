@@ -10,8 +10,6 @@ import { SEOProvider } from "@/lib/seo";
 
 // Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
-const About = lazy(() => import("@/pages/about"));
-const Contact = lazy(() => import("@/pages/contact"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 function Router() {
@@ -23,8 +21,6 @@ function Router() {
     }>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

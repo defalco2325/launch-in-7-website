@@ -1,17 +1,11 @@
-import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 
 export default function MobileCTA() {
-  const [location] = useLocation();
 
   const handleStartBuild = () => {
-    if (location === "/") {
-      const auditSection = document.querySelector('#audit-section');
-      if (auditSection) {
-        auditSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      window.location.href = "/contact";
+    const auditSection = document.querySelector('#audit-section');
+    if (auditSection) {
+      auditSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

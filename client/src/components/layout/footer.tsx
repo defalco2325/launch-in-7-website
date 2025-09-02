@@ -91,36 +91,6 @@ export default function Footer() {
                     Home
                   </Link>
                 </li>
-                <li>
-                  <button 
-                    onClick={() => {
-                      const aboutSection = document.querySelector('#about-section') as HTMLElement;
-                      if (aboutSection) {
-                        const offsetTop = aboutSection.offsetTop - 100;
-                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                      }
-                    }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                    data-testid="footer-link-about"
-                  >
-                    About
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => {
-                      const contactSection = document.querySelector('#contact-section') as HTMLElement;
-                      if (contactSection) {
-                        const offsetTop = contactSection.offsetTop - 100;
-                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                      }
-                    }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                    data-testid="footer-link-contact"
-                  >
-                    Contact
-                  </button>
-                </li>
               </ul>
             </div>
             
