@@ -19,7 +19,7 @@ export default function Footer() {
               <div className="space-y-2">
                 <p className="text-gray-300 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
-                  7025826584
+                  702-582-6584
                 </p>
               </div>
             </div>
