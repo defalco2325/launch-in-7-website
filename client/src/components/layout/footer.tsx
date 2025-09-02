@@ -32,13 +32,15 @@ export default function Footer() {
               <h3 className="font-poppins font-semibold text-lg mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link 
-                    href="/"
-                    className="text-gray-300 hover:text-white transition-colors"
+                  <button 
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-home"
                   >
                     Home
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <Link 
@@ -50,13 +52,18 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    href="/contact"
-                    className="text-gray-300 hover:text-white transition-colors"
+                  <button 
+                    onClick={() => {
+                      const footerSection = document.querySelector('footer');
+                      if (footerSection) {
+                        footerSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-contact"
                   >
                     Contact
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <button 
