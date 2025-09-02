@@ -38,11 +38,6 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/about"
-              onClick={() => {
-                setTimeout(() => {
-                  window.scrollTo({ top: 0, behavior: 'auto' });
-                }, 0);
-              }}
               className={`text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-all duration-300 font-semibold relative group ${
                 location === "/about" ? "text-electric-blue" : ""
               }`}
@@ -104,12 +99,7 @@ export default function Header() {
               <Link 
                 href="/about"
                 className="block text-gray-600 dark:text-gray-300 hover:text-electric-blue transition-colors font-semibold text-lg"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'auto' });
-                  }, 0);
-                }}
+                onClick={() => setIsMobileMenuOpen(false)}
                 data-testid="mobile-nav-about"
               >
                 About

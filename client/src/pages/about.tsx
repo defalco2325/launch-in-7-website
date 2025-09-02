@@ -1,4 +1,11 @@
+import { useEffect } from "react";
+
 export default function About() {
+  useEffect(() => {
+    // Scroll to top when About page loads
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
