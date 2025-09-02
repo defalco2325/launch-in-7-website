@@ -79,6 +79,14 @@ export function SEOProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+export function SEO({ title, description, url, image }: SEOData) {
+  useEffect(() => {
+    updateSEO({ title, description, url, image });
+  }, [title, description, url, image]);
+
+  return null;
+}
+
 export function addStructuredData(data: any) {
   if (typeof window === "undefined") return;
 
