@@ -142,9 +142,15 @@ export default function Footer() {
               &copy; 2024 Launch in 7. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
-              <span className="text-gray-400 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
-              <span className="text-gray-400 cursor-not-allowed">Terms of Service (Coming Soon)</span>
-              <span className="text-gray-400 cursor-not-allowed">Cookie Policy (Coming Soon)</span>
+              <Link href="/privacy-policy" className="text-gray-300 hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms-of-service" className="text-gray-300 hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+              <Link href="/cookie-policy" className="text-gray-300 hover:text-white transition-colors">
+                Cookie Policy
+              </Link>
             </div>
           </div>
         </div>
