@@ -59,20 +59,6 @@ export default function Footer() {
                     Contact
                   </Link>
                 </li>
-                <li>
-                  <button 
-                    onClick={() => {
-                      const auditSection = document.querySelector('#audit-section');
-                      if (auditSection) {
-                        auditSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                    data-testid="footer-link-audit"
-                  >
-                    Free Audit
-                  </button>
-                </li>
               </ul>
             </div>
             
