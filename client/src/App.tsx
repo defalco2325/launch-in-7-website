@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,23 +18,20 @@ import CookiePolicy from "@/pages/cookie-policy";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  const [location] = useLocation();
+  
+  // Debug current route
+  console.log("Current route:", location);
+  
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/privacy-policy">
-        <PrivacyPolicy />
-      </Route>
-      <Route path="/terms-of-service">
-        <TermsOfService />
-      </Route>
-      <Route path="/cookie-policy">
-        <CookiePolicy />
-      </Route>
-      <Route>
-        <NotFound />
-      </Route>
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-of-service" component={TermsOfService} />
+      <Route path="/cookie-policy" component={CookiePolicy} />
+      <Route component={NotFound} />
     </Switch>
   );
 }
