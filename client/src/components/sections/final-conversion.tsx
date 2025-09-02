@@ -1,6 +1,15 @@
 import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Declare global Calendly object for TypeScript
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export default function FinalConversion() {
   const handleStartBuild = () => {
     const auditSection = document.querySelector('#audit-section');
@@ -10,7 +19,7 @@ export default function FinalConversion() {
   };
 
   const handleStrategyCall = () => {
-    window.open('https://calendly.com/infolaunchin7/30min', '_blank');
+    window.Calendly?.initPopupWidget({ url: 'https://calendly.com/infolaunchin7/30min' });
   };
 
   return (
