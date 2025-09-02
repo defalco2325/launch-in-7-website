@@ -1,7 +1,8 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Phone } from "lucide-react";
 
 export default function Footer() {
+  const [location] = useLocation();
   return (
     <footer 
       className="bg-deep-navy text-white py-16"
@@ -34,7 +35,11 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      if (location === '/') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      } else {
+                        window.location.href = '/';
+                      }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"
                     data-testid="footer-link-home"
@@ -54,9 +59,19 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      const footerSection = document.querySelector('footer');
-                      if (footerSection) {
-                        footerSection.scrollIntoView({ behavior: 'smooth' });
+                      if (location === '/') {
+                        const footerSection = document.querySelector('footer');
+                        if (footerSection) {
+                          footerSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      } else {
+                        window.location.href = '/#contact';
+                        setTimeout(() => {
+                          const footerSection = document.querySelector('footer');
+                          if (footerSection) {
+                            footerSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 100);
                       }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"
@@ -68,9 +83,19 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      const auditSection = document.querySelector('#audit-section');
-                      if (auditSection) {
-                        auditSection.scrollIntoView({ behavior: 'smooth' });
+                      if (location === '/') {
+                        const auditSection = document.querySelector('#audit-section');
+                        if (auditSection) {
+                          auditSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      } else {
+                        window.location.href = '/#audit';
+                        setTimeout(() => {
+                          const auditSection = document.querySelector('#audit-section');
+                          if (auditSection) {
+                            auditSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 100);
                       }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"
@@ -89,9 +114,19 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => {
-                      const faqSection = document.querySelector('#faq-section');
-                      if (faqSection) {
-                        faqSection.scrollIntoView({ behavior: 'smooth' });
+                      if (location === '/') {
+                        const faqSection = document.querySelector('#faq-section');
+                        if (faqSection) {
+                          faqSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      } else {
+                        window.location.href = '/#faq';
+                        setTimeout(() => {
+                          const faqSection = document.querySelector('#faq-section');
+                          if (faqSection) {
+                            faqSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 100);
                       }
                     }}
                     className="text-gray-300 hover:text-white transition-colors text-left"
