@@ -7,18 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check } from "lucide-react";
-
-// Declare global Calendly object for TypeScript
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
+import CalendlyPopup from "@/components/ui/calendly-popup";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
 
   const form = useForm<AuditFormData>({
     resolver: zodResolver(auditFormSchema),
@@ -88,7 +81,8 @@ export default function AuditForm() {
   }
 
   return (
-    <form 
+    <>
+      <form 
       onSubmit={form.handleSubmit(onSubmit)} 
       className="space-y-6"
       data-netlify="true"
@@ -254,7 +248,7 @@ export default function AuditForm() {
         <Button
           type="button"
           variant="outline"
-          onClick={() => window.open('https://calendly.com/infolaunchin7/30min', '_blank')}
+          onClick={() => setIsCalendlyOpen(true)}
           className="bg-white border-2 border-electric-blue text-electric-blue px-8 py-3 rounded-xl font-semibold hover:bg-electric-blue hover:text-white transition-all duration-300"
           data-testid="button-schedule-call"
         >
@@ -265,5 +259,13 @@ export default function AuditForm() {
         </Button>
       </div>
     </form>
+    
+    {/* Calendly Popup */}
+    <CalendlyPopup
+      isOpen={isCalendlyOpen}
+      onClose={() => setIsCalendlyOpen(false)}
+      url="https://calendly.com/infolaunchin7/30min"
+    />
+  </>
   );
 }
