@@ -8,15 +8,6 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
-
-// Import self-hosted fonts
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/600.css";
-import "@fontsource/poppins/700.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/600.css";
-
 import "./index.css";
 
 // Lazy load all pages to reduce initial JavaScript execution time
