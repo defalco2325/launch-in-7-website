@@ -73,26 +73,6 @@ body {
 }
 
 /* Aggressive layout shift prevention */
-#footer-section {
-  contain: layout style size;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-#footer-section * {
-  contain: layout;
-  transform: translateZ(0);
-}
-
-#footer-section h2,
-#footer-section p,
-#footer-section div {
-  text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
-  font-kerning: none;
-}
 * {
   font-kerning: none;
 }
