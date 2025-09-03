@@ -27,16 +27,20 @@ export default function Header() {
               className="transition-all duration-300 hover:opacity-80"
               data-testid="logo-link"
             >
-              <img 
-                src={logoImage} 
-                alt="Launch in 7"
-                className="h-32 w-auto"
-                style={{ 
-                  backgroundColor: 'transparent',
-                  mixBlendMode: 'screen',
-                  filter: 'contrast(1.2) brightness(1.1)'
-                }}
-              />
+              {logoImage ? (
+                <img 
+                  src={logoImage} 
+                  alt="Launch in 7"
+                  className="h-16 w-auto"
+                  onError={(e) => {
+                    console.error('Logo failed to load:', logoImage);
+                  }}
+                />
+              ) : (
+                <span className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent">
+                  Launch<span className="text-deep-navy">in</span>7
+                </span>
+              )}
             </Link>
           </div>
           
