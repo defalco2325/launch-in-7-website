@@ -7,7 +7,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
-import SplashScreen from "@/components/ui/splash-screen";
+import SplashScreen from "@/components/ui/simple-splash";
 
 // Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
@@ -32,8 +32,11 @@ function App() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    console.log("App useEffect running, setting showSplash to true");
+    console.log("App useEffect running");
+    // For testing: always show splash screen
+    // Remove the sessionStorage check temporarily
     setShowSplash(true);
+    console.log("showSplash set to true");
   }, []);
 
   const handleSplashComplete = () => {
@@ -48,8 +51,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SEOProvider>
-          {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
           <div className="min-h-screen bg-background">
+            {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
             <Header />
             <main id="main-content" className="pt-16" role="main">
               <Router />
