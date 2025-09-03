@@ -53,23 +53,52 @@ body {
   font-kerning: none;
 }
 
+/* Apply containment selectively to reduce overhead */
+.hero-section, .footer, .main-content, .section {
+  contain: layout style;
+}
+
+/* Additional containment for performance-critical components */
+.timeline-container, .card-grid, .form-container, .services-grid {
+  contain: layout style paint;
+  /* Isolate heavy interactive components */
+}
+
+/* Optimize form elements to prevent layout recalculation */
+form, .form-field, .input-group {
+  contain: style;
+}
+
+/* Container optimization for lazy-loaded sections */
+.lazy-section {
+  contain: layout style paint;
+  /* Prevent layout shifts when lazy content loads */
+}
+
+/* Optimize complex selectors by simplifying specificity */
+.glass-card {
+  backdrop-filter: blur(10px);
+  /* Simplified glass effect to reduce GPU overhead */
+}
+
 /* Reduced layout containment to prevent excessive processing */
 footer.bg-deep-navy {
   min-height: 600px; /* Increased height to prevent CLS */
-  contain: layout style; /* Isolate layout and style calculations */
+  contain: layout style paint; /* Isolate layout, style, and paint */
+  /* Force GPU layer for heavy footer content */
+  will-change: auto;
 }
 
-/* Selective hardware acceleration - only for active animations */
-.animate-fade-in-up:hover,
-.animate-bounce-soft:hover {
+/* Minimal hardware acceleration - only when needed */
+.animate-fade-in-up:hover {
   will-change: transform;
 }
 
-/* Remove excessive hardware acceleration that causes compositor layer overhead */
+/* Remove excessive will-change properties to reduce layer overhead */
 .glass-card,
 .gradient-bg,
 .cutting-edge-gradient {
-  /* Removed will-change and transform to reduce layer creation overhead */
+  will-change: auto;
 }
 
 /* Prevent reflow during image loads */
@@ -81,6 +110,8 @@ img[loading="lazy"] {
 .hero-section {
   contain: layout style paint;
   transform: translateZ(0);
+  /* Isolate expensive hero section from rest of page */
+  isolation: isolate;
 }
 
 /* Optimize gradient animations for 60fps */
@@ -92,20 +123,11 @@ img[loading="lazy"] {
 }
 
 .animate-progress-continuous {
-  animation: progress-continuous 17.5s linear infinite;
+  /* Replaced infinite animation with static state to reduce CPU load */
   background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
 }
 
-@keyframes progress-flow {
-  0% { width: 14.28%; }
-  14.28% { width: 28.56%; }
-  28.56% { width: 42.84%; }
-  42.84% { width: 57.12%; }
-  57.12% { width: 71.4%; }
-  71.4% { width: 85.68%; }
-  85.68% { width: 100%; }
-  100% { width: 14.28%; }
-}
+/* Removed progress-flow animation to reduce main-thread work */
 
 /* Text rendering optimization - reduce blocking */
 h1, h2, h3 {
@@ -123,13 +145,13 @@ h1, h2, h3 {
 
 /* Micro-interactions optimization */
 .pulse-ring {
-  animation: pulse-glow 4s infinite;
+  /* Reduced infinite animation to minimize CPU usage */
+  animation: pulse-glow 8s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 1; }
+  0%, 90%, 100% { transform: scale(1) translateZ(0); opacity: 1; }
+  45% { transform: scale(1.05) translateZ(0); opacity: 0.9; }
 }
 
 /* Force consistent line heights to prevent CLS */
@@ -177,11 +199,13 @@ body, p, div, span {
 
 /* Reduce animation frequency to lower CPU usage */
 .animate-float-slow {
-  animation: float-slow 12s ease-in-out infinite;
+  /* Disabled infinite floating to reduce main-thread work */
+  animation: none;
 }
 
 .animate-float-medium {
-  animation: float-medium 15s ease-in-out 3s infinite;
+  /* Disabled infinite floating to reduce main-thread work */
+  animation: none;
 }
 
 .animate-spin-slow {
