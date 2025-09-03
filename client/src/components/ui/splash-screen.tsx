@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import SmokeTrail from "@/components/ui/smoke-trail";
 import ExhaustParticles from "@/components/ui/exhaust-particles";
-import logoWebp from "@assets/logo-optimized.webp";
+import logoWebp from "@assets/logo.webp";
 import logoPng from "@assets/logo-optimized.png";
 
 interface SplashScreenProps {

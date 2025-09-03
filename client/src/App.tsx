@@ -29,15 +29,17 @@ function Router() {
 }
 
 function App() {
-  const [showSplash, setShowSplash] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Check if splash has been shown in this session
-    const splashSeen = sessionStorage.getItem('l7_splash_seen');
+    // For testing - always show splash, comment out sessionStorage check
+    // const splashSeen = sessionStorage.getItem('l7_splash_seen');
+    // if (!splashSeen) {
+    //   setShowSplash(true);
+    // }
     
-    if (!splashSeen) {
-      setShowSplash(true);
-    }
+    // Always show splash for now during development
+    setShowSplash(true);
   }, []);
 
   const handleSplashComplete = () => {
