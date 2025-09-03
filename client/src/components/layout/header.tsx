@@ -31,7 +31,7 @@ export default function Header() {
                 <img 
                   src={logoImage} 
                   alt="Launch in 7"
-                  className="h-14 w-auto"
+                  className="h-20 w-auto"
                   style={{
                     mixBlendMode: 'multiply',
                     filter: 'contrast(1.2)'
