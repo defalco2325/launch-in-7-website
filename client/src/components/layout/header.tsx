@@ -23,19 +23,10 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Link 
               href="/"
-              className="transition-all duration-300 hover:opacity-80"
+              className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent hover:from-neon-cyan hover:to-accent-purple transition-all duration-300"
               data-testid="logo-link"
             >
-              <img 
-                src="/logo.jpg" 
-                alt="Launch in 7"
-                className="h-12 w-auto"
-                style={{ backgroundColor: 'transparent' }}
-                onError={(e) => {
-                  console.error('Logo failed to load');
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+              Launch<span className="text-deep-navy dark:text-white">in</span>7
             </Link>
           </div>
           
