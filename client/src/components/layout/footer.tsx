@@ -3,30 +3,20 @@ import { Phone } from "lucide-react";
 
 export default function Footer() {
   return (
-    <>
-      {/* Spacer to maintain page height and prevent layout shift */}
-      <div style={{ height: '600px', contain: 'strict' }} />
-      
-      {/* Footer positioned absolutely to remove from layout flow */}
-      <footer 
-        className="bg-deep-navy text-white"
-        style={{ 
-          position: 'absolute',
-          bottom: '0',
-          left: '0',
-          right: '0',
-          width: '100%',
-          height: '600px',
-          contain: 'strict',
-          willChange: 'transform',
-          overflow: 'hidden',
-          transform: 'translate3d(0, 0, 0)',
-          padding: '64px 0',
-          isolation: 'isolate',
-          zIndex: 10
-        }}
-        id="footer-section"
-      >
+    <footer 
+      className="bg-deep-navy text-white"
+      style={{ 
+        position: 'relative',
+        height: '600px',
+        contain: 'strict',
+        willChange: 'transform',
+        overflow: 'hidden',
+        transform: 'translate3d(0, 0, 0)',
+        padding: '64px 0',
+        isolation: 'isolate'
+      }}
+      id="footer-section"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* About Section */}
@@ -87,58 +77,29 @@ export default function Footer() {
           </div>
 
           {/* Contact Section */}
-          <div 
-            id="contact-section" 
-            className="mb-12"
-            style={{ 
-              contain: 'strict', 
-              height: '120px',
-              overflow: 'hidden',
-              transform: 'translate3d(0, 0, 0)'
-            }}
-          >
-            <h3 
-              className="font-poppins font-bold text-2xl mb-6 text-center text-electric-blue"
-              style={{ contain: 'strict', height: '32px', overflow: 'hidden' }}
-            >
-              Get In Touch
-            </h3>
-            <div className="text-center" style={{ contain: 'strict', height: '80px', overflow: 'hidden' }}>
-              <p className="text-gray-300 mb-4" style={{ contain: 'strict', height: '24px', overflow: 'hidden' }}>Ready to launch your website in just 7 days?</p>
+          <div id="contact-section" className="mb-12">
+            <h3 className="font-poppins font-bold text-2xl mb-6 text-center">Get In Touch</h3>
+            <div className="text-center">
+              <p className="text-gray-300 mb-4">Ready to launch your website in just 7 days?</p>
               <a 
                 href="tel:7025826584" 
-                className="text-electric-blue font-semibold text-xl flex items-center justify-center mb-4"
-                style={{ contain: 'strict', height: '28px', overflow: 'hidden' }}
+                className="text-electric-blue hover:text-neon-cyan transition-colors font-semibold text-xl flex items-center justify-center mb-4"
                 data-testid="footer-phone-contact"
               >
                 <Phone className="w-5 h-5 mr-2" />
                 702-582-6584
               </a>
-              <p className="text-gray-400 text-sm" style={{ contain: 'strict', height: '20px', overflow: 'hidden' }}>Available Monday-Friday, 9 AM - 6 PM PST</p>
+              <p className="text-gray-400 text-sm">Available Monday-Friday, 9 AM - 6 PM PST</p>
             </div>
           </div>
 
           
           {/* Bottom Bar */}
-          <div 
-            className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between"
-            style={{ 
-              contain: 'strict', 
-              height: '80px',
-              overflow: 'hidden',
-              transform: 'translate3d(0, 0, 0)'
-            }}
-          >
-            <p 
-              className="text-gray-400 text-sm mb-4 md:mb-0"
-              style={{ contain: 'strict', height: '20px', overflow: 'hidden' }}
-            >
+          <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between">
+            <p className="text-gray-400 text-sm mb-4 md:mb-0">
               &copy; 2024 Launch in 7. All rights reserved.
             </p>
-            <div 
-              className="flex space-x-6 text-sm"
-              style={{ contain: 'strict', height: '20px', overflow: 'hidden' }}
-            >
+            <div className="flex space-x-6 text-sm">
               <span className="text-gray-400 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
               <span className="text-gray-400 cursor-not-allowed">Terms of Service (Coming Soon)</span>
               <span className="text-gray-400 cursor-not-allowed">Cookie Policy (Coming Soon)</span>
@@ -147,6 +108,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-    </>
   );
 }
