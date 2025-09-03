@@ -32,6 +32,10 @@ export default function Header() {
                   src={logoImage} 
                   alt="Launch in 7"
                   className="h-32 w-auto"
+                  style={{
+                    mixBlendMode: 'multiply',
+                    filter: 'contrast(1.2)'
+                  }}
                   onError={(e) => {
                     console.error('Logo failed to load:', logoImage);
                   }}
