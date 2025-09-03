@@ -23,7 +23,7 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Link 
               href="/"
-              className="font-poppins font-black text-2xl text-electric-blue"
+              className="font-poppins font-black text-2xl"
               style={{
                 contain: 'strict',
                 height: '32px',
@@ -33,7 +33,9 @@ export default function Header() {
               }}
               data-testid="logo-link"
             >
-              Launch<span className="text-deep-navy dark:text-white">in</span>7
+              <span className="bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent">Launch</span>
+              <span className="text-black">in</span>
+              <span className="bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent">7</span>
             </Link>
           </div>
           
