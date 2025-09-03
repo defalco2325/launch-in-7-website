@@ -2,11 +2,12 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import { SEOProvider } from "@/lib/seo";
+import SplashScreen from "@/components/ui/splash-screen";
 
 // Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
@@ -28,10 +29,27 @@ function Router() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState(false);
+
+  useEffect(() => {
+    // Check if splash has been shown in this session
+    const splashSeen = sessionStorage.getItem('l7_splash_seen');
+    
+    if (!splashSeen) {
+      setShowSplash(true);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    sessionStorage.setItem('l7_splash_seen', 'true');
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SEOProvider>
+          {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
           <div className="min-h-screen bg-background">
             <Header />
             <main id="main-content" className="pt-16" role="main">
