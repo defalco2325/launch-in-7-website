@@ -40,176 +40,266 @@
       }
     </style>
     
-    <!-- Splash Screen CSS - shows immediately before React loads -->
+    <!-- Epic Rocket Launch Splash Screen -->
     <style>
-      /* Splash screen that shows before React hydration */
+      /* Main splash screen container */
       #splash-screen {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: white;
+        background: radial-gradient(ellipse at center, #0f0f23 0%, #000 100%);
         z-index: 9999;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
       
-      #splash-logo-container {
-        position: relative;
-        margin-bottom: 2rem;
-        animation: rocket-launch-sequence 2.5s ease-out forwards;
-      }
-      
-      #splash-logo {
-        height: 80px;
-        width: auto;
-        display: block;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-        filter: contrast(1.2);
-      }
-      
-      #logo-glow {
+      /* Animated star field background */
+      #stars {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 120px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+          radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+          radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+          radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+          radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
+          radial-gradient(1px 1px at 200px 120px, #fff, transparent),
+          radial-gradient(1px 1px at 250px 60px, rgba(255,255,255,0.7), transparent),
+          radial-gradient(2px 2px at 300px 100px, #eee, transparent);
+        background-repeat: repeat;
+        background-size: 350px 200px;
+        animation: stars-twinkle 4s ease-in-out infinite;
+      }
+      
+      /* Rocket ship container */
+      #rocket-container {
+        position: relative;
+        z-index: 10;
+        animation: rocket-main-sequence 4s ease-out forwards;
+      }
+      
+      /* Rocket body */
+      #rocket {
+        width: 60px;
         height: 120px;
-        transform: translate(-50%, -50%);
-        background: radial-gradient(circle, rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.2), transparent);
-        border-radius: 50%;
-        opacity: 0;
-        z-index: 1;
-        animation: logo-glow-pulse 2.5s ease-in-out;
+        background: linear-gradient(45deg, #e5e7eb 0%, #f9fafb 50%, #d1d5db 100%);
+        border-radius: 30px 30px 10px 10px;
+        position: relative;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
       }
       
-      #exhaust-trail {
-        position: absolute;
-        bottom: -10px;
-        right: 20%;
-        width: 8px;
-        height: 40px;
-        background: linear-gradient(to bottom, 
-          rgba(59, 130, 246, 0.8) 0%, 
-          rgba(6, 182, 212, 0.6) 40%, 
-          rgba(255, 255, 255, 0.2) 70%, 
-          transparent 100%);
-        border-radius: 4px;
-        opacity: 0;
-        animation: exhaust-ignition 2.5s ease-out forwards;
-        animation-delay: 0.6s;
-        filter: blur(1px);
-      }
-      
-      #smoke-particles {
-        position: absolute;
-        bottom: -20px;
-        right: 18%;
-        width: 15px;
-        height: 15px;
-        opacity: 0;
-        animation: smoke-expansion 2.5s ease-out forwards;
-        animation-delay: 0.8s;
-      }
-      
-      #smoke-particles::before,
-      #smoke-particles::after {
+      /* Rocket nose cone */
+      #rocket::before {
         content: '';
         position: absolute;
-        width: 12px;
-        height: 12px;
-        background: radial-gradient(circle, rgba(156, 163, 175, 0.4), transparent 70%);
-        border-radius: 50%;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 20px solid #f59e0b;
+      }
+      
+      /* Rocket fins */
+      #rocket::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 20px;
+        background: #6b7280;
+        border-radius: 0 0 20px 20px;
+      }
+      
+      /* Massive exhaust flame */
+      #exhaust {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 0;
+        background: linear-gradient(to bottom, 
+          #fbbf24 0%, 
+          #f59e0b 25%, 
+          #dc2626 50%, 
+          #7c2d12 75%, 
+          transparent 100%);
+        border-radius: 50px 50px 0 0;
+        opacity: 0;
+        animation: exhaust-ignition 4s ease-out forwards;
+        animation-delay: 1s;
         filter: blur(2px);
       }
       
-      #smoke-particles::before {
-        animation: smoke-drift-1 2s ease-out forwards;
-        animation-delay: 0.8s;
+      /* Particle explosion system */
+      #particles {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 100px;
       }
       
-      #smoke-particles::after {
-        animation: smoke-drift-2 2.2s ease-out forwards;
-        animation-delay: 1s;
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #fbbf24;
+        border-radius: 50%;
+        opacity: 0;
       }
       
-      #splash-tagline {
-        color: #666;
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-        animation: tagline-fade 2.5s ease-in-out;
+      /* Dramatic text reveal */
+      #launch-text {
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: white;
+        opacity: 0;
+        animation: text-dramatic-reveal 4s ease-out forwards;
+        animation-delay: 0.5s;
       }
       
-      @keyframes logo-glow-pulse {
-        0% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-        20% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
-        40% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
-        100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+      #main-title {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #fbbf24, #f59e0b, #dc2626);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
       }
       
-      @keyframes rocket-launch-sequence {
-        0% { transform: translateY(0px) scale(1); }
-        25% { transform: translateY(-3px) scale(1.01); } /* Brief pulse */
-        40% { transform: translateY(-3px) scale(1.01); } /* Hold for ignition */
-        60% { transform: translateY(-10px) scale(1.02); } /* Pre-launch */
-        100% { transform: translateY(-100vh) scale(0.7); } /* Launch off screen */
+      #sub-title {
+        font-size: 1.5rem;
+        color: #cbd5e1;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+      }
+      
+      /* Screen shake effect */
+      .screen-shake {
+        animation: screen-shake 0.5s ease-in-out;
+      }
+      
+      /* Keyframe animations */
+      @keyframes stars-twinkle {
+        0%, 100% { opacity: 1; transform: translateY(0); }
+        50% { opacity: 0.7; transform: translateY(-2px); }
+      }
+      
+      @keyframes rocket-main-sequence {
+        0% { transform: translateY(100vh) scale(0.8); }
+        20% { transform: translateY(0) scale(1); }
+        70% { transform: translateY(0) scale(1.1); }
+        90% { transform: translateY(-50px) scale(1.2); }
+        100% { transform: translateY(-100vh) scale(0.6); }
       }
       
       @keyframes exhaust-ignition {
-        0% { opacity: 0; height: 0px; }
-        30% { opacity: 0.8; height: 15px; }
-        60% { opacity: 1; height: 25px; }
-        100% { opacity: 0.3; height: 60px; }
+        0% { height: 0; opacity: 0; }
+        15% { height: 20px; opacity: 0.8; }
+        30% { height: 40px; opacity: 1; }
+        70% { height: 80px; opacity: 1; width: 60px; }
+        100% { height: 200px; opacity: 0.3; width: 100px; }
       }
       
-      @keyframes smoke-expansion {
-        0% { opacity: 0; transform: scale(1); }
-        40% { opacity: 0.6; transform: scale(1.5); }
-        100% { opacity: 0; transform: scale(3); }
+      @keyframes text-dramatic-reveal {
+        0% { opacity: 0; transform: translateX(-50%) translateY(50px) scale(0.8); }
+        30% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        70% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateX(-50%) translateY(-50px) scale(1.1); }
       }
       
-      @keyframes smoke-drift-1 {
-        0% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0; }
-        30% { transform: translateY(20px) translateX(-5px) scale(1.5); opacity: 0.5; }
-        100% { transform: translateY(80px) translateX(-15px) scale(2.5); opacity: 0; }
+      @keyframes screen-shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
       }
       
-      @keyframes smoke-drift-2 {
-        0% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0; }
-        25% { transform: translateY(15px) translateX(8px) scale(1.3); opacity: 0.4; }
-        100% { transform: translateY(70px) translateX(20px) scale(2.2); opacity: 0; }
-      }
-      
-      @keyframes tagline-fade {
-        0%, 60% { opacity: 0.8; }
-        100% { opacity: 0; }
-      }
-      
-      /* Extended splash screen duration with launch effect */
-      .react-loaded #splash-screen {
-        animation: entire-screen-launch 0.8s ease-in 2s forwards;
-      }
-      
-      @keyframes entire-screen-launch {
+      @keyframes particle-explosion {
         0% { 
-          opacity: 1; 
-          transform: translateY(0); 
-          background: white;
+          opacity: 0; 
+          transform: scale(1) translateY(0); 
         }
-        70% { 
-          opacity: 0.9; 
-          transform: translateY(-40px); 
-          background: linear-gradient(to bottom, white 0%, rgba(255,255,255,0.8) 100%);
+        30% { 
+          opacity: 1; 
+          transform: scale(1.5) translateY(-20px); 
         }
         100% { 
           opacity: 0; 
-          transform: translateY(-100vh); 
-          background: transparent;
+          transform: scale(0.5) translateY(-80px); 
+        }
+      }
+      
+      @keyframes particle-drift-1 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(-30px, -100px) rotate(180deg); }
+      }
+      
+      @keyframes particle-drift-2 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(25px, -90px) rotate(-150deg); }
+      }
+      
+      @keyframes particle-drift-3 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(-15px, -110px) rotate(200deg); }
+      }
+      
+      @keyframes particle-drift-4 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(35px, -95px) rotate(-120deg); }
+      }
+      
+      @keyframes particle-drift-5 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(-25px, -105px) rotate(160deg); }
+      }
+      
+      @keyframes particle-drift-6 {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(20px, -115px) rotate(-180deg); }
+      }
+      
+      /* Epic finale - entire screen launch */
+      .react-loaded #splash-screen {
+        animation: epic-finale 1.2s ease-in 3.5s forwards;
+      }
+      
+      @keyframes epic-finale {
+        0% { 
+          opacity: 1; 
+          transform: scale(1) translateY(0); 
+          filter: brightness(1);
+        }
+        50% { 
+          opacity: 0.8; 
+          transform: scale(1.1) translateY(-100px); 
+          filter: brightness(1.2);
+        }
+        100% { 
+          opacity: 0; 
+          transform: scale(0.3) translateY(-100vh); 
+          filter: brightness(2);
           display: none;
         }
       }
@@ -341,15 +431,33 @@
     <title>Launch in 7 - Professional Website Development</title>
   </head>
   <body>
-    <!-- Immediate splash screen before React loads -->
+    <!-- Epic Rocket Launch Splash Screen -->
     <div id="splash-screen">
-      <div id="splash-logo-container">
-        <img id="splash-logo" src="/splash-logo.png" alt="Launch in 7" />
-        <div id="logo-glow"></div>
-        <div id="exhaust-trail"></div>
-        <div id="smoke-particles"></div>
+      <!-- Animated star field -->
+      <div id="stars"></div>
+      
+      <!-- Main rocket launch sequence -->
+      <div id="rocket-container">
+        <div id="rocket">
+          <div id="exhaust"></div>
+        </div>
+        
+        <!-- Particle explosion system -->
+        <div id="particles">
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 1.2s, particle-drift-1 2s ease-out infinite 1.2s;"></div>
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 1.4s, particle-drift-2 2s ease-out infinite 1.4s;"></div>
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 1.6s, particle-drift-3 2s ease-out infinite 1.6s;"></div>
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 1.8s, particle-drift-4 2s ease-out infinite 1.8s;"></div>
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 2.0s, particle-drift-5 2s ease-out infinite 2.0s;"></div>
+          <div class="particle" style="animation: particle-explosion 1s ease-out infinite 2.2s, particle-drift-6 2s ease-out infinite 2.2s;"></div>
+        </div>
       </div>
-      <div id="splash-tagline">Launch Your Business in 7 Days</div>
+      
+      <!-- Dramatic text reveal -->
+      <div id="launch-text">
+        <div id="main-title">LAUNCH IN 7</div>
+        <div id="sub-title">Prepare for Liftoff</div>
+      </div>
     </div>
     
     <div id="root" role="main"></div>

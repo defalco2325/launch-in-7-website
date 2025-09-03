@@ -47,10 +47,10 @@ function App() {
   );
 }
 
-// Hide the CSS splash screen when React loads (after a delay for animation)
+// Hide the CSS splash screen when React loads (after epic animation completes)
 setTimeout(() => {
   document.body.classList.add('react-loaded');
-}, 50);
+}, 200);
 
 createRoot(document.getElementById("root")!).render(<App />);
 
