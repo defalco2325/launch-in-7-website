@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoUrl from "@assets/logo.png";
+import logoUrl from "@assets/generated_images/Transparent_background_Launchin7_logo_bea8c83b.png";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function Header() {
               <img 
                 src={logoUrl} 
                 alt="Launch in 7 - Website Building Company" 
-                className="h-12 w-auto object-contain"
+                className="h-20 w-auto object-contain"
               />
             </Link>
           </div>
