@@ -26,6 +26,9 @@ export default function Header() {
               href="/"
               className="transition-all duration-300 hover:opacity-80"
               data-testid="logo-link"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               {logoImage ? (
                 <img 
