@@ -47,6 +47,9 @@ function App() {
   );
 }
 
+// Hide the CSS splash screen when React loads
+document.body.classList.add('react-loaded');
+
 createRoot(document.getElementById("root")!).render(<App />);
 
 // Setup Netlify Forms progressive enhancement

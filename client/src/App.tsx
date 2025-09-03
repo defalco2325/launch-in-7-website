@@ -29,14 +29,21 @@ function Router() {
 }
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
+  // For static sites, use a different approach - check on mount
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
 
   useEffect(() => {
-    console.log("App useEffect running");
-    // For testing: always show splash screen
-    // Remove the sessionStorage check temporarily
-    setShowSplash(true);
-    console.log("showSplash set to true");
+    // This only runs on client-side after hydration
+    setIsHydrated(true);
+    
+    // Check if splash should show (only on first visit)
+    const splashSeen = sessionStorage.getItem('l7_splash_seen');
+    if (!splashSeen) {
+      setShowSplash(true);
+    }
+    
+    console.log("App hydrated, showSplash:", !splashSeen);
   }, []);
 
   const handleSplashComplete = () => {
@@ -45,7 +52,12 @@ function App() {
     sessionStorage.setItem('l7_splash_seen', 'true');
   };
 
-  console.log("App rendering, showSplash:", showSplash);
+  console.log("App rendering, isHydrated:", isHydrated, "showSplash:", showSplash);
+
+  // Don't show splash until after hydration to prevent mismatch
+  if (!isHydrated) {
+    return null; // Let the initial HTML render first
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
