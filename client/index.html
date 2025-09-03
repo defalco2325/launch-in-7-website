@@ -66,7 +66,7 @@
         width: 120vw;
         height: 120vh;
         transform: translate(-50%, -50%);
-        background: radial-gradient(circle, rgba(0, 122, 255, 0.03) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.03) 0%, rgba(6, 182, 212, 0.02) 50%, transparent 70%);
         animation: ambient-pulse 8s ease-in-out infinite;
       }
       
@@ -84,7 +84,7 @@
         font-weight: 700;
         letter-spacing: -0.03em;
         color: transparent;
-        background: linear-gradient(135deg, #ffffff 0%, #007AFF 100%);
+        background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -101,7 +101,7 @@
         transform: translateX(-50%);
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, transparent, #007AFF, transparent);
+        background: linear-gradient(90deg, transparent, #06B6D4, transparent);
         animation: underline-expand 3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         animation-delay: 1s;
       }
@@ -116,6 +116,30 @@
         transform: translateY(20px);
         animation: tagline-reveal 3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         animation-delay: 1.5s;
+      }
+      
+      /* Rocket ignition effects */
+      #content-container::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+        animation: ignition-glow 4s ease-out forwards;
+        animation-delay: 2s;
+        z-index: -1;
+      }
+      
+      @keyframes ignition-glow {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        30% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+        60% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
       }
       
       /* Subtle loading indicator */
@@ -136,7 +160,7 @@
       
       #loading-bar {
         height: 100%;
-        background: linear-gradient(90deg, transparent, #007AFF, transparent);
+        background: linear-gradient(90deg, transparent, #06B6D4, transparent);
         border-radius: 1px;
         transform: translateX(-100%);
         animation: loading-progress 3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
@@ -223,21 +247,46 @@
         }
       }
       
-      /* Seamless transition out */
+      /* Rocket rumble and takeoff sequence */
       .react-loaded #splash-screen {
-        animation: elegant-exit 0.8s cubic-bezier(0.23, 1, 0.32, 1) 2.5s forwards;
+        animation: 
+          screen-rumble 0.5s ease-in-out 2.3s,
+          rocket-takeoff 1.2s cubic-bezier(0.7, 0, 0.84, 0) 2.8s forwards;
       }
       
-      @keyframes elegant-exit {
+      @keyframes screen-rumble {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        10% { transform: translate(-2px, 1px) rotate(-0.5deg); }
+        20% { transform: translate(2px, -1px) rotate(0.5deg); }
+        30% { transform: translate(-1px, 2px) rotate(-0.3deg); }
+        40% { transform: translate(1px, -2px) rotate(0.3deg); }
+        50% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+        60% { transform: translate(2px, 1px) rotate(0.5deg); }
+        70% { transform: translate(-1px, -2px) rotate(-0.3deg); }
+        80% { transform: translate(1px, 2px) rotate(0.3deg); }
+        90% { transform: translate(-2px, 1px) rotate(-0.5deg); }
+      }
+      
+      @keyframes rocket-takeoff {
         0% { 
-          opacity: 1; 
-          transform: scale(1); 
-          filter: blur(0px);
+          transform: translate(0, 0) scale(1); 
+          opacity: 1;
+          filter: brightness(1);
+        }
+        20% { 
+          transform: translate(0, -50px) scale(1.02); 
+          opacity: 1;
+          filter: brightness(1.1);
+        }
+        50% { 
+          transform: translate(0, -200px) scale(1.1); 
+          opacity: 0.9;
+          filter: brightness(1.3);
         }
         100% { 
-          opacity: 0; 
-          transform: scale(1.05); 
-          filter: blur(10px);
+          transform: translate(0, -100vh) scale(0.5); 
+          opacity: 0;
+          filter: brightness(2);
           visibility: hidden;
         }
       }
