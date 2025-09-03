@@ -12,21 +12,41 @@ interface SplashScreenProps {
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [stage, setStage] = useState<"intro" | "ignition" | "launch" | "complete">("intro");
   
+  // Debug: Log that component is rendering
+  console.log("SplashScreen rendering, stage:", stage);
+  
   // Check for reduced motion preference
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
+    console.log("SplashScreen useEffect running, prefersReducedMotion:", prefersReducedMotion);
+    
     if (prefersReducedMotion) {
       // Simple fade sequence for accessibility
-      setTimeout(() => onComplete(), 1000);
+      setTimeout(() => {
+        console.log("Completing splash screen (reduced motion)");
+        onComplete();
+      }, 1000);
       return;
     }
 
     // Animation sequence timing
-    const introTimer = setTimeout(() => setStage("ignition"), 800);
-    const ignitionTimer = setTimeout(() => setStage("launch"), 1400);
-    const launchTimer = setTimeout(() => setStage("complete"), 1900);
-    const completeTimer = setTimeout(() => onComplete(), 2100);
+    const introTimer = setTimeout(() => {
+      console.log("Stage: ignition");
+      setStage("ignition");
+    }, 800);
+    const ignitionTimer = setTimeout(() => {
+      console.log("Stage: launch");
+      setStage("launch");
+    }, 1400);
+    const launchTimer = setTimeout(() => {
+      console.log("Stage: complete");
+      setStage("complete");
+    }, 1900);
+    const completeTimer = setTimeout(() => {
+      console.log("Completing splash screen");
+      onComplete();
+    }, 2100);
 
     return () => {
       clearTimeout(introTimer);
@@ -68,6 +88,25 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       scale: 1.03 
     }
   };
+
+  // Simple test version - just show a red background
+  return (
+    <div
+      className="fixed inset-0 bg-red-500 z-50 flex flex-col items-center justify-center"
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+    >
+      <div className="text-center text-white">
+        <h1 className="text-4xl font-bold mb-4">SPLASH SCREEN TEST</h1>
+        <p className="text-xl">Stage: {stage}</p>
+        <button 
+          onClick={onComplete}
+          className="mt-4 px-4 py-2 bg-white text-red-500 rounded"
+        >
+          Skip Animation
+        </button>
+      </div>
+    </div>
+  );
 
   if (prefersReducedMotion) {
     return (

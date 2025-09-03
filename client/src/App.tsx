@@ -32,20 +32,17 @@ function App() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // For testing - always show splash, comment out sessionStorage check
-    // const splashSeen = sessionStorage.getItem('l7_splash_seen');
-    // if (!splashSeen) {
-    //   setShowSplash(true);
-    // }
-    
-    // Always show splash for now during development
+    console.log("App useEffect running, setting showSplash to true");
     setShowSplash(true);
   }, []);
 
   const handleSplashComplete = () => {
+    console.log("handleSplashComplete called");
     setShowSplash(false);
     sessionStorage.setItem('l7_splash_seen', 'true');
   };
+
+  console.log("App rendering, showSplash:", showSplash);
 
   return (
     <QueryClientProvider client={queryClient}>
