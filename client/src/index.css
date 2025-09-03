@@ -53,9 +53,13 @@ body {
   font-kerning: none;
 }
 
-/* Ultra-aggressive CLS prevention for footer */
+/* Ultra-aggressive CLS prevention - footer completely out of layout flow */
 footer#footer-section {
-  position: relative !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
   height: 600px !important; 
   contain: strict !important;
   overflow: hidden !important;
@@ -63,6 +67,7 @@ footer#footer-section {
   will-change: transform !important;
   isolation: isolate !important; /* Complete stacking context isolation */
   padding: 64px 0 !important; /* Fixed padding instead of Tailwind classes */
+  z-index: 10 !important;
 }
 
 footer#footer-section * {
