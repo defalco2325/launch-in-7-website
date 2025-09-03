@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoImage from "@/assets/logo.png";
+import logoWebp from "@/assets/logo.webp";
+import logoPng from "@/assets/logo-optimized.png";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,24 +31,18 @@ export default function Header() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
-              {logoImage ? (
+              <picture>
+                <source srcSet={logoWebp} type="image/webp" />
                 <img 
-                  src={logoImage} 
+                  src={logoPng} 
                   alt="Launch in 7"
                   className="h-20 w-auto"
                   style={{
                     mixBlendMode: 'multiply',
                     filter: 'contrast(1.2)'
                   }}
-                  onError={(e) => {
-                    console.error('Logo failed to load:', logoImage);
-                  }}
                 />
-              ) : (
-                <span className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent">
-                  Launch<span className="text-deep-navy">in</span>7
-                </span>
-              )}
+              </picture>
             </Link>
           </div>
           
