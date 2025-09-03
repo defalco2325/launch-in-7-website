@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoImage from "@/assets/logo.png";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -23,10 +24,18 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Link 
               href="/"
-              className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent hover:from-neon-cyan hover:to-accent-purple transition-all duration-300"
+              className="transition-all duration-300 hover:opacity-80"
               data-testid="logo-link"
             >
-              Launch<span className="text-deep-navy dark:text-white">in</span>7
+              <img 
+                src={logoImage} 
+                alt="Launch in 7"
+                className="h-12 w-auto"
+                style={{ 
+                  backgroundColor: 'transparent',
+                  mixBlendMode: 'multiply' 
+                }}
+              />
             </Link>
           </div>
           
