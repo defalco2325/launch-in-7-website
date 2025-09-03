@@ -53,11 +53,20 @@ body {
   font-kerning: none;
 }
 
-/* Reduced layout containment to prevent excessive processing */
-footer.bg-deep-navy {
-  height: 600px !important; /* Fixed height to completely prevent CLS */
-  contain: strict !important; /* Complete isolation to prevent any shifts */
-  overflow: hidden !important; /* Prevent content overflow shifts */
+/* Ultra-aggressive CLS prevention for footer */
+footer#footer-section {
+  position: relative !important;
+  height: 600px !important; 
+  contain: strict !important;
+  overflow: hidden !important;
+  transform: translate3d(0, 0, 0) !important; /* Force GPU layer */
+  will-change: transform !important;
+  isolation: isolate !important; /* Complete stacking context isolation */
+  padding: 64px 0 !important; /* Fixed padding instead of Tailwind classes */
+}
+
+footer#footer-section * {
+  contain: layout !important; /* Apply containment to all children */
 }
 
 /* Selective hardware acceleration - only for active animations */

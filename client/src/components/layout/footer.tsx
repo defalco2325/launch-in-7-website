@@ -4,19 +4,32 @@ import { Phone } from "lucide-react";
 export default function Footer() {
   return (
     <footer 
-      className="bg-deep-navy text-white py-16"
+      className="bg-deep-navy text-white"
       style={{ 
+        position: 'relative',
         height: '600px',
         contain: 'strict',
-        willChange: 'auto',
-        overflow: 'hidden'
+        willChange: 'transform',
+        overflow: 'hidden',
+        transform: 'translate3d(0, 0, 0)',
+        padding: '64px 0',
+        isolation: 'isolate'
       }}
       id="footer-section"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* About Section */}
-          <div id="about-section" className="mb-16" style={{ contain: 'layout' }}>
+          <div 
+            id="about-section" 
+            className="mb-16" 
+            style={{ 
+              contain: 'strict', 
+              height: '380px',
+              overflow: 'hidden',
+              transform: 'translate3d(0, 0, 0)'
+            }}
+          >
             <div className="text-center mb-12" style={{ contain: 'strict', height: '140px', overflow: 'hidden' }}>
               <h2 
                 className="font-poppins font-bold text-3xl lg:text-4xl mb-6 text-electric-blue"
