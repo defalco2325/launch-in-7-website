@@ -47,11 +47,6 @@ function App() {
   );
 }
 
-// Hide the CSS splash screen when React loads (after epic animation completes)
-setTimeout(() => {
-  document.body.classList.add('react-loaded');
-}, 200);
-
 createRoot(document.getElementById("root")!).render(<App />);
 
 // Setup Netlify Forms progressive enhancement
