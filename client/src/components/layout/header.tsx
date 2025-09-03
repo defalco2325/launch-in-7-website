@@ -23,7 +23,14 @@ export default function Header() {
           <div className="flex-shrink-0">
             <Link 
               href="/"
-              className="font-poppins font-black text-2xl bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent hover:from-neon-cyan hover:to-accent-purple transition-all duration-300"
+              className="font-poppins font-black text-2xl text-electric-blue"
+              style={{
+                contain: 'strict',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                width: '150px'
+              }}
               data-testid="logo-link"
             >
               Launch<span className="text-deep-navy dark:text-white">in</span>7

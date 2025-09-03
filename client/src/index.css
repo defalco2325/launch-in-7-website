@@ -55,8 +55,9 @@ body {
 
 /* Reduced layout containment to prevent excessive processing */
 footer.bg-deep-navy {
-  min-height: 600px; /* Increased height to prevent CLS */
-  contain: layout style; /* Isolate layout and style calculations */
+  height: 600px !important; /* Fixed height to completely prevent CLS */
+  contain: strict !important; /* Complete isolation to prevent any shifts */
+  overflow: hidden !important; /* Prevent content overflow shifts */
 }
 
 /* Selective hardware acceleration - only for active animations */

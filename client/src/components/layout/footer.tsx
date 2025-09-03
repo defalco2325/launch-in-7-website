@@ -6,9 +6,10 @@ export default function Footer() {
     <footer 
       className="bg-deep-navy text-white py-16"
       style={{ 
-        minHeight: '600px',
-        contain: 'layout style',
-        willChange: 'auto'
+        height: '600px',
+        contain: 'strict',
+        willChange: 'auto',
+        overflow: 'hidden'
       }}
       id="footer-section"
     >
@@ -16,16 +17,23 @@ export default function Footer() {
         <div className="max-w-6xl mx-auto">
           {/* About Section */}
           <div id="about-section" className="mb-16" style={{ contain: 'layout' }}>
-            <div className="text-center mb-12" style={{ contain: 'layout', minHeight: '140px' }}>
+            <div className="text-center mb-12" style={{ contain: 'strict', height: '140px', overflow: 'hidden' }}>
               <h2 
-                className="font-poppins font-bold text-3xl lg:text-4xl mb-6 bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent"
-                style={{ contain: 'layout', minHeight: '48px', lineHeight: '1.2' }}
+                className="font-poppins font-bold text-3xl lg:text-4xl mb-6 text-electric-blue"
+                style={{ 
+                  contain: 'strict', 
+                  height: '48px', 
+                  lineHeight: '1.2',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 About Launch in 7
               </h2>
               <p 
                 className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed"
-                style={{ contain: 'layout', minHeight: '80px' }}
+                style={{ contain: 'strict', height: '80px', overflow: 'hidden' }}
               >
                 We're a conversion-focused website development company that believes quality shouldn't take months. 
                 Our streamlined 7-day process combines cutting-edge design, SEO optimization, and performance excellence 
@@ -35,19 +43,19 @@ export default function Footer() {
             </div>
             <div 
               className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
-              style={{ contain: 'layout', minHeight: '120px' }}
+              style={{ contain: 'strict', height: '120px', overflow: 'hidden' }}
             >
-              <div className="p-6" style={{ contain: 'layout', minHeight: '120px' }}>
+              <div className="p-6" style={{ contain: 'strict', height: '120px', overflow: 'hidden' }}>
                 <div className="text-4xl font-bold text-electric-blue mb-2">7</div>
                 <div className="text-xl font-semibold mb-2">Day Guarantee</div>
                 <div className="text-gray-300">Fast, reliable delivery without cutting corners</div>
               </div>
-              <div className="p-6" style={{ contain: 'layout', minHeight: '120px' }}>
+              <div className="p-6" style={{ contain: 'strict', height: '120px', overflow: 'hidden' }}>
                 <div className="text-4xl font-bold text-neon-cyan mb-2">100%</div>
                 <div className="text-xl font-semibold mb-2">SEO Optimized</div>
                 <div className="text-gray-300">Built for search engines and user experience</div>
               </div>
-              <div className="p-6" style={{ contain: 'layout', minHeight: '120px' }}>
+              <div className="p-6" style={{ contain: 'strict', height: '120px', overflow: 'hidden' }}>
                 <div className="text-4xl font-bold text-success-green mb-2">∞</div>
                 <div className="text-xl font-semibold mb-2">Conversion Focus</div>
                 <div className="text-gray-300">Designed to turn visitors into customers</div>
