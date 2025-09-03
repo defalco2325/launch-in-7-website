@@ -35,7 +35,10 @@ export default defineConfig({
         manualChunks: {
           'react': ['react', 'react-dom'],
           'vendor': ['wouter', '@tanstack/react-query'],
-          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-slot', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
+          // Critical UI - needed for initial page load (Button, TooltipProvider)
+          'ui-critical': ['@radix-ui/react-slot', '@radix-ui/react-tooltip'],
+          // Deferred UI - only needed for forms and other lazy-loaded sections
+          'ui-deferred': ['@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-toast'],
           'forms': ['react-hook-form', '@hookform/resolvers', 'zod']
         },
         // Optimize asset naming
