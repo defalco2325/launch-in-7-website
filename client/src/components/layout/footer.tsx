@@ -6,9 +6,10 @@ export default function Footer() {
     <footer 
       className="bg-deep-navy text-white py-16"
       style={{ 
-        minHeight: '600px',
-        contain: 'layout style',
-        willChange: 'auto'
+        height: '600px',
+        contain: 'layout style size',
+        willChange: 'auto',
+        overflow: 'hidden'
       }}
       id="footer-section"
     >
@@ -17,10 +18,21 @@ export default function Footer() {
           {/* About Section */}
           <div id="about-section" className="mb-16" style={{ minHeight: '320px', contain: 'layout' }}>
             <div className="text-center mb-12" style={{ minHeight: '160px' }}>
-              <h2 className="font-poppins font-bold text-3xl lg:text-4xl mb-6 bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent" style={{ minHeight: '60px' }}>
+              <h2 className="font-poppins font-bold text-3xl lg:text-4xl mb-6 bg-gradient-to-r from-electric-blue to-neon-cyan bg-clip-text text-transparent" style={{ 
+                minHeight: '60px',
+                height: '60px',
+                lineHeight: '1.2',
+                contain: 'layout size'
+              }}>
                 About Launch in 7
               </h2>
-              <p className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed" style={{ minHeight: '80px' }}>
+              <p className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed" style={{ 
+                minHeight: '80px',
+                height: '80px',
+                overflow: 'hidden',
+                contain: 'layout size',
+                lineHeight: '1.5'
+              }}>
                 We're a conversion-focused website development company that believes quality shouldn't take months. 
                 Our streamlined 7-day process combines cutting-edge design, SEO optimization, and performance excellence 
                 to help businesses launch faster without compromising on results. With our proven system, you get a 
