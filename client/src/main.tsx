@@ -50,7 +50,7 @@ function App() {
 // Hide the CSS splash screen when React loads (after a delay for animation)
 setTimeout(() => {
   document.body.classList.add('react-loaded');
-}, 100);
+}, 50);
 
 createRoot(document.getElementById("root")!).render(<App />);
 

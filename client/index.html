@@ -58,92 +58,160 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
       
+      #splash-logo-container {
+        position: relative;
+        margin-bottom: 2rem;
+        animation: rocket-launch-sequence 2.5s ease-out forwards;
+      }
+      
       #splash-logo {
-        font-size: 3rem;
-        font-weight: bold;
-        background: linear-gradient(45deg, #0EA5E9, #06B6D4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
+        height: 80px;
+        width: auto;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        filter: contrast(1.2);
+      }
+      
+      #logo-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        height: 120px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.2), transparent);
+        border-radius: 50%;
+        opacity: 0;
+        z-index: 1;
+        animation: logo-glow-pulse 2.5s ease-in-out;
+      }
+      
+      #exhaust-trail {
+        position: absolute;
+        bottom: -10px;
+        right: 20%;
+        width: 8px;
+        height: 40px;
+        background: linear-gradient(to bottom, 
+          rgba(59, 130, 246, 0.8) 0%, 
+          rgba(6, 182, 212, 0.6) 40%, 
+          rgba(255, 255, 255, 0.2) 70%, 
+          transparent 100%);
+        border-radius: 4px;
+        opacity: 0;
+        animation: exhaust-ignition 2.5s ease-out forwards;
+        animation-delay: 0.6s;
+        filter: blur(1px);
+      }
+      
+      #smoke-particles {
+        position: absolute;
+        bottom: -20px;
+        right: 18%;
+        width: 15px;
+        height: 15px;
+        opacity: 0;
+        animation: smoke-expansion 2.5s ease-out forwards;
+        animation-delay: 0.8s;
+      }
+      
+      #smoke-particles::before,
+      #smoke-particles::after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(circle, rgba(156, 163, 175, 0.4), transparent 70%);
+        border-radius: 50%;
+        filter: blur(2px);
+      }
+      
+      #smoke-particles::before {
+        animation: smoke-drift-1 2s ease-out forwards;
+        animation-delay: 0.8s;
+      }
+      
+      #smoke-particles::after {
+        animation: smoke-drift-2 2.2s ease-out forwards;
+        animation-delay: 1s;
       }
       
       #splash-tagline {
         color: #666;
         font-size: 1.2rem;
         margin-bottom: 2rem;
-        animation: tagline-pulse 3s ease-in-out;
+        animation: tagline-fade 2.5s ease-in-out;
       }
       
-      @keyframes tagline-pulse {
-        0%, 100% { opacity: 0.8; }
-        50% { opacity: 1; color: #0EA5E9; }
-      }
-      
-      #splash-rocket {
-        font-size: 2rem;
-        animation: rocket-launch-sequence 3s ease-out forwards;
-        position: relative;
-      }
-      
-      /* Smoke trail effect */
-      #splash-rocket::before {
-        content: '💨';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        animation: smoke-trail 3s ease-out forwards;
-        animation-delay: 0.8s;
-      }
-      
-      /* Exhaust glow effect */
-      #splash-rocket::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.8), rgba(6, 182, 212, 0.4), transparent);
-        border-radius: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        animation: exhaust-glow 3s ease-out forwards;
-        animation-delay: 0.8s;
+      @keyframes logo-glow-pulse {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        20% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        40% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
       }
       
       @keyframes rocket-launch-sequence {
         0% { transform: translateY(0px) scale(1); }
-        25% { transform: translateY(-5px) scale(1.02); } /* Gentle float */
-        40% { transform: translateY(-5px) scale(1.02); } /* Ignition pause */
-        60% { transform: translateY(-15px) scale(1.05); } /* Pre-launch */
-        100% { transform: translateY(-200px) scale(0.8); opacity: 0.3; } /* Launch away */
+        25% { transform: translateY(-3px) scale(1.01); } /* Brief pulse */
+        40% { transform: translateY(-3px) scale(1.01); } /* Hold for ignition */
+        60% { transform: translateY(-10px) scale(1.02); } /* Pre-launch */
+        100% { transform: translateY(-100vh) scale(0.7); } /* Launch off screen */
       }
       
-      @keyframes smoke-trail {
-        0% { opacity: 0; transform: translateX(-50%) translateY(0px) scale(1); }
-        30% { opacity: 0.6; transform: translateX(-50%) translateY(10px) scale(1.2); }
-        70% { opacity: 0.8; transform: translateX(-50%) translateY(50px) scale(2); }
-        100% { opacity: 0; transform: translateX(-50%) translateY(100px) scale(3); }
+      @keyframes exhaust-ignition {
+        0% { opacity: 0; height: 0px; }
+        30% { opacity: 0.8; height: 15px; }
+        60% { opacity: 1; height: 25px; }
+        100% { opacity: 0.3; height: 60px; }
       }
       
-      @keyframes exhaust-glow {
-        0% { opacity: 0; transform: translateX(-50%) scale(1); }
-        30% { opacity: 0.8; transform: translateX(-50%) scale(1.5); }
-        60% { opacity: 1; transform: translateX(-50%) scale(2); }
-        100% { opacity: 0; transform: translateX(-50%) scale(3); }
+      @keyframes smoke-expansion {
+        0% { opacity: 0; transform: scale(1); }
+        40% { opacity: 0.6; transform: scale(1.5); }
+        100% { opacity: 0; transform: scale(3); }
       }
       
-      /* Extended splash screen duration */
+      @keyframes smoke-drift-1 {
+        0% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0; }
+        30% { transform: translateY(20px) translateX(-5px) scale(1.5); opacity: 0.5; }
+        100% { transform: translateY(80px) translateX(-15px) scale(2.5); opacity: 0; }
+      }
+      
+      @keyframes smoke-drift-2 {
+        0% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0; }
+        25% { transform: translateY(15px) translateX(8px) scale(1.3); opacity: 0.4; }
+        100% { transform: translateY(70px) translateX(20px) scale(2.2); opacity: 0; }
+      }
+      
+      @keyframes tagline-fade {
+        0%, 60% { opacity: 0.8; }
+        100% { opacity: 0; }
+      }
+      
+      /* Extended splash screen duration with launch effect */
       .react-loaded #splash-screen {
-        animation: splash-fade-out 0.5s ease-out 2.5s forwards;
+        animation: entire-screen-launch 0.8s ease-in 2s forwards;
       }
       
-      @keyframes splash-fade-out {
-        0% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0; transform: translateY(-20px); display: none; }
+      @keyframes entire-screen-launch {
+        0% { 
+          opacity: 1; 
+          transform: translateY(0); 
+          background: white;
+        }
+        70% { 
+          opacity: 0.9; 
+          transform: translateY(-40px); 
+          background: linear-gradient(to bottom, white 0%, rgba(255,255,255,0.8) 100%);
+        }
+        100% { 
+          opacity: 0; 
+          transform: translateY(-100vh); 
+          background: transparent;
+          display: none;
+        }
       }
     </style>
 
@@ -275,9 +343,13 @@
   <body>
     <!-- Immediate splash screen before React loads -->
     <div id="splash-screen">
-      <div id="splash-logo">Launch in 7</div>
+      <div id="splash-logo-container">
+        <img id="splash-logo" src="/splash-logo.png" alt="Launch in 7" />
+        <div id="logo-glow"></div>
+        <div id="exhaust-trail"></div>
+        <div id="smoke-particles"></div>
+      </div>
       <div id="splash-tagline">Launch Your Business in 7 Days</div>
-      <div id="splash-rocket">🚀</div>
     </div>
     
     <div id="root" role="main"></div>
