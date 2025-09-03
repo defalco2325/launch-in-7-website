@@ -11,7 +11,7 @@ export function updateSEO({
   title = "Launch in 7 - Your New Website, Live in 7 Days",
   description = "Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.",
   url = typeof window !== "undefined" ? window.location.href : "",
-  image = "/og-image.jpg"
+  image = `/og-image.jpg?v=${Date.now()}`
 }: SEOData) {
   if (typeof window === "undefined") return;
 
