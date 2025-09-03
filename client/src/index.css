@@ -1,6 +1,4 @@
-/* Self-hosted fonts - critical FCP optimization */
-@import '@fontsource/poppins/700.css';
-@import '@fontsource/inter/400.css';
+/* System fonts only - no preloading */
 
 /* Enhanced focus styles for accessibility */
 *:focus-visible {
@@ -34,15 +32,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced font fallback system with precise metrics to prevent CLS */
+/* System font fallback - no custom fonts */
 .font-poppins {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
   font-kerning: none;
   contain: layout style; /* Prevent font loading shifts */
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
   font-kerning: none;
   text-rendering: optimizeSpeed;
   /* Reduce font smoothing overhead */

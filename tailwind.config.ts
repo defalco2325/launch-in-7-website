@@ -71,9 +71,9 @@ export default {
         "tech-orange": "var(--tech-orange)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        poppins: ["var(--font-poppins)", "sans-serif"],
-        inter: ["var(--font-inter)", "sans-serif"],
+        sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "system-ui", "sans-serif"],
+        poppins: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "system-ui", "sans-serif"],
+        inter: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
