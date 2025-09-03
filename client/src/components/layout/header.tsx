@@ -27,10 +27,14 @@ export default function Header() {
               data-testid="logo-link"
             >
               <img 
-                src="/logo.png" 
+                src="/logo.jpg" 
                 alt="Launch in 7"
                 className="h-12 w-auto"
                 style={{ backgroundColor: 'transparent' }}
+                onError={(e) => {
+                  console.error('Logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </Link>
           </div>

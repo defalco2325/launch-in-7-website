@@ -76,6 +76,19 @@ app.use((req, res, next) => {
       res.sendFile(path.resolve(process.cwd(), 'public/og-image.jpg'));
     });
     
+    // Serve logo files
+    app.get('/logo.png', (req, res) => {
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.sendFile(path.resolve(process.cwd(), 'public/logo.png'));
+    });
+    
+    app.get('/logo.jpg', (req, res) => {
+      res.setHeader('Content-Type', 'image/jpeg');
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.sendFile(path.resolve(process.cwd(), 'public/logo.jpg'));
+    });
+    
     // Serve specific SEO files before catch-all
     app.get('/robots.txt', (req, res) => {
       res.setHeader('Content-Type', 'text/plain');
