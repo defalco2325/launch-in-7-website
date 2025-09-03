@@ -31,7 +31,7 @@ export default function Header() {
                 <img 
                   src={logoImage} 
                   alt="Launch in 7"
-                  className="h-16 w-auto"
+                  className="h-32 w-auto"
                   onError={(e) => {
                     console.error('Logo failed to load:', logoImage);
                   }}
