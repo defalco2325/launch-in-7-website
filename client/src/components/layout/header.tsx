@@ -33,7 +33,8 @@ export default function Header() {
                 className="h-32 w-auto"
                 style={{ 
                   backgroundColor: 'transparent',
-                  mixBlendMode: 'multiply' 
+                  mixBlendMode: 'screen',
+                  filter: 'contrast(1.2) brightness(1.1)'
                 }}
               />
             </Link>
