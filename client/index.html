@@ -94,6 +94,37 @@
     <title>Launch in 7 - Professional Website Development</title>
   </head>
   <body>
+    <!-- Video Splash Screen -->
+    <div id="splash" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 1s ease-out;
+    ">
+      <video 
+        id="splash-video"
+        autoplay 
+        muted 
+        playsinline
+        style="
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        "
+      >
+        <source src="/splash.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
     <div id="root" role="main"></div>
     
     <!-- Hidden forms for Netlify form detection at build time -->
@@ -124,6 +155,4 @@
       <input name="budget" />
     </form>
     
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
 </html>
