@@ -21,8 +21,20 @@
 #splash-video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
+}
+
+/* Desktop screens - better fit without excessive cropping */
+@media (min-width: 769px) {
+  #splash-video {
+    object-fit: contain;
+    object-position: center center;
+  }
+  
+  #splash {
+    background-color: black; /* Ensure black bars are black, not transparent */
+  }
 }
 
 /* Mobile-optimized video display */
