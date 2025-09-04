@@ -8,6 +8,7 @@ import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
 import SplashScreen from "@/components/splash-screen";
 import { SEOProvider } from "@/lib/seo";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
@@ -30,12 +31,14 @@ function Router() {
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const isMobile = useIsMobile();
 
   const handleSplashComplete = () => {
     setShowSplash(false);
   };
 
-  if (showSplash) {
+  // Only show splash screen on mobile devices
+  if (showSplash && isMobile) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
 
