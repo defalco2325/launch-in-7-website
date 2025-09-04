@@ -225,6 +225,15 @@ export default function AuditForm() {
         {/* Submit Button */}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <Button
+            type="button"
+            variant="outline"
+            className="sm:w-auto bg-white border-2 border-gray-300 text-deep-navy hover:bg-gray-50 hover:border-gray-400 font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
+            data-testid="button-schedule-consultation"
+          >
+            Schedule a Free Consultation
+          </Button>
+
+          <Button
             type="submit"
             disabled={form.formState.isSubmitting}
             className="flex-1 bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
@@ -238,15 +247,6 @@ export default function AuditForm() {
             ) : (
               "Get My Free Audit"
             )}
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="sm:w-auto bg-gradient-to-r from-success-green to-tech-orange hover:from-success-green/90 hover:to-tech-orange/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
-            data-testid="button-book-call"
-          >
-            Book a Call Instead
           </Button>
         </div>
       </form>
