@@ -15,9 +15,22 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     // Prevent body scrolling
     document.body.style.overflow = 'hidden';
     
+    const hideSplash = () => {
+      console.log('Hiding splash screen');
+      setIsFading(true);
+      // Re-enable body scrolling
+      document.body.style.overflow = '';
+      
+      setTimeout(() => {
+        setIsVisible(false);
+        onComplete();
+      }, 800); // 800ms fade out duration
+    };
+
     const video = videoRef.current;
     if (!video) {
-      console.log('Video element not found');
+      console.log('Video element not found, hiding splash in 3 seconds');
+      setTimeout(hideSplash, 3000);
       return;
     }
 
@@ -36,7 +49,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           .catch(error => {
             console.error('Video autoplay failed:', error);
             // If autoplay fails, hide splash after a short delay
-            setTimeout(hideSplash, 1000);
+            setTimeout(hideSplash, 2000);
           });
       }
     };
@@ -47,16 +60,9 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       hideSplash();
     };
 
-    const hideSplash = () => {
-      console.log('Hiding splash screen');
-      setIsFading(true);
-      // Re-enable body scrolling
-      document.body.style.overflow = '';
-      
-      setTimeout(() => {
-        setIsVisible(false);
-        onComplete();
-      }, 800); // 800ms fade out duration
+    const handleLoadError = () => {
+      console.log('Video failed to load, hiding splash');
+      setTimeout(hideSplash, 1000);
     };
 
     // Set up maximum timeout as fallback
@@ -68,12 +74,14 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     // Add event listeners
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('ended', handleVideoEnd);
+    video.addEventListener('error', handleLoadError);
 
     // Cleanup function
     return () => {
       clearTimeout(maxTimeout);
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('ended', handleVideoEnd);
+      video.removeEventListener('error', handleLoadError);
       document.body.style.overflow = '';
     };
   }, [onComplete]);
@@ -87,6 +95,11 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         isFading ? 'opacity-0 splash-fade-out' : 'opacity-100'
       }`}
     >
+      {/* Test text overlay to verify splash is showing */}
+      <div className="absolute top-4 left-4 text-white text-sm z-10">
+        SPLASH SCREEN ACTIVE
+      </div>
+      
       <video
         ref={videoRef}
         className="w-full h-full object-cover"

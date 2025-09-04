@@ -39,9 +39,8 @@ function App() {
     setShowSplash(false);
   };
 
-  // Only show splash screen on mobile devices
-  // Show splash if we haven't determined mobile status yet (undefined) or if it's mobile
-  if (showSplash && (isMobile === undefined || isMobile === true)) {
+  // FOR TESTING: Always show splash screen first, then add mobile detection back
+  if (showSplash) {
     console.log('Showing splash screen');
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
