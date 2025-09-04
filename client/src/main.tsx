@@ -53,27 +53,31 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-// Defer all non-critical scripts to after initial render
+// Defer all non-critical scripts to reduce main-thread blocking
 const deferNonCriticalScripts = () => {
-  // Setup Netlify Forms progressive enhancement
-  setupNetlifyForms();
+  // Setup Netlify Forms progressive enhancement (low priority)
+  setTimeout(() => {
+    setupNetlifyForms();
+  }, 100);
 
-  // Register service worker for PWA functionality (deferred)
+  // Register service worker for PWA functionality (very low priority)
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered successfully:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
+    setTimeout(() => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+    }, 500);
   }
 };
 
-// Use requestIdleCallback with fallback for better browser support
+// Use requestIdleCallback with aggressive deferral to minimize main-thread impact
 if (typeof requestIdleCallback === 'function') {
-  requestIdleCallback(deferNonCriticalScripts, { timeout: 2000 });
+  requestIdleCallback(deferNonCriticalScripts, { timeout: 5000 });
 } else {
-  // Fallback for older browsers
-  setTimeout(deferNonCriticalScripts, 1000);
+  // Fallback with longer delay for older browsers
+  setTimeout(deferNonCriticalScripts, 3000);
 }
