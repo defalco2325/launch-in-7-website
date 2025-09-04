@@ -71,10 +71,7 @@ export default function Footer() {
 
           
           {/* Bottom Bar */}
-          <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-between h-[100px]">
-            <p className="text-gray-100 text-sm mb-4 md:mb-0 h-5">
-              &copy; 2024 Launch in 7. All rights reserved.
-            </p>
+          <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row items-center justify-center h-[100px]">
             <div className="flex space-x-6 text-sm h-5">
               <span className="text-gray-100 cursor-not-allowed" aria-disabled="true">Privacy Policy (Coming Soon)</span>
               <span className="text-gray-100 cursor-not-allowed" aria-disabled="true">Terms of Service (Coming Soon)</span>
