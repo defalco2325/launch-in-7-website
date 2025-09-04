@@ -46,115 +46,20 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Section */}
-          <div id="contact-section" className="mb-16 pt-12 border-t border-white/20 bg-deep-navy/30 rounded-lg p-8">
-            <h3 className="font-poppins font-bold text-3xl mb-8 text-center text-white">Get In Touch</h3>
-            <div className="text-center space-y-6">
-              <p className="text-white text-xl font-medium">Ready to launch your website in just 7 days?</p>
-              <a 
-                href="tel:7025826584" 
-                className="bg-electric-blue hover:bg-electric-blue/80 text-white font-bold text-2xl py-4 px-8 rounded-xl flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white max-w-md mx-auto"
-                data-testid="footer-phone-contact"
-              >
-                <Phone className="w-6 h-6 mr-3 text-white" width="24" height="24" />
-                702-582-6584
-              </a>
-              <p className="text-gray-200 text-lg">Available Monday-Friday, 9 AM - 6 PM PST</p>
-            </div>
+          {/* Contact Section - Simplified */}
+          <div className="mb-12 pt-8 border-t border-white/20 text-center">
+            <h3 className="font-poppins font-bold text-2xl mb-6 text-white">Ready to Get Started?</h3>
+            <a 
+              href="tel:7025826584" 
+              className="bg-electric-blue hover:bg-electric-blue/80 text-white font-bold text-xl py-4 px-8 rounded-lg inline-flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+              data-testid="footer-phone-contact"
+            >
+              <Phone className="w-5 h-5 mr-3 text-white" />
+              Call 702-582-6584
+            </a>
+            <p className="text-gray-200 text-sm mt-4">Available Monday-Friday, 9 AM - 6 PM PST</p>
           </div>
 
-          {/* Newsletter & Social */}
-          <div className="mb-12 pt-12 border-t border-white/20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              {/* Newsletter Signup */}
-              <div className="text-center lg:text-left">
-                <h3 className="font-poppins font-bold text-2xl mb-4 text-white">Stay Updated</h3>
-                <p className="text-gray-200 mb-6">Get web development tips and launch notifications</p>
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0">
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email"
-                    className="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-transparent"
-                    data-testid="newsletter-email"
-                  />
-                  <button 
-                    className="bg-electric-blue hover:bg-electric-blue/80 text-white font-semibold px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-                    data-testid="newsletter-signup"
-                  >
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-
-              {/* Social Media & Contact */}
-              <div className="text-center lg:text-right">
-                <h3 className="font-poppins font-bold text-2xl mb-4 text-white">Connect With Us</h3>
-                <div className="flex justify-center lg:justify-end space-x-4 mb-6">
-                  <a href="mailto:hello@launchin7.com" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors" data-testid="email-link">
-                    <Mail className="w-5 h-5 text-white" />
-                  </a>
-                  <a href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors" data-testid="facebook-link">
-                    <Facebook className="w-5 h-5 text-white" />
-                  </a>
-                  <a href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors" data-testid="twitter-link">
-                    <Twitter className="w-5 h-5 text-white" />
-                  </a>
-                  <a href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors" data-testid="linkedin-link">
-                    <Linkedin className="w-5 h-5 text-white" />
-                  </a>
-                  <a href="#" className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors" data-testid="instagram-link">
-                    <Instagram className="w-5 h-5 text-white" />
-                  </a>
-                </div>
-                <div className="text-gray-200 text-sm">
-                  <div className="mb-2">hello@launchin7.com</div>
-                  <div>Based in Las Vegas, Nevada</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="mb-12 pt-8 border-t border-white/20">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
-              <div>
-                <h4 className="font-semibold text-white mb-4">Services</h4>
-                <ul className="space-y-2 text-gray-200 text-sm">
-                  <li><Link href="/" className="hover:text-white transition-colors">Website Development</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">SEO Optimization</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Mobile Design</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Performance Audit</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-4">Company</h4>
-                <ul className="space-y-2 text-gray-200 text-sm">
-                  <li><Link href="/" className="hover:text-white transition-colors">About Us</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Our Process</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Portfolio</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Contact</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-4">Support</h4>
-                <ul className="space-y-2 text-gray-200 text-sm">
-                  <li><Link href="/" className="hover:text-white transition-colors">Help Center</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">Documentation</Link></li>
-                  <li><Link href="/" className="hover:text-white transition-colors">FAQs</Link></li>
-                  <li><a href="tel:7025826584" className="hover:text-white transition-colors">702-582-6584</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-4">Legal</h4>
-                <ul className="space-y-2 text-gray-200 text-sm">
-                  <li><span className="cursor-not-allowed opacity-60">Privacy Policy</span></li>
-                  <li><span className="cursor-not-allowed opacity-60">Terms of Service</span></li>
-                  <li><span className="cursor-not-allowed opacity-60">Cookie Policy</span></li>
-                  <li><span className="cursor-not-allowed opacity-60">Refund Policy</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
           
           {/* Bottom Bar */}
           <div className="border-t border-white/20 pt-8 pb-4">
