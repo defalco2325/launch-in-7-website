@@ -7,13 +7,13 @@ import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
 
-// CRITICAL PATH: Only load essential shell components
+// CRITICAL PATH: Eagerly load shell + above-the-fold components
 import Header from "@/components/layout/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-// Lazy load ALL pages and heavy components to reduce initial bundle
-const Home = lazy(() => import("@/pages/home"));
-const Footer = lazy(() => import("@/components/layout/footer"));
+// Inline most components, only lazy load heavy ones
+import Home from "@/pages/home";
+import Footer from "@/components/layout/footer";
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 function Router() {
@@ -42,10 +42,8 @@ function App() {
             <main id="main-content" className="pt-16" role="main">
               <Router />
             </main>
-            {/* Footer lazy loaded */}
-            <Suspense fallback={<div className="bg-deep-navy h-32"></div>}>
-              <Footer />
-            </Suspense>
+            {/* Footer inlined */}
+            <Footer />
           </div>
         </SEOProvider>
       </TooltipProvider>
@@ -56,13 +54,7 @@ function App() {
 createRoot(document.getElementById("root")!).render(<App />);
 
 // Splash Screen Logic
-let splashInitialized = false;
 const initializeSplashScreen = () => {
-  // Prevent multiple initializations (important for HMR in development)
-  if (splashInitialized) {
-    return;
-  }
-  
   const splash = document.getElementById('splash');
   const video = document.getElementById('splash-video') as HTMLVideoElement;
   const body = document.body;
@@ -72,8 +64,6 @@ const initializeSplashScreen = () => {
     return;
   }
 
-  // Mark as initialized before proceeding
-  splashInitialized = true;
   console.log('Initializing splash screen');
 
   // Disable scrolling initially
@@ -84,40 +74,20 @@ const initializeSplashScreen = () => {
 
   const hideSplash = () => {
     console.log('Hiding splash screen');
-    
-    // Add fade out class immediately
     splash.classList.add('splash-fade-out');
-    
-    // Listen for animation end to complete the transition
-    const handleAnimationEnd = () => {
+    setTimeout(() => {
       splash.classList.add('splash-hidden');
       body.classList.remove('splash-active');
-      splash.removeEventListener('animationend', handleAnimationEnd);
-      console.log('Splash screen completely hidden');
-    };
-    
-    splash.addEventListener('animationend', handleAnimationEnd);
-    
-    // Fallback in case animation doesn't fire
-    setTimeout(() => {
-      if (!splash.classList.contains('splash-hidden')) {
-        console.log('Fallback: Force hiding splash screen');
-        handleAnimationEnd();
-      }
-    }, 1200); // Slightly longer than animation duration
+    }, 1000);
   };
 
-  // Attempt to play video with yielding to prevent main-thread blocking
+  // Attempt to play video
   const attemptPlay = async () => {
     if (playAttempted) return;
     playAttempted = true;
     
     try {
       console.log('Attempting to play video');
-      
-      // Yield to main thread before heavy operations
-      await new Promise(resolve => setTimeout(resolve, 0));
-      
       video.currentTime = 0;
       video.muted = true; // Ensure muted for autoplay
       
@@ -128,17 +98,15 @@ const initializeSplashScreen = () => {
         hasStartedPlaying = true;
         console.log('Video started playing successfully');
         
-        // Schedule hiding splash after video plays for 4 seconds
-        console.log('Video playing - will hide splash in 4 seconds');
+        // Set timer to hide splash after video duration
         setTimeout(() => {
           console.log('Video finished - hiding splash');
           hideSplash();
-        }, 4000);
+        }, 4000); // 4 seconds for the rocket launch video
       }
     } catch (error) {
       console.log('Video autoplay failed:', error);
-      // Defer error handling to not block main thread
-      requestAnimationFrame(() => hideSplash());
+      hideSplash();
     }
   };
 
@@ -166,19 +134,19 @@ const initializeSplashScreen = () => {
     hideSplash();
   });
 
-  // Fallback timeouts
+  // Fallback: if video hasn't started playing within 2 seconds, hide splash
   setTimeout(() => {
     if (!hasStartedPlaying) {
       console.log('Video timeout - hiding splash');
       hideSplash();
     }
   }, 2000);
-  
-  // Absolute fallback: always hide after 6 seconds max
+
+  // Absolute fallback: always hide after 8 seconds max
   setTimeout(() => {
-    console.log('Maximum timeout reached - forcing hide');
+    console.log('Maximum timeout reached - hiding splash');
     hideSplash();
-  }, 6000);
+  }, 8000);
 };
 
 // Initialize splash screen when DOM is ready
@@ -189,62 +157,27 @@ if (document.readyState === 'loading') {
   initializeSplashScreen();
 }
 
-// Break up non-critical scripts to prevent main-thread blocking
-const setupNetlifyFormsAsync = () => {
-  if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(() => {
-      setupNetlifyForms();
-    }, { timeout: 1000 });
-  } else {
-    setTimeout(() => setupNetlifyForms(), 500);
-  }
-};
+// Defer all non-critical scripts to after initial render
+const deferNonCriticalScripts = () => {
+  // Setup Netlify Forms progressive enhancement
+  setupNetlifyForms();
 
-const setupServiceWorkerAsync = () => {
+  // Register service worker for PWA functionality (deferred)
   if ('serviceWorker' in navigator) {
-    if (typeof requestIdleCallback === 'function') {
-      requestIdleCallback(() => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.log('Service Worker registration failed:', error);
-          });
-      }, { timeout: 3000 });
-    } else {
-      setTimeout(() => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.log('Service Worker registration failed:', error);
-          });
-      }, 1000);
-    }
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered successfully:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('Service Worker registration failed:', error);
+      });
   }
 };
 
-// Stagger non-critical script initialization to spread main-thread work
-requestAnimationFrame(() => {
-  setupNetlifyFormsAsync();
-  
-  // Add delay between heavy operations
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      setupServiceWorkerAsync();
-      
-      // Initialize performance optimizations after everything loads
-      import('./utils/performance').then(({ optimizeWillChange }) => {
-        if (typeof requestIdleCallback === 'function') {
-          requestIdleCallback(() => {
-            optimizeWillChange();
-          }, { timeout: 5000 });
-        } else {
-          setTimeout(() => optimizeWillChange(), 2000);
-        }
-      });
-    });
-  }, 100);
-});
+// Use requestIdleCallback with fallback for better browser support
+if (typeof requestIdleCallback === 'function') {
+  requestIdleCallback(deferNonCriticalScripts, { timeout: 2000 });
+} else {
+  // Fallback for older browsers
+  setTimeout(deferNonCriticalScripts, 1000);
+}
