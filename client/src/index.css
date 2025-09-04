@@ -111,21 +111,20 @@
   }
 }
 
-/* Hardware accelerated fade animation */
+/* Smooth fade out animation */
 @keyframes fadeOut {
-  from {
+  0% {
     opacity: 1;
-    transform: translate3d(0,0,0);
+    visibility: visible;
   }
-  to {
+  100% {
     opacity: 0;
-    transform: translate3d(0,0,0);
+    visibility: visible;
   }
 }
 
 .splash-fade-out {
   animation: fadeOut 1s ease-out forwards;
-  /* Force hardware layer only during animation */
   will-change: opacity;
 }
 

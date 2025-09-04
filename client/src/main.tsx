@@ -84,17 +84,27 @@ const initializeSplashScreen = () => {
 
   const hideSplash = () => {
     console.log('Hiding splash screen');
-    // Use requestAnimationFrame to avoid blocking main thread
-    requestAnimationFrame(() => {
-      splash.classList.add('splash-fade-out');
-      // Use requestAnimationFrame instead of setTimeout for better performance
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          splash.classList.add('splash-hidden');
-          body.classList.remove('splash-active');
-        }, 1000);
-      });
-    });
+    
+    // Add fade out class immediately
+    splash.classList.add('splash-fade-out');
+    
+    // Listen for animation end to complete the transition
+    const handleAnimationEnd = () => {
+      splash.classList.add('splash-hidden');
+      body.classList.remove('splash-active');
+      splash.removeEventListener('animationend', handleAnimationEnd);
+      console.log('Splash screen completely hidden');
+    };
+    
+    splash.addEventListener('animationend', handleAnimationEnd);
+    
+    // Fallback in case animation doesn't fire
+    setTimeout(() => {
+      if (!splash.classList.contains('splash-hidden')) {
+        console.log('Fallback: Force hiding splash screen');
+        handleAnimationEnd();
+      }
+    }, 1200); // Slightly longer than animation duration
   };
 
   // Attempt to play video with yielding to prevent main-thread blocking
@@ -118,19 +128,12 @@ const initializeSplashScreen = () => {
         hasStartedPlaying = true;
         console.log('Video started playing successfully');
         
-        // Use requestIdleCallback if available, fallback to setTimeout
-        const scheduleHide = () => {
+        // Schedule hiding splash after video plays for 4 seconds
+        console.log('Video playing - will hide splash in 4 seconds');
+        setTimeout(() => {
           console.log('Video finished - hiding splash');
           hideSplash();
-        };
-        
-        if (typeof requestIdleCallback === 'function') {
-          setTimeout(() => {
-            requestIdleCallback(scheduleHide, { timeout: 4000 });
-          }, 4000);
-        } else {
-          setTimeout(scheduleHide, 4000);
-        }
+        }, 4000);
       }
     } catch (error) {
       console.log('Video autoplay failed:', error);
@@ -163,33 +166,19 @@ const initializeSplashScreen = () => {
     hideSplash();
   });
 
-  // Use requestIdleCallback for fallback timers to avoid blocking main thread
-  const scheduleVideoTimeout = () => {
+  // Fallback timeouts
+  setTimeout(() => {
     if (!hasStartedPlaying) {
       console.log('Video timeout - hiding splash');
       hideSplash();
     }
-  };
-
-  const scheduleMaxTimeout = () => {
-    console.log('Maximum timeout reached - hiding splash');
+  }, 2000);
+  
+  // Absolute fallback: always hide after 6 seconds max
+  setTimeout(() => {
+    console.log('Maximum timeout reached - forcing hide');
     hideSplash();
-  };
-
-  // Fallback: if video hasn't started playing within 2 seconds, hide splash
-  if (typeof requestIdleCallback === 'function') {
-    setTimeout(() => {
-      requestIdleCallback(scheduleVideoTimeout, { timeout: 2000 });
-    }, 2000);
-    
-    // Absolute fallback: always hide after 8 seconds max
-    setTimeout(() => {
-      requestIdleCallback(scheduleMaxTimeout, { timeout: 8000 });
-    }, 8000);
-  } else {
-    setTimeout(scheduleVideoTimeout, 2000);
-    setTimeout(scheduleMaxTimeout, 8000);
-  }
+  }, 6000);
 };
 
 // Initialize splash screen when DOM is ready
