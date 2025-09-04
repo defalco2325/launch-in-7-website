@@ -94,6 +94,20 @@
     <title>Launch in 7 - Professional Website Development</title>
   </head>
   <body>
+    <!-- Video Splash Screen Overlay -->
+    <div id="splash">
+      <video 
+        id="splash-video" 
+        autoplay 
+        muted 
+        playsinline
+        preload="auto"
+      >
+        <source src="/splash.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    
     <div id="root" role="main"></div>
     
     <!-- Hidden forms for Netlify form detection at build time -->

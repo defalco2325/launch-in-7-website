@@ -53,6 +53,53 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
+// Splash Screen Logic
+const initializeSplashScreen = () => {
+  const splash = document.getElementById('splash');
+  const video = document.getElementById('splash-video') as HTMLVideoElement;
+  const body = document.body;
+
+  if (!splash || !video) return;
+
+  // Disable scrolling initially
+  body.classList.add('splash-active');
+
+  // Handle video end event
+  video.addEventListener('ended', () => {
+    // Start fade out animation
+    splash.classList.add('splash-fade-out');
+    
+    // After animation completes, hide splash and enable scrolling
+    setTimeout(() => {
+      splash.classList.add('splash-hidden');
+      body.classList.remove('splash-active');
+    }, 1000); // Match the CSS animation duration
+  });
+
+  // Fallback: if video fails to load or play, hide splash after 3 seconds
+  setTimeout(() => {
+    if (!video.ended && splash.style.display !== 'none') {
+      splash.classList.add('splash-fade-out');
+      setTimeout(() => {
+        splash.classList.add('splash-hidden');
+        body.classList.remove('splash-active');
+      }, 1000);
+    }
+  }, 3000);
+
+  // Handle video load errors
+  video.addEventListener('error', () => {
+    splash.classList.add('splash-fade-out');
+    setTimeout(() => {
+      splash.classList.add('splash-hidden');
+      body.classList.remove('splash-active');
+    }, 1000);
+  });
+};
+
+// Initialize splash screen immediately
+initializeSplashScreen();
+
 // Defer all non-critical scripts to after initial render
 const deferNonCriticalScripts = () => {
   // Setup Netlify Forms progressive enhancement
