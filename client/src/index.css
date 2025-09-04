@@ -81,12 +81,17 @@ form, .form-field, .input-group {
   /* Simplified glass effect to reduce GPU overhead */
 }
 
-/* Reduced layout containment to prevent excessive processing */
-footer.bg-deep-navy {
-  min-height: 600px; /* Increased height to prevent CLS */
-  contain: layout style paint; /* Isolate layout, style, and paint */
-  /* Force GPU layer for heavy footer content */
+/* Fixed footer dimensions to eliminate CLS */
+#footer-section {
+  height: 600px !important; /* Fixed height prevents layout shifts */
+  contain: layout style paint;
   will-change: auto;
+  overflow: hidden; /* Prevent content overflow causing shifts */
+}
+
+/* Ensure footer components maintain stable layout */
+#footer-section * {
+  contain: style;
 }
 
 /* Minimal hardware acceleration - only when needed */
