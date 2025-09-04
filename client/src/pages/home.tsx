@@ -60,26 +60,9 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      {/* Delayed mounting - only render after first paint */}
-      {ready && (
-        <>
-          <div ref={guaranteeRef} id="guarantee-section" style={{ contentVisibility: 'auto', containIntrinsicSize: '800px 1px' }}>
-            {guaranteeInView && (
-              <Suspense fallback={null}>
-                <GuaranteeExplainer />
-              </Suspense>
-            )}
-          </div>
-          
-          <div ref={servicesRef} style={{ contentVisibility: 'auto', containIntrinsicSize: '800px 1px' }}>
-            {servicesInView && (
-              <Suspense fallback={null}>
-                <ServicesSnapshot />
-              </Suspense>
-            )}
-          </div>
-        </>
-      )}
+      {/* Render sections directly for better reliability */}
+      <GuaranteeExplainer />
+      <ServicesSnapshot />
       <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -115,20 +98,13 @@ export default function Home() {
                   <div className="w-2 h-2 bg-accent-purple rounded-full"></div>
                 </div>
                 
-                <div ref={auditRef}>
-                  {auditInView && (
-                    <Suspense fallback={
-                      <div 
-                        className="h-64 flex items-center justify-center"
-                        style={{ minHeight: '256px' }}
-                      >
-                        <div className="animate-pulse text-gray-500">Loading form...</div>
-                      </div>
-                    }>
-                      <AuditForm />
-                    </Suspense>
-                  )}
-                </div>
+                <Suspense fallback={
+                  <div className="h-64 flex items-center justify-center">
+                    <div className="animate-pulse text-gray-500">Loading form...</div>
+                  </div>
+                }>
+                  <AuditForm />
+                </Suspense>
                 
                 {/* Trust Indicators */}
                 <div className="mt-8 pt-6 border-t border-gray-100">
