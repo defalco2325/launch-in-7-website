@@ -7,14 +7,14 @@ import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
 
-// Lazy load ALL components to minimize initial bundle size
+// CRITICAL PATH: Eagerly load shell + above-the-fold components
+import Header from "@/components/layout/header";
+import { TooltipProvider } from "@/components/ui/tooltip";
+
+// Lazy load below-the-fold content to reduce critical chain
 const Home = lazy(() => import("@/pages/home"));
 const NotFound = lazy(() => import("@/pages/not-found"));
-const Header = lazy(() => import("@/components/layout/header"));
 const Footer = lazy(() => import("@/components/layout/footer"));
-const TooltipProvider = lazy(() => 
-  import("@/components/ui/tooltip").then(module => ({ default: module.TooltipProvider }))
-);
 
 function Router() {
   return (
@@ -34,25 +34,21 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-      </div>}>
-        <TooltipProvider>
-          <SEOProvider>
-            <div className="min-h-screen bg-background">
-              <Suspense fallback={<div className="h-16 bg-white border-b"></div>}>
-                <Header />
-              </Suspense>
-              <main id="main-content" className="pt-16" role="main">
-                <Router />
-              </main>
-              <Suspense fallback={<div className="h-96 bg-slate-900"></div>}>
-                <Footer />
-              </Suspense>
-            </div>
-          </SEOProvider>
-        </TooltipProvider>
-      </Suspense>
+      <TooltipProvider>
+        <SEOProvider>
+          <div className="min-h-screen bg-background">
+            {/* Header in critical path - no lazy loading */}
+            <Header />
+            <main id="main-content" className="pt-16" role="main">
+              <Router />
+            </main>
+            {/* Footer lazy loaded since it's below-the-fold */}
+            <Suspense fallback={<div className="h-[600px] bg-slate-900"></div>}>
+              <Footer />
+            </Suspense>
+          </div>
+        </SEOProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }
