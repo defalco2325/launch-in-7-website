@@ -241,10 +241,10 @@ form, .form-field, .input-group {
 
 /* Fixed footer dimensions to eliminate CLS */
 #footer-section {
-  height: 600px !important; /* Fixed height prevents layout shifts */
+  min-height: auto; /* Allow footer to expand naturally */
   contain: layout style paint;
   will-change: auto;
-  overflow: hidden; /* Prevent content overflow causing shifts */
+  overflow: visible; /* Allow footer content to display fully */
 }
 
 /* Ensure footer components maintain stable layout */
