@@ -17,6 +17,7 @@ import { useState, useEffect, useMemo, memo, useRef, useCallback } from "react";
 const HeroSection = memo(function HeroSection() {
   // 7-day process animation state
   const [currentDay, setCurrentDay] = useState(1);
+  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
@@ -53,11 +54,26 @@ const HeroSection = memo(function HeroSection() {
   useEffect(() => {
     if (!isVisible) return;
     
-    const interval = setInterval(() => {
-      setCurrentDay(prev => prev >= 7 ? 1 : prev + 1);
-    }, 2500); // Day changes every 2.5 seconds
-
-    return () => clearInterval(interval);
+    // Smooth progress animation
+    const totalCycleDuration = 17500; // 7 days * 2.5 seconds each
+    const startTime = Date.now();
+    
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTime;
+      const cycleProgress = (elapsed % totalCycleDuration) / totalCycleDuration;
+      
+      // Calculate smooth progress (0 to 100)
+      const smoothProgress = cycleProgress * 100;
+      setProgress(smoothProgress);
+      
+      // Calculate current day based on progress
+      const dayProgress = Math.floor(cycleProgress * 7) + 1;
+      setCurrentDay(Math.min(dayProgress, 7));
+    };
+    
+    const animationFrame = setInterval(updateProgress, 16); // ~60fps
+    
+    return () => clearInterval(animationFrame);
   }, [isVisible]);
 
   // Memoized callbacks to reduce re-renders
@@ -236,14 +252,15 @@ const HeroSection = memo(function HeroSection() {
                       </span>
                     </div>
                     
-                    {/* Progress Bar Based on Current Day */}
+                    {/* Smooth Progress Bar */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full transition-all duration-500 ease-out"
+                        className="cutting-edge-gradient h-3 rounded-full"
                         style={{
-                          width: `${(currentDay / 7) * 100}%`,
+                          width: `${progress}%`,
                           transform: "translateZ(0)",
-                          backfaceVisibility: "hidden"
+                          backfaceVisibility: "hidden",
+                          transition: "none" // Disable transition for smooth animation
                         }}
                       ></div>
                     </div>
