@@ -149,48 +149,24 @@ export default function AuditForm() {
             <Label id="lbl-audit-goal" htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
               Primary Goal *
             </Label>
-            
-            {/* Mobile native select */}
-            <label htmlFor="m-goal" className="sr-only">Select your main goal</label>
-            <select
-              id="m-goal"
-              aria-label="Select your main goal"
-              className="block sm:hidden w-full h-12 min-h-[44px] px-3 text-base bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-              value={form.watch("goal") || ""}
-              onChange={(e) => form.setValue("goal", e.target.value as AuditFormData["goal"])}
-              data-testid="select-audit-goal-mobile"
-            >
-              <option value="" disabled>Select your main goal</option>
-              <option value="increase-traffic">Increase Traffic</option>
-              <option value="improve-conversions">Improve Conversions</option>
-              <option value="better-performance">Better Performance</option>
-              <option value="modernize-design">Modernize Design</option>
-              <option value="add-ecommerce">Add E-commerce</option>
-              <option value="mobile-optimization">Mobile Optimization</option>
-            </select>
-
-            {/* Desktop combobox */}
-            <div className="hidden sm:block">
-              <Select onValueChange={(value) => form.setValue("goal", value as AuditFormData["goal"])} value={form.watch("goal")}>
-                <SelectTrigger 
-                  id="audit-goal"
-                  aria-labelledby="lbl-audit-goal"
-                  className="w-full h-12 min-h-[44px] px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-                  data-testid="select-audit-goal"
-                >
-                  <SelectValue placeholder="Select your main goal" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="increase-traffic">Increase Traffic</SelectItem>
-                  <SelectItem value="improve-conversions">Improve Conversions</SelectItem>
-                  <SelectItem value="better-performance">Better Performance</SelectItem>
-                  <SelectItem value="modernize-design">Modernize Design</SelectItem>
-                  <SelectItem value="add-ecommerce">Add E-commerce</SelectItem>
-                  <SelectItem value="mobile-optimization">Mobile Optimization</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
+            <Select onValueChange={(value) => form.setValue("goal", value as AuditFormData["goal"])} value={form.watch("goal")}>
+              <SelectTrigger 
+                id="audit-goal"
+                aria-labelledby="lbl-audit-goal"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-goal"
+              >
+                <SelectValue placeholder="Select your main goal" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="increase-traffic">Increase Traffic</SelectItem>
+                <SelectItem value="improve-conversions">Improve Conversions</SelectItem>
+                <SelectItem value="better-performance">Better Performance</SelectItem>
+                <SelectItem value="modernize-design">Modernize Design</SelectItem>
+                <SelectItem value="add-ecommerce">Add E-commerce</SelectItem>
+                <SelectItem value="mobile-optimization">Mobile Optimization</SelectItem>
+              </SelectContent>
+            </Select>
             {form.formState.errors.goal && (
               <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.goal.message}</p>
             )}
@@ -200,46 +176,23 @@ export default function AuditForm() {
             <Label id="lbl-audit-timeline" htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
               Timeline *
             </Label>
-            
-            {/* Mobile native select */}
-            <label htmlFor="m-timeline" className="sr-only">When do you need this?</label>
-            <select
-              id="m-timeline"
-              aria-label="When do you need this?"
-              className="block sm:hidden w-full h-12 min-h-[44px] px-3 text-base bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-              value={form.watch("timeline") || ""}
-              onChange={(e) => form.setValue("timeline", e.target.value as AuditFormData["timeline"])}
-              data-testid="select-audit-timeline-mobile"
-            >
-              <option value="" disabled>When do you need this?</option>
-              <option value="asap">ASAP</option>
-              <option value="this-month">This Month</option>
-              <option value="next-month">Next Month</option>
-              <option value="this-quarter">This Quarter</option>
-              <option value="exploring">Just Exploring</option>
-            </select>
-
-            {/* Desktop combobox */}
-            <div className="hidden sm:block">
-              <Select onValueChange={(value) => form.setValue("timeline", value as AuditFormData["timeline"])} value={form.watch("timeline")}>
-                <SelectTrigger 
-                  id="audit-timeline"
-                  aria-labelledby="lbl-audit-timeline"
-                  className="w-full h-12 min-h-[44px] px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-                  data-testid="select-audit-timeline"
-                >
-                  <SelectValue placeholder="When do you need this?" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="asap">ASAP</SelectItem>
-                  <SelectItem value="this-month">This Month</SelectItem>
-                  <SelectItem value="next-month">Next Month</SelectItem>
-                  <SelectItem value="this-quarter">This Quarter</SelectItem>
-                  <SelectItem value="exploring">Just Exploring</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
+            <Select onValueChange={(value) => form.setValue("timeline", value as AuditFormData["timeline"])} value={form.watch("timeline")}>
+              <SelectTrigger 
+                id="audit-timeline"
+                aria-labelledby="lbl-audit-timeline"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-timeline"
+              >
+                <SelectValue placeholder="When do you need this?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asap">ASAP</SelectItem>
+                <SelectItem value="this-month">This Month</SelectItem>
+                <SelectItem value="next-month">Next Month</SelectItem>
+                <SelectItem value="this-quarter">This Quarter</SelectItem>
+                <SelectItem value="exploring">Just Exploring</SelectItem>
+              </SelectContent>
+            </Select>
             {form.formState.errors.timeline && (
               <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.timeline.message}</p>
             )}
@@ -249,50 +202,25 @@ export default function AuditForm() {
             <Label id="lbl-audit-budget" htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
               Budget Range *
             </Label>
-            
-            {/* Mobile native select */}
-            <label htmlFor="m-budget" className="sr-only">Select budget range</label>
-            <select
-              id="m-budget"
-              aria-label="Select budget range"
-              className="block sm:hidden w-full h-12 min-h-[44px] px-3 text-base bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-              value={form.watch("budget") || ""}
-              onChange={(e) => form.setValue("budget", e.target.value as AuditFormData["budget"])}
-              data-testid="select-audit-budget-mobile"
-            >
-              <option value="" disabled>Select budget range</option>
-              <option value="200-500">$200 - $500</option>
-              <option value="500-1000">$500 - $1,000</option>
-              <option value="1000-2000">$1,000 - $2,000</option>
-              <option value="2000-3000">$2,000 - $3,000</option>
-              <option value="3000-4000">$3,000 - $4,000</option>
-              <option value="4000-5000">$4,000 - $5,000</option>
-              <option value="5000-plus">$5,000+</option>
-            </select>
-
-            {/* Desktop combobox */}
-            <div className="hidden sm:block">
-              <Select onValueChange={(value) => form.setValue("budget", value as AuditFormData["budget"])} value={form.watch("budget")}>
-                <SelectTrigger 
-                  id="audit-budget"
-                  aria-labelledby="lbl-audit-budget"
-                  className="w-full h-12 min-h-[44px] px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus-visible:ring-2 focus-visible:ring-electric-blue focus-visible:border-electric-blue transition-all"
-                  data-testid="select-audit-budget"
-                >
-                  <SelectValue placeholder="Select budget range" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="200-500">$200 - $500</SelectItem>
-                  <SelectItem value="500-1000">$500 - $1,000</SelectItem>
-                  <SelectItem value="1000-2000">$1,000 - $2,000</SelectItem>
-                  <SelectItem value="2000-3000">$2,000 - $3,000</SelectItem>
-                  <SelectItem value="3000-4000">$3,000 - $4,000</SelectItem>
-                  <SelectItem value="4000-5000">$4,000 - $5,000</SelectItem>
-                  <SelectItem value="5000-plus">$5,000+</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
+            <Select onValueChange={(value) => form.setValue("budget", value as AuditFormData["budget"])} value={form.watch("budget")}>
+              <SelectTrigger 
+                id="audit-budget"
+                aria-labelledby="lbl-audit-budget"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-budget"
+              >
+                <SelectValue placeholder="Select budget range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="200-500">$200 - $500</SelectItem>
+                <SelectItem value="500-1000">$500 - $1,000</SelectItem>
+                <SelectItem value="1000-2000">$1,000 - $2,000</SelectItem>
+                <SelectItem value="2000-3000">$2,000 - $3,000</SelectItem>
+                <SelectItem value="3000-4000">$3,000 - $4,000</SelectItem>
+                <SelectItem value="4000-5000">$4,000 - $5,000</SelectItem>
+                <SelectItem value="5000-plus">$5,000+</SelectItem>
+              </SelectContent>
+            </Select>
             {form.formState.errors.budget && (
               <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.budget.message}</p>
             )}
@@ -304,7 +232,7 @@ export default function AuditForm() {
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="w-full h-12 min-h-[44px] bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl focus-visible:ring-2 focus-visible:ring-cyan-300"
+            className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-audit-submit"
           >
             {form.formState.isSubmitting ? (
@@ -321,7 +249,7 @@ export default function AuditForm() {
             type="button"
             variant="outline"
             onClick={() => setIsCalendlyOpen(true)}
-            className="w-full h-12 min-h-[44px] bg-white border-2 border-gray-300 text-deep-navy hover:bg-gray-50 hover:border-gray-400 font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl focus-visible:ring-2 focus-visible:ring-cyan-300"
+            className="w-full bg-white border-2 border-gray-300 text-deep-navy hover:bg-gray-50 hover:border-gray-400 font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-schedule-consultation"
           >
             Schedule a Free Consultation
