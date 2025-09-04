@@ -236,14 +236,14 @@ const HeroSection = memo(function HeroSection() {
                       </span>
                     </div>
                     
-                    {/* Continuous Progress Bar - Mobile optimized */}
+                    {/* Progress Bar Based on Current Day */}
                     <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="cutting-edge-gradient h-3 rounded-full animate-progress-continuous"
+                        className="cutting-edge-gradient h-3 rounded-full transition-all duration-500 ease-out"
                         style={{
+                          width: `${(currentDay / 7) * 100}%`,
                           transform: "translateZ(0)",
-                          backfaceVisibility: "hidden",
-                          maxWidth: "100%"
+                          backfaceVisibility: "hidden"
                         }}
                       ></div>
                     </div>
