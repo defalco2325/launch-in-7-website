@@ -54,7 +54,13 @@ function App() {
 createRoot(document.getElementById("root")!).render(<App />);
 
 // Splash Screen Logic
+let splashInitialized = false;
 const initializeSplashScreen = () => {
+  // Prevent multiple initializations (important for HMR in development)
+  if (splashInitialized) {
+    return;
+  }
+  
   const splash = document.getElementById('splash');
   const video = document.getElementById('splash-video') as HTMLVideoElement;
   const body = document.body;
@@ -64,6 +70,8 @@ const initializeSplashScreen = () => {
     return;
   }
 
+  // Mark as initialized before proceeding
+  splashInitialized = true;
   console.log('Initializing splash screen');
 
   // Disable scrolling initially
