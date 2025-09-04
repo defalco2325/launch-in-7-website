@@ -1,0 +1,84 @@
+My site shows Avoid chaining critical requests (max critical path ~740 ms). Please shorten the critical chain and load above-the-fold faster.
+
+Do this:
+
+Inline critical CSS & preload the rest
+
+Extract only above-the-fold CSS and inline it in index.html.
+
+Add:
+
+<link rel="preload" href="/index.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/index.css"></noscript>
+
+
+Prioritize the entry JS
+
+Ensure a single small entry:
+
+<link rel="modulepreload" href="/src/main.jsx">
+<script type="module" src="/src/main.jsx"></script>
+
+
+Remove/defers scripts not needed for first paint:
+
+<script defer src="/ui-critic.js"></script>
+<script defer src="/vendor.js"></script>
+
+
+Break the dependency ladder
+
+Eliminate nested import chains in main.jsx/App.jsx. Import only shell + hero.
+
+Lazy-load heavy sections/routes:
+
+const Home = React.lazy(()=>import('./pages/Home'));
+const Pricing = React.lazy(()=>import('./pages/Pricing'));
+// but keep Hero and Header eagerly loaded
+
+
+Bundle strategy (Vite)
+
+Create flatter chunks; avoid deep chains:
+
+// vite.config.js
+export default {
+  build:{ rollupOptions:{
+    output:{
+      manualChunks:{
+        react:['react','react-dom'],
+        ui:['framer-motion','@headlessui/react'],
+      }
+    }
+  }}
+}
+
+
+Ensure page shell (App + Hero) stays in the main entry, not gated behind another chunk.
+
+Fonts & hero media
+
+Preconnect and preload:
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="font" href="/fonts/Inter.woff2" type="font/woff2" crossorigin>
+
+
+Preload LCP image with priority hint:
+
+<link rel="preload" as="image" href="/img/hero.webp" imagesrcset="/img/hero@2x.webp 2x" fetchpriority="high">
+
+
+Remove CSS @import chains
+
+Replace nested @import in CSS with direct links or consolidated files to prevent serial fetches.
+
+Prefetch non-critical routes
+
+<link rel="prefetch" href="/home-DzvJBhg.js" as="script">
+
+Acceptance:
+
+Critical chain depth ≤2 (HTML → entry JS/CSS → LCP image).
+
+LCP improves and ‘Avoid chaining critical requests’ warning disappears or shows fewer/shorter chains.

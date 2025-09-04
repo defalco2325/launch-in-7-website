@@ -1,16 +1,18 @@
-// Import specific icons only
-import { ShieldCheck } from "lucide-react";
-import { Zap } from "lucide-react";
-import { Code2 } from "lucide-react";
-import { Sparkles } from "lucide-react";
-import { ArrowRight } from "lucide-react";
-import { ChevronDown } from "lucide-react";
-import { Palette } from "lucide-react";
-import { TestTube } from "lucide-react";
-import { Rocket } from "lucide-react";
-import { CheckCircle } from "lucide-react";
+// Optimize icon imports for tree-shaking
+import { 
+  ShieldCheck, 
+  Zap, 
+  Code2, 
+  Sparkles, 
+  ArrowRight, 
+  ChevronDown, 
+  Palette, 
+  TestTube, 
+  Rocket, 
+  CheckCircle 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo, memo, useRef } from "react";
+import { useState, useEffect, useMemo, memo, useRef, useCallback } from "react";
 
 const HeroSection = memo(function HeroSection() {
   // 7-day process animation state
@@ -58,26 +60,20 @@ const HeroSection = memo(function HeroSection() {
     return () => clearInterval(interval);
   }, [isVisible]);
 
-  const handleStartBuild = () => {
+  const handleStartBuild = useCallback(() => {
     const auditSection = document.querySelector('#audit-section');
-    if (auditSection) {
-      auditSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    auditSection?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
-  const handleFreeAudit = () => {
+  const handleFreeAudit = useCallback(() => {
     const auditSection = document.querySelector('#audit-section');
-    if (auditSection) {
-      auditSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    auditSection?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
-  const scrollToNext = () => {
+  const scrollToNext = useCallback(() => {
     const nextSection = document.querySelector('#guarantee-section');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    nextSection?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   return (
     <section 

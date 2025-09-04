@@ -50,42 +50,48 @@ app.use((req, res, next) => {
 
   // Add explicit static file routes for development
   if (app.get("env") === "development") {
-    // Serve favicon files with proper MIME types
+    // Serve favicon files with proper MIME types and aggressive caching
     app.get('/favicon.svg', (req, res) => {
       res.setHeader('Content-Type', 'image/svg+xml');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"favicon-svg-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/favicon.svg'));
     });
     
     app.get('/favicon.png', (req, res) => {
       res.setHeader('Content-Type', 'image/png');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"favicon-png-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/favicon.png'));
     });
     
     app.get('/favicon.ico', (req, res) => {
       res.setHeader('Content-Type', 'image/x-icon');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"favicon-ico-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/favicon.ico'));
     });
     
-    // Serve Open Graph image for social sharing
+    // Serve Open Graph image for social sharing with optimized caching
     app.get('/og-image.jpg', (req, res) => {
       res.setHeader('Content-Type', 'image/jpeg');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"og-image-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/og-image.jpg'));
     });
     
-    // Serve logo files
+    // Serve logo files with optimized caching
     app.get('/logo.png', (req, res) => {
       res.setHeader('Content-Type', 'image/png');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"logo-png-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/logo.png'));
     });
     
     app.get('/logo.jpg', (req, res) => {
       res.setHeader('Content-Type', 'image/jpeg');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('ETag', '"logo-jpg-v1"');
       res.sendFile(path.resolve(process.cwd(), 'public/logo.jpg'));
     });
     

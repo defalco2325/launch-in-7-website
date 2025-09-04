@@ -1,21 +1,18 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoWebp from "@/assets/logo.webp";
 import logoPng from "@/assets/logo-optimized.png";
 
-export default function Header() {
+const Header = memo(function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
 
-  const handleStartBuild = () => {
-    // Scroll to audit section
+  const handleStartBuild = useCallback(() => {
     const auditSection = document.querySelector('#audit-section');
-    if (auditSection) {
-      auditSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    auditSection?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
@@ -100,4 +97,6 @@ export default function Header() {
       )}
     </header>
   );
-}
+});
+
+export default Header;

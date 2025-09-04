@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { memo } from "react";
 
 interface IconCardProps {
   icon: LucideIcon;
@@ -7,7 +8,7 @@ interface IconCardProps {
   delay?: number;
 }
 
-export default function IconCard({ 
+const IconCard = memo(function IconCard({ 
   icon: Icon, 
   title, 
   description, 
@@ -34,4 +35,6 @@ export default function IconCard({
       </div>
     </div>
   );
-}
+});
+
+export default IconCard;

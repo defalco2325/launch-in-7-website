@@ -171,21 +171,7 @@ body, p, div, span {
 
 /* CSS Animations for Hero Section */
 /* Simplified animations to reduce main-thread work */
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes float-medium {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-/* Pause spin animation to reduce continuous processing */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+/* Removed unused keyframes to reduce CSS size and parsing time */
 
 @keyframes fade-in-left {
   from { opacity: 0; transform: translateX(-40px); }
@@ -197,21 +183,7 @@ body, p, div, span {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Reduce animation frequency to lower CPU usage */
-.animate-float-slow {
-  /* Disabled infinite floating to reduce main-thread work */
-  animation: none;
-}
-
-.animate-float-medium {
-  /* Disabled infinite floating to reduce main-thread work */
-  animation: none;
-}
-
-.animate-spin-slow {
-  /* Disable continuous spinning animation */
-  animation: none;
-}
+/* Removed unused animation classes to reduce CSS parsing overhead */
 
 .animate-fade-in-left {
   animation: fade-in-left 0.6s ease-out forwards;
@@ -246,13 +218,14 @@ body, p, div, span {
   to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes pulse-scale {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+/* Simplified pulse animation for critical elements only */
+@keyframes pulse-minimal {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
 }
 
-.animate-pulse-scale {
-  animation: pulse-scale 4s ease-in-out infinite;
+.animate-pulse-minimal {
+  animation: pulse-minimal 3s ease-in-out infinite;
 }
 
 .animate-fade-in {
@@ -264,23 +237,7 @@ body, p, div, span {
   opacity: 0;
 }
 
-@keyframes bounce-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
-}
-
-.animate-bounce-soft {
-  animation: bounce-soft 1.5s ease-in-out infinite;
-}
-
-@keyframes progress-continuous {
-  0% { width: 0%; }
-  100% { width: 100%; }
-}
-
-.animate-progress-continuous {
-  animation: progress-continuous 17.5s linear infinite;
-}
+/* Removed unused heavy animations to reduce main-thread work */
 
 :root {
   --background: hsl(0, 0%, 100%);

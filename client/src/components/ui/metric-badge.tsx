@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { memo } from "react";
 
 interface MetricBadgeProps {
   icon: LucideIcon;
@@ -7,7 +8,7 @@ interface MetricBadgeProps {
   delay?: number;
 }
 
-export default function MetricBadge({ 
+const MetricBadge = memo(function MetricBadge({ 
   icon: Icon, 
   text, 
   description, 
@@ -27,4 +28,6 @@ export default function MetricBadge({
       )}
     </div>
   );
-}
+});
+
+export default MetricBadge;
