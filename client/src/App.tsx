@@ -33,15 +33,13 @@ function App() {
   const [showSplash, setShowSplash] = useState(true);
   const isMobile = useIsMobile();
 
-  console.log('App render - showSplash:', showSplash, 'isMobile:', isMobile);
 
   const handleSplashComplete = () => {
     setShowSplash(false);
   };
 
-  // FOR TESTING: Always show splash screen first, then add mobile detection back
-  if (showSplash) {
-    console.log('Showing splash screen');
+  // Only show splash screen on mobile devices
+  if (showSplash && (isMobile === undefined || isMobile === true)) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
 

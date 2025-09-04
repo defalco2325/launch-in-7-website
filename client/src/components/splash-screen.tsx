@@ -95,10 +95,6 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         isFading ? 'opacity-0 splash-fade-out' : 'opacity-100'
       }`}
     >
-      {/* Test text overlay to verify splash is showing */}
-      <div className="absolute top-4 left-4 text-white text-sm z-10">
-        SPLASH SCREEN ACTIVE
-      </div>
       
       <video
         ref={videoRef}
