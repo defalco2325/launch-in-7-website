@@ -144,12 +144,13 @@ export default function AuditForm() {
           </div>
 
           <div>
-            <Label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label id="lbl-audit-goal" htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
               Primary Goal *
             </Label>
-            <Select onValueChange={(value) => form.setValue("goal", value)} value={form.watch("goal")}>
+            <Select onValueChange={(value) => form.setValue("goal", value as AuditFormData["goal"])} value={form.watch("goal")}>
               <SelectTrigger 
                 id="audit-goal"
+                aria-labelledby="lbl-audit-goal"
                 className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
                 data-testid="select-audit-goal"
               >
@@ -170,12 +171,13 @@ export default function AuditForm() {
           </div>
 
           <div>
-            <Label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label id="lbl-audit-timeline" htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
               Timeline *
             </Label>
-            <Select onValueChange={(value) => form.setValue("timeline", value)} value={form.watch("timeline")}>
+            <Select onValueChange={(value) => form.setValue("timeline", value as AuditFormData["timeline"])} value={form.watch("timeline")}>
               <SelectTrigger 
                 id="audit-timeline"
+                aria-labelledby="lbl-audit-timeline"
                 className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
                 data-testid="select-audit-timeline"
               >
@@ -195,12 +197,13 @@ export default function AuditForm() {
           </div>
 
           <div className="md:col-span-2">
-            <Label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label id="lbl-audit-budget" htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
               Budget Range *
             </Label>
-            <Select onValueChange={(value) => form.setValue("budget", value)} value={form.watch("budget")}>
+            <Select onValueChange={(value) => form.setValue("budget", value as AuditFormData["budget"])} value={form.watch("budget")}>
               <SelectTrigger 
                 id="audit-budget"
+                aria-labelledby="lbl-audit-budget"
                 className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
                 data-testid="select-audit-budget"
               >
