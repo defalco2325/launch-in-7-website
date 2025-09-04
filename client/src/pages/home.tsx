@@ -1,13 +1,11 @@
 import HeroSection from "@/components/sections/hero";
-import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
-import ServicesSnapshot from "@/components/sections/services-snapshot";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
-// Only lazy load the heaviest component - audit form
-const AuditForm = lazy(() => 
-  import("@/components/forms/audit-form").then(module => ({ default: module.default }))
-);
+// Lazy load audit form and other below-the-fold components
+const AuditForm = lazy(() => import("@/components/forms/audit-form"));
+const GuaranteeExplainer = lazy(() => import("@/components/sections/guarantee-explainer"));
+const ServicesSnapshot = lazy(() => import("@/components/sections/services-snapshot"));
 
 // Use Intersection Observer hook for lazy loading
 function useInViewport(ref: React.RefObject<HTMLElement>, rootMargin = "200px") {
@@ -60,9 +58,14 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      {/* Render sections directly for better reliability */}
-      <GuaranteeExplainer />
-      <ServicesSnapshot />
+      {/* Lazy load below-the-fold sections to reduce initial bundle */}
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-100"></div>}>
+        <GuaranteeExplainer />
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-50"></div>}>
+        <ServicesSnapshot />
+      </Suspense>
       <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">

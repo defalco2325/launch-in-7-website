@@ -35,25 +35,50 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
-        // Conservative chunking - only split audit form
+        // Optimized chunking - reduced vendor bundle
         manualChunks: (id) => {
-          // Only audit form in separate chunk (this is safe and beneficial)
-          if (id.includes('audit-form') || id.includes('calendly-popup')) {
-            return 'audit';
+          // Minimal critical vendor - only React core
+          if (id.includes('node_modules') && (
+            id.includes('react/') || id.includes('react-dom/') || 
+            id.includes('wouter') || id.includes('scheduler') ||
+            id.includes('react/jsx')
+          )) {
+            return 'vendor';
           }
           
-          // Form libraries only loaded with audit form
-          if (id.includes('react-hook-form') || id.includes('@hookform/resolvers') ||
+          // UI chunk - radix components and icons (defer until used)
+          if (id.includes('node_modules') && (
+            id.includes('@radix-ui') || id.includes('lucide-react')
+          )) {
+            return 'ui';
+          }
+          
+          // Utils chunk - styling utilities
+          if (id.includes('node_modules') && (
+            id.includes('class-variance-authority') || id.includes('clsx') ||
+            id.includes('tailwind-merge')
+          )) {
+            return 'utils';
+          }
+          
+          // Forms chunk - form libraries
+          if (id.includes('audit-form') || id.includes('calendly-popup') ||
+              id.includes('react-hook-form') || id.includes('@hookform/resolvers') ||
               id.includes('zod')) {
             return 'forms';
           }
           
-          // Keep all other dependencies in vendor bundle for stability
-          if (id.includes('node_modules')) {
-            return 'vendor';
+          // Query chunk - data management
+          if (id.includes('node_modules') && (
+            id.includes('@tanstack/react-query')
+          )) {
+            return 'query';
           }
           
-          // All app code in main bundle
+          // Defer all other node_modules
+          if (id.includes('node_modules')) {
+            return 'deferred';
+          }
         },
         entryFileNames: '[name]-[hash].js',
         chunkFileNames: '[name]-[hash].js',
