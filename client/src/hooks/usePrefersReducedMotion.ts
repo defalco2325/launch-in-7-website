@@ -8,6 +8,11 @@ export function usePrefersReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Safety check for browser environment
+    if (typeof window === 'undefined' || !window.matchMedia) {
+      return;
+    }
+
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 

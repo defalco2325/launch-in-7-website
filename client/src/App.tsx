@@ -2,7 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
@@ -29,15 +29,30 @@ function Router() {
 }
 
 function App() {
-  // Check for debug flag and session storage
-  const urlParams = new URLSearchParams(window.location.search);
-  const noSplash = urlParams.get('nosplash') === '1';
-  const [showSplash, setShowSplash] = useState(() => 
-    !noSplash && !sessionStorage.getItem('l7_splash_seen')
-  );
+  // Initialize with false to prevent hydration mismatch, then check in useEffect
+  const [showSplash, setShowSplash] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Only run on client side after hydration
+    setIsClient(true);
+    
+    // Check for debug flag and session storage
+    const urlParams = new URLSearchParams(window.location.search);
+    const noSplash = urlParams.get('nosplash') === '1';
+    const hasSeenSplash = sessionStorage.getItem('l7_splash_seen');
+    
+    // Show splash only if not disabled and not seen before
+    if (!noSplash && !hasSeenSplash) {
+      setShowSplash(true);
+    }
+  }, []);
 
   const handleSplashDone = () => {
-    sessionStorage.setItem('l7_splash_seen', 'true');
+    // Safety check for browser environment
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem('l7_splash_seen', 'true');
+    }
     setShowSplash(false);
   };
 
@@ -45,7 +60,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SEOProvider>
-          {showSplash && <SplashScreen onDone={handleSplashDone} />}
+          {isClient && showSplash && <SplashScreen onDone={handleSplashDone} />}
           <main 
             aria-hidden={showSplash}
             className={showSplash ? 'opacity-0' : 'opacity-100 transition-opacity duration-300'}
