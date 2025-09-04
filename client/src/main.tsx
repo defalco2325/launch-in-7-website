@@ -7,13 +7,13 @@ import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
 
-// CRITICAL PATH: Eagerly load shell + above-the-fold components
+// CRITICAL PATH: Only load essential shell components
 import Header from "@/components/layout/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-// Inline most components, only lazy load heavy ones
-import Home from "@/pages/home";
-import Footer from "@/components/layout/footer";
+// Lazy load ALL pages and heavy components to reduce initial bundle
+const Home = lazy(() => import("@/pages/home"));
+const Footer = lazy(() => import("@/components/layout/footer"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 function Router() {
@@ -42,8 +42,10 @@ function App() {
             <main id="main-content" className="pt-16" role="main">
               <Router />
             </main>
-            {/* Footer inlined */}
-            <Footer />
+            {/* Footer lazy loaded */}
+            <Suspense fallback={<div className="bg-deep-navy h-32"></div>}>
+              <Footer />
+            </Suspense>
           </div>
         </SEOProvider>
       </TooltipProvider>
