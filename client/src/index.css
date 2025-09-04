@@ -34,9 +34,9 @@
     /* Ensure video covers full mobile screen */
     object-fit: cover;
     object-position: center center;
-    /* Force hardware acceleration on mobile */
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* Force hardware acceleration on mobile + 5% zoom out */
+    transform: scale(0.95) translateZ(0);
+    -webkit-transform: scale(0.95) translateZ(0);
   }
 }
 
@@ -46,11 +46,13 @@
     /* Better fit for narrow mobile screens */
     object-fit: cover;
     object-position: center top;
-    /* Optimize for portrait viewing */
+    /* Optimize for portrait viewing + 5% zoom out */
     width: 100vw;
     height: 100vh;
     max-width: none;
     max-height: none;
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
   }
 }
 
@@ -60,9 +62,11 @@
     /* Adjust for landscape mobile viewing */
     object-fit: cover;
     object-position: center center;
-    /* Ensure full coverage in landscape */
+    /* Ensure full coverage in landscape + 5% zoom out */
     min-width: 100%;
     min-height: 100%;
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
   }
 }
 
@@ -72,9 +76,11 @@
     /* Optimize for very small screens */
     object-fit: cover;
     object-position: center center;
-    /* Ensure no letterboxing on small screens */
+    /* Ensure no letterboxing on small screens + 5% zoom out */
     width: 100vw;
     height: 100vh;
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
   }
   
   #splash {
