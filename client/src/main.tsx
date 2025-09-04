@@ -127,6 +127,11 @@ const initializeAdaptiveSplash = () => {
 
   // Detect optimal video source based on aspect ratio
   const detectOptimalVideo = () => {
+    // For now, always use fallback video since specific aspect ratio videos may not exist
+    return Promise.resolve(videoSources.fallback);
+    
+    // TODO: Uncomment when aspect-specific videos are available
+    /*
     const viewportRatio = window.innerWidth / window.innerHeight;
     const isLandscape = viewportRatio > 1.2;
     const isPortrait = viewportRatio < 0.8;
@@ -151,6 +156,7 @@ const initializeAdaptiveSplash = () => {
       };
       testVideo.src = selectedSource;
     });
+    */
   };
 
   // Switch video source
@@ -195,11 +201,15 @@ const initializeAdaptiveSplash = () => {
     playAttempted = true;
     
     try {
-      console.log('Selecting optimal video source');
+      console.log('Attempting to play video');
       
       // Detect and set optimal video source
       const optimalSrc = await detectOptimalVideo();
-      if (video.src !== optimalSrc) {
+      console.log('Using video source:', optimalSrc);
+      
+      // Only switch source if different
+      if (video.src && !video.src.endsWith(optimalSrc.split('/').pop() || '')) {
+        console.log('Switching video source to:', optimalSrc);
         await switchVideoSource(optimalSrc);
       }
       
@@ -214,22 +224,18 @@ const initializeAdaptiveSplash = () => {
       if (playPromise !== undefined) {
         await playPromise;
         hasStartedPlaying = true;
-        console.log('Adaptive video started playing successfully');
+        console.log('Video started playing successfully');
         
-        // Auto-hide after 4 seconds
-        const scheduleHide = () => hideSplash();
-        
-        if (typeof requestIdleCallback === 'function') {
-          setTimeout(() => {
-            requestIdleCallback(scheduleHide, { timeout: 4000 });
-          }, 4000);
-        } else {
-          setTimeout(scheduleHide, 4000);
-        }
+        // Auto-hide after 4 seconds - use simple setTimeout for reliability
+        setTimeout(() => {
+          console.log('Auto-hiding splash after video duration');
+          hideSplash();
+        }, 4000);
       }
     } catch (error) {
-      console.log('Adaptive video autoplay failed:', error);
-      requestAnimationFrame(() => hideSplash());
+      console.log('Video autoplay failed:', error);
+      // Hide splash immediately on error
+      setTimeout(() => hideSplash(), 100);
     }
   };
 
@@ -313,26 +319,19 @@ const initializeAdaptiveSplash = () => {
     resizeTimeout = setTimeout(handleResize, 300);
   });
 
-  // Fallback timers with requestIdleCallback optimization
-  const scheduleVideoTimeout = () => {
+  // Simplified fallback timers for reliability
+  setTimeout(() => {
     if (!hasStartedPlaying) {
-      console.log('Video timeout - hiding splash');
+      console.log('Video timeout - hiding splash (2s)');
       hideSplash();
     }
-  };
+  }, 2000);
 
-  const scheduleMaxTimeout = () => {
-    console.log('Maximum timeout reached - hiding splash');
+  // Absolute maximum timeout
+  setTimeout(() => {
+    console.log('Maximum timeout reached - force hiding splash (6s)');
     hideSplash();
-  };
-
-  if (typeof requestIdleCallback === 'function') {
-    setTimeout(() => requestIdleCallback(scheduleVideoTimeout, { timeout: 2000 }), 2000);
-    setTimeout(() => requestIdleCallback(scheduleMaxTimeout, { timeout: 8000 }), 8000);
-  } else {
-    setTimeout(scheduleVideoTimeout, 2000);
-    setTimeout(scheduleMaxTimeout, 8000);
-  }
+  }, 6000);
 };
 
 // Initialize adaptive splash screen when DOM is ready
