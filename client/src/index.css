@@ -147,9 +147,15 @@ img[loading="lazy"] {
     #06B6D4 100%);
 }
 
+@keyframes progress-continuous {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
 .animate-progress-continuous {
-  /* Replaced infinite animation with static state to reduce CPU load */
   background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
+  animation: progress-continuous 3s ease-in-out infinite;
 }
 
 /* Removed progress-flow animation to reduce main-thread work */
