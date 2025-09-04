@@ -69,6 +69,8 @@ export default {
         "accent-purple": "var(--accent-purple)",
         "neon-cyan": "var(--neon-cyan)",
         "tech-orange": "var(--tech-orange)",
+        "brand-link": "#28B2F6",
+        "brand-link-hover": "#22D3EE",
       },
       fontFamily: {
         sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "system-ui", "sans-serif"],

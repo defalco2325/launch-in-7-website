@@ -461,4 +461,8 @@ body, p, div, span {
   .text-electric-blue { color: var(--electric-blue); }
   .text-success-green { color: var(--success-green); }
   .font-poppins { font-family: var(--font-poppins); }
+  
+  /* Safe text on dark backgrounds - WCAG AA compliant */
+  .on-deep-navy { color: #e5e7eb; } /* gray-200 equivalent */
+  .on-deep-navy-muted { color: #cbd5e1; } /* slate-300 equivalent */
 }
