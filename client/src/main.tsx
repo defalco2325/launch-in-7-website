@@ -55,74 +55,169 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-// Splash Screen Logic
+// Adaptive Splash Screen Logic
 let splashInitialized = false;
-const initializeSplashScreen = () => {
-  // Prevent multiple initializations (important for HMR in development)
-  if (splashInitialized) {
-    return;
-  }
+
+interface VideoConfig {
+  landscape: string;
+  portrait: string;
+  square: string;
+  fallback: string;
+}
+
+const videoSources: VideoConfig = {
+  landscape: '/video-landscape.mp4',
+  portrait: '/video-portrait.mp4', 
+  square: '/video-square.mp4',
+  fallback: '/splash.mp4'
+};
+
+const initializeAdaptiveSplash = () => {
+  if (splashInitialized) return;
   
   const splash = document.getElementById('splash');
   const video = document.getElementById('splash-video') as HTMLVideoElement;
   const body = document.body;
+  const focalToggle = document.getElementById('focal-toggle');
+  const focalControls = document.getElementById('focal-controls');
+  const fxSlider = document.getElementById('fx-slider') as HTMLInputElement;
+  const fySlider = document.getElementById('fy-slider') as HTMLInputElement;
+  const fxValue = document.getElementById('fx-value');
+  const fyValue = document.getElementById('fy-value');
+  const resetBtn = document.getElementById('reset-focal');
+  const closeBtn = document.getElementById('close-focal');
 
   if (!splash || !video) {
     console.log('Splash elements not found');
     return;
   }
 
-  // Mark as initialized before proceeding
   splashInitialized = true;
-  console.log('Initializing splash screen');
+  console.log('Initializing adaptive splash screen');
 
-  // Disable scrolling initially
   body.classList.add('splash-active');
   
-  let hasStartedPlaying = false;
-  let playAttempted = false;
+  // Load focal point settings from localStorage
+  const loadFocalPoint = () => {
+    const saved = localStorage.getItem('splash-focal-point');
+    if (saved) {
+      try {
+        const { fx, fy } = JSON.parse(saved);
+        updateFocalPoint(fx, fy);
+        if (fxSlider) fxSlider.value = fx.toString();
+        if (fySlider) fySlider.value = fy.toString();
+      } catch (e) {
+        console.log('Failed to load focal point settings');
+      }
+    }
+  };
 
-  const hideSplash = () => {
-    console.log('Hiding splash screen');
-    // Use requestAnimationFrame to avoid blocking main thread
-    requestAnimationFrame(() => {
-      splash.classList.add('splash-fade-out');
-      // Use requestAnimationFrame instead of setTimeout for better performance
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          splash.classList.add('splash-hidden');
-          body.classList.remove('splash-active');
-        }, 1000);
-      });
+  // Update focal point CSS variables
+  const updateFocalPoint = (fx: number, fy: number) => {
+    splash.style.setProperty('--fx', `${fx}%`);
+    splash.style.setProperty('--fy', `${fy}%`);
+    if (fxValue) fxValue.textContent = `${fx}%`;
+    if (fyValue) fyValue.textContent = `${fy}%`;
+  };
+
+  // Save focal point to localStorage
+  const saveFocalPoint = (fx: number, fy: number) => {
+    localStorage.setItem('splash-focal-point', JSON.stringify({ fx, fy }));
+  };
+
+  // Detect optimal video source based on aspect ratio
+  const detectOptimalVideo = () => {
+    const viewportRatio = window.innerWidth / window.innerHeight;
+    const isLandscape = viewportRatio > 1.2;
+    const isPortrait = viewportRatio < 0.8;
+    
+    let selectedSource: string;
+    
+    if (isLandscape) {
+      selectedSource = videoSources.landscape;
+    } else if (isPortrait) {
+      selectedSource = videoSources.portrait;
+    } else {
+      selectedSource = videoSources.square;
+    }
+
+    // Check if video source exists, fallback if needed
+    return new Promise<string>((resolve) => {
+      const testVideo = document.createElement('video');
+      testVideo.oncanplay = () => resolve(selectedSource);
+      testVideo.onerror = () => {
+        console.log(`Fallback: ${selectedSource} not found, using default`);
+        resolve(videoSources.fallback);
+      };
+      testVideo.src = selectedSource;
     });
   };
 
-  // Attempt to play video with yielding to prevent main-thread blocking
+  // Switch video source
+  const switchVideoSource = async (src: string) => {
+    return new Promise<void>((resolve, reject) => {
+      const currentTime = video.currentTime;
+      const wasPlaying = !video.paused;
+      
+      video.addEventListener('loadedmetadata', () => {
+        video.currentTime = currentTime;
+        if (wasPlaying) {
+          video.play().then(resolve).catch(reject);
+        } else {
+          resolve();
+        }
+      }, { once: true });
+      
+      video.addEventListener('error', reject, { once: true });
+      video.src = src;
+      video.load();
+    });
+  };
+
+  // Smooth splash hide animation
+  const hideSplash = () => {
+    console.log('Hiding adaptive splash screen');
+    requestAnimationFrame(() => {
+      splash.classList.add('splash-fade-out');
+      setTimeout(() => {
+        splash.classList.add('splash-hidden');
+        body.classList.remove('splash-active');
+      }, 1000);
+    });
+  };
+
+  let hasStartedPlaying = false;
+  let playAttempted = false;
+
+  // Enhanced video play with adaptive source selection
   const attemptPlay = async () => {
     if (playAttempted) return;
     playAttempted = true;
     
     try {
-      console.log('Attempting to play video');
+      console.log('Selecting optimal video source');
       
-      // Yield to main thread before heavy operations
+      // Detect and set optimal video source
+      const optimalSrc = await detectOptimalVideo();
+      if (video.src !== optimalSrc) {
+        await switchVideoSource(optimalSrc);
+      }
+      
+      // Yield to main thread
       await new Promise(resolve => setTimeout(resolve, 0));
       
       video.currentTime = 0;
-      video.muted = true; // Ensure muted for autoplay
+      video.muted = true;
       
       const playPromise = video.play();
       
       if (playPromise !== undefined) {
         await playPromise;
         hasStartedPlaying = true;
-        console.log('Video started playing successfully');
+        console.log('Adaptive video started playing successfully');
         
-        // Use requestIdleCallback if available, fallback to setTimeout
-        const scheduleHide = () => {
-          console.log('Video finished - hiding splash');
-          hideSplash();
-        };
+        // Auto-hide after 4 seconds
+        const scheduleHide = () => hideSplash();
         
         if (typeof requestIdleCallback === 'function') {
           setTimeout(() => {
@@ -133,37 +228,92 @@ const initializeSplashScreen = () => {
         }
       }
     } catch (error) {
-      console.log('Video autoplay failed:', error);
-      // Defer error handling to not block main thread
+      console.log('Adaptive video autoplay failed:', error);
       requestAnimationFrame(() => hideSplash());
     }
   };
 
-  // Try to play immediately if video is ready
-  if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-    console.log('Video is ready - attempting immediate play');
+  // Handle viewport changes and re-optimize video
+  const handleResize = async () => {
+    if (!hasStartedPlaying || video.paused) return;
+    
+    try {
+      const optimalSrc = await detectOptimalVideo();
+      if (video.src !== optimalSrc && !video.paused) {
+        await switchVideoSource(optimalSrc);
+      }
+    } catch (error) {
+      console.log('Failed to switch video on resize:', error);
+    }
+  };
+
+  // Set up focal point controls
+  const setupFocalControls = () => {
+    loadFocalPoint();
+
+    // Toggle focal controls
+    focalToggle?.addEventListener('click', () => {
+      focalControls?.classList.toggle('hidden');
+    });
+
+    // Close focal controls
+    closeBtn?.addEventListener('click', () => {
+      focalControls?.classList.add('hidden');
+    });
+
+    // Reset focal point
+    resetBtn?.addEventListener('click', () => {
+      updateFocalPoint(50, 50);
+      saveFocalPoint(50, 50);
+      if (fxSlider) fxSlider.value = '50';
+      if (fySlider) fySlider.value = '50';
+    });
+
+    // Horizontal slider
+    fxSlider?.addEventListener('input', (e) => {
+      const fx = parseInt((e.target as HTMLInputElement).value);
+      const fy = fySlider ? parseInt(fySlider.value) : 50;
+      updateFocalPoint(fx, fy);
+      saveFocalPoint(fx, fy);
+    });
+
+    // Vertical slider
+    fySlider?.addEventListener('input', (e) => {
+      const fy = parseInt((e.target as HTMLInputElement).value);
+      const fx = fxSlider ? parseInt(fxSlider.value) : 50;
+      updateFocalPoint(fx, fy);
+      saveFocalPoint(fx, fy);
+    });
+  };
+
+  // Initialize everything
+  setupFocalControls();
+
+  // Start video playback
+  if (video.readyState >= 3) {
     attemptPlay();
   } else {
-    // Wait for video to be ready
-    video.addEventListener('canplay', () => {
-      console.log('Video can play');
-      attemptPlay();
-    }, { once: true });
+    video.addEventListener('canplay', attemptPlay, { once: true });
   }
 
-  // Handle when video actually starts playing
+  // Handle video events
   video.addEventListener('playing', () => {
-    console.log('Video is playing');
     hasStartedPlaying = true;
   });
 
-  // Handle video errors
-  video.addEventListener('error', (e) => {
-    console.log('Video error:', e);
+  video.addEventListener('error', () => {
+    console.log('Video error, hiding splash');
     hideSplash();
   });
 
-  // Use requestIdleCallback for fallback timers to avoid blocking main thread
+  // Handle window resize for adaptive video switching  
+  let resizeTimeout: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(handleResize, 300);
+  });
+
+  // Fallback timers with requestIdleCallback optimization
   const scheduleVideoTimeout = () => {
     if (!hasStartedPlaying) {
       console.log('Video timeout - hiding splash');
@@ -176,28 +326,21 @@ const initializeSplashScreen = () => {
     hideSplash();
   };
 
-  // Fallback: if video hasn't started playing within 2 seconds, hide splash
   if (typeof requestIdleCallback === 'function') {
-    setTimeout(() => {
-      requestIdleCallback(scheduleVideoTimeout, { timeout: 2000 });
-    }, 2000);
-    
-    // Absolute fallback: always hide after 8 seconds max
-    setTimeout(() => {
-      requestIdleCallback(scheduleMaxTimeout, { timeout: 8000 });
-    }, 8000);
+    setTimeout(() => requestIdleCallback(scheduleVideoTimeout, { timeout: 2000 }), 2000);
+    setTimeout(() => requestIdleCallback(scheduleMaxTimeout, { timeout: 8000 }), 8000);
   } else {
     setTimeout(scheduleVideoTimeout, 2000);
     setTimeout(scheduleMaxTimeout, 8000);
   }
 };
 
-// Initialize splash screen when DOM is ready
+// Initialize adaptive splash screen when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeSplashScreen);
+  document.addEventListener('DOMContentLoaded', initializeAdaptiveSplash);
 } else {
   // DOM is already loaded
-  initializeSplashScreen();
+  initializeAdaptiveSplash();
 }
 
 // Break up non-critical scripts to prevent main-thread blocking

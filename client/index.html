@@ -94,8 +94,8 @@
     <title>Launch in 7 - Professional Website Development</title>
   </head>
   <body>
-    <!-- Video Splash Screen Overlay -->
-    <div id="splash">
+    <!-- Adaptive Video Splash Screen -->
+    <div id="splash" style="--fx: 50%; --fy: 50%;">
       <video 
         id="splash-video" 
         autoplay 
@@ -108,9 +108,36 @@
         x5-video-player-fullscreen="true"
         poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMwMDAwMDAiLz48L3N2Zz4K"
       >
+        <!-- Multiple sources for different aspect ratios -->
+        <source data-aspect="landscape" src="/video-landscape.mp4" type="video/mp4" media="(orientation: landscape)">
+        <source data-aspect="portrait" src="/video-portrait.mp4" type="video/mp4" media="(orientation: portrait)">
+        <source data-aspect="square" src="/video-square.mp4" type="video/mp4">
+        <!-- Fallback to original video -->
         <source src="/splash.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+      
+      <!-- Focal Point Controls -->
+      <div id="focal-controls" class="focal-controls hidden">
+        <div class="focal-panel">
+          <h3>Video Focal Point</h3>
+          <div class="focal-sliders">
+            <label>
+              Horizontal: <span id="fx-value">50%</span>
+              <input type="range" id="fx-slider" min="0" max="100" value="50">
+            </label>
+            <label>
+              Vertical: <span id="fy-value">50%</span>
+              <input type="range" id="fy-slider" min="0" max="100" value="50">
+            </label>
+          </div>
+          <button id="reset-focal" class="focal-btn">Reset</button>
+          <button id="close-focal" class="focal-btn">Close</button>
+        </div>
+      </div>
+      
+      <!-- Toggle button for focal controls -->
+      <button id="focal-toggle" class="focal-toggle" title="Adjust video focal point">⚙️</button>
     </div>
     
     <div id="root" role="main"></div>
