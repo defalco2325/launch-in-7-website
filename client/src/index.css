@@ -23,6 +23,9 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Zoom out by 5% */
+  transform: scale(0.95);
+  -webkit-transform: scale(0.95);
 }
 
 /* Mobile-optimized video display */

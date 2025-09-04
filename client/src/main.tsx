@@ -110,6 +110,12 @@ const initializeSplashScreen = () => {
     }
   };
 
+  // Handle video end event (single play only)
+  video.addEventListener('ended', () => {
+    console.log('Video ended - hiding splash');
+    hideSplash();
+  });
+
   // Try to play immediately if video is ready
   if (video.readyState >= 3) { // HAVE_FUTURE_DATA
     console.log('Video is ready - attempting immediate play');
