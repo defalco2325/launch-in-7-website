@@ -243,6 +243,7 @@ export default function AuditForm() {
           <Button
             type="button"
             variant="outline"
+            onClick={() => window.open('https://calendly.com/launchin7', '_blank')}
             className="w-full bg-white border-2 border-gray-300 text-deep-navy hover:bg-gray-50 hover:border-gray-400 font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-schedule-consultation"
           >

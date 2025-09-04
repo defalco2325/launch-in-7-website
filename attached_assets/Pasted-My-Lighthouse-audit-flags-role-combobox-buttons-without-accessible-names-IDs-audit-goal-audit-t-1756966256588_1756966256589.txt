@@ -1,0 +1,72 @@
+My Lighthouse audit flags role="combobox" buttons without accessible names (IDs: audit-goal, audit-timeline, audit-budget). Give each control a programmatic name.
+
+Do this
+
+Label each combobox
+
+Use a visible <label> with id and connect it via aria-labelledby, or add an explicit aria-label.
+
+If you keep a placeholder only, include a visually hidden text node.
+
+Code examples (Radix/React + Tailwind)
+
+Option A — Preferred (label + aria-labelledby):
+
+<label id="lbl-audit-goal" htmlFor="audit-goal" className="block text-sm font-medium">
+  Select your main goal
+</label>
+
+<button
+  id="audit-goal"
+  type="button"
+  role="combobox"
+  aria-labelledby="lbl-audit-goal audit-goal"
+  aria-expanded="false"
+  aria-controls="radix-r0"
+  className="flex h-10 items-center justify-between text-sm ring-offset-background"
+>
+  <span className="sr-only">Current selection:</span>
+  {/* render selected value or placeholder here */}
+</button>
+
+
+Option B — Quick fix (aria-label):
+
+<button
+  id="audit-timeline"
+  type="button"
+  role="combobox"
+  aria-label="When do you need this?"
+  aria-expanded="false"
+  aria-controls="radix-r1"
+  className="flex h-10 items-center justify-between text-sm ring-offset-background"
+>
+  {/* content */}
+</button>
+
+<button
+  id="audit-budget"
+  type="button"
+  role="combobox"
+  aria-label="Select budget range"
+  aria-expanded="false"
+  aria-controls="radix-r2"
+  className="flex h-10 items-center justify-between text-sm ring-offset-background"
+>
+  {/* content */}
+</button>
+
+
+Extras
+
+Ensure any decorative icons inside the buttons have aria-hidden="true" and focusable="false".
+
+When a selection changes, update the text node inside the button so the accessible name reflects the chosen value (e.g., “Budget: $2k–$5k”).
+
+Keep focus styles visible (focus-visible:ring etc.).
+
+Acceptance
+
+No Lighthouse errors: all combobox buttons expose an accessible name via aria-labelledby or aria-label.
+
+Screen readers announce meaningful labels (e.g., “Select your main goal, collapsed, combobox”).
