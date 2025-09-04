@@ -1,14 +1,10 @@
 import HeroSection from "@/components/sections/hero";
+import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
+import ServicesSnapshot from "@/components/sections/services-snapshot";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
-// Lazy load below-the-fold sections with preload strategy
-const GuaranteeExplainer = lazy(() => 
-  import("@/components/sections/guarantee-explainer").then(module => ({ default: module.default }))
-);
-const ServicesSnapshot = lazy(() => 
-  import("@/components/sections/services-snapshot").then(module => ({ default: module.default }))
-);
+// Only lazy load the heaviest component - audit form
 const AuditForm = lazy(() => 
   import("@/components/forms/audit-form").then(module => ({ default: module.default }))
 );

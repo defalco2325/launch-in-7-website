@@ -1,72 +1,39 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { auditFormSchema, type AuditFormData } from "@/lib/validations";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check } from "lucide-react";
-import CalendlyPopup from "@/components/ui/calendly-popup";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<AuditFormData>({
-    resolver: zodResolver(auditFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      website: "",
-      goal: undefined,
-      timeline: undefined,
-      budget: undefined,
-    },
-  });
-
-  const onSubmit = async (data: AuditFormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
     try {
-      // Prepare data for Netlify Forms submission
-      const formData = {
-        "form-name": "launchin7-audit",
-        "bot-field": "", // Honeypot field (empty for humans)
-        name: data.name,
-        email: data.email,
-        website: data.website,
-        goal: data.goal || "",
-        timeline: data.timeline || "",
-        budget: data.budget || ""
-      };
-
-      // Submit to Netlify Forms
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      
       const response = await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: Object.keys(formData)
-          .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(formData[key as keyof typeof formData]))
-          .join("&"),
+        body: formData
       });
 
       if (response.ok) {
         setIsSuccess(true);
         form.reset();
-        // Don't auto-redirect - let the user see the success message
-        // They can manually navigate if needed
       } else {
         throw new Error('Form submission failed');
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      // Form error will be shown in the UI state
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   if (isSuccess) {
     return (
-      <div
-        className="text-center py-8 animate-fade-in-up"
-      >
+      <div className="text-center py-8">
         <div className="w-16 h-16 bg-success-green rounded-full flex items-center justify-center mx-auto mb-4">
           <Check className="w-8 h-8 text-white" />
         </div>
@@ -83,189 +50,158 @@ export default function AuditForm() {
   return (
     <>
       <form 
-      onSubmit={form.handleSubmit(onSubmit)} 
-      className="space-y-6"
-      data-netlify="true"
-      data-react-form="true"
-      name="launchin7-audit"
-      method="POST"
-      action="/thanks"
-      netlify-honeypot="bot-field"
-    >
-      {/* Hidden input for Netlify form detection */}
-      <input type="hidden" name="form-name" value="launchin7-audit" />
-      {/* Honeypot field (hidden from users) */}
-      <p className="hidden">
-        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-      </p>
-      {/* Form Fields Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="audit-name" className="block text-sm font-semibold text-deep-navy mb-3">
-            Full Name *
-          </Label>
-          <Input
-            id="audit-name"
-            type="text"
-            placeholder="Enter your full name"
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            data-testid="input-audit-name"
-            {...form.register("name")}
-          />
-          {form.formState.errors.name && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.name.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="audit-email" className="block text-sm font-semibold text-deep-navy mb-3">
-            Email Address *
-          </Label>
-          <Input
-            id="audit-email"
-            type="email"
-            placeholder="your@email.com"
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            data-testid="input-audit-email"
-            {...form.register("email")}
-          />
-          {form.formState.errors.email && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="audit-website" className="block text-sm font-semibold text-deep-navy mb-3">
-            Website URL *
-          </Label>
-          <Input
-            id="audit-website"
-            type="url"
-            placeholder="https://yourwebsite.com"
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            data-testid="input-audit-website"
-            {...form.register("website")}
-          />
-          {form.formState.errors.website && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.website.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
-            Primary Goal *
-          </Label>
-          <Select onValueChange={(value) => form.setValue("goal", value as any)} data-testid="select-audit-goal">
-            <SelectTrigger 
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              aria-label="Select your primary goal for the website audit"
-            >
-              <SelectValue placeholder="Select your goal" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="increase-traffic">Increase Traffic</SelectItem>
-              <SelectItem value="improve-conversions">Improve Conversions</SelectItem>
-              <SelectItem value="better-performance">Better Performance</SelectItem>
-              <SelectItem value="modernize-design">Modernize Design</SelectItem>
-              <SelectItem value="add-ecommerce">Add E-commerce</SelectItem>
-              <SelectItem value="mobile-optimization">Mobile Optimization</SelectItem>
-            </SelectContent>
-          </Select>
-          {form.formState.errors.goal && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.goal.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
-            Timeline *
-          </Label>
-          <Select onValueChange={(value) => form.setValue("timeline", value as any)} data-testid="select-audit-timeline">
-            <SelectTrigger 
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              aria-label="Select your project timeline for website development"
-            >
-              <SelectValue placeholder="Select timeline" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="asap">ASAP (Within 7 days)</SelectItem>
-              <SelectItem value="this-month">This Month</SelectItem>
-              <SelectItem value="next-month">Next Month</SelectItem>
-              <SelectItem value="this-quarter">This Quarter</SelectItem>
-              <SelectItem value="exploring">Just Exploring</SelectItem>
-            </SelectContent>
-          </Select>
-          {form.formState.errors.timeline && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.timeline.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
-            Budget *
-          </Label>
-          <Select onValueChange={(value) => form.setValue("budget", value as any)} data-testid="select-audit-budget">
-            <SelectTrigger 
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              aria-label="Select your project budget range"
-            >
-              <SelectValue placeholder="Select budget" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="200-500">$200+</SelectItem>
-              <SelectItem value="500-1000">$500+</SelectItem>
-              <SelectItem value="1000-2000">$1,000+</SelectItem>
-              <SelectItem value="2000-3000">$2,000+</SelectItem>
-              <SelectItem value="3000-4000">$3,000+</SelectItem>
-              <SelectItem value="4000-5000">$4,000+</SelectItem>
-              <SelectItem value="5000-plus">$5,000+</SelectItem>
-            </SelectContent>
-          </Select>
-          {form.formState.errors.budget && (
-            <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.budget.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex flex-col items-center space-y-4 pt-4">
-        <Button
-          type="submit"
-          disabled={form.formState.isSubmitting}
-          className="gradient-bg text-white px-12 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 glow-effect min-w-[240px]"
-          data-testid="button-submit-audit"
-        >
-          {form.formState.isSubmitting ? "Submitting..." : "Get My Free Audit"}
-        </Button>
+        onSubmit={handleSubmit} 
+        className="space-y-6"
+        data-netlify="true"
+        name="launchin7-audit"
+        method="POST"
+        netlify-honeypot="bot-field"
+      >
+        {/* Hidden input for Netlify form detection */}
+        <input type="hidden" name="form-name" value="launchin7-audit" />
+        {/* Honeypot field (hidden from users) */}
+        <p className="hidden">
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </p>
         
-        {/* Alternative: Schedule a Call */}
-        <div className="flex items-center space-x-4 text-gray-500">
-          <div className="h-px bg-gray-300 flex-1"></div>
-          <span className="text-sm font-medium">or</span>
-          <div className="h-px bg-gray-300 flex-1"></div>
+        {/* Form Fields Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="audit-name" className="block text-sm font-semibold text-deep-navy mb-3">
+              Full Name *
+            </label>
+            <input
+              id="audit-name"
+              name="name"
+              type="text"
+              required
+              placeholder="Enter your full name"
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="input-audit-name"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="audit-email" className="block text-sm font-semibold text-deep-navy mb-3">
+              Email Address *
+            </label>
+            <input
+              id="audit-email"
+              name="email"
+              type="email"
+              required
+              placeholder="your@email.com"
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="input-audit-email"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="audit-website" className="block text-sm font-semibold text-deep-navy mb-3">
+              Website URL *
+            </label>
+            <input
+              id="audit-website"
+              name="website"
+              type="url"
+              required
+              placeholder="https://yourwebsite.com"
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="input-audit-website"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
+              Primary Goal *
+            </label>
+            <select
+              id="audit-goal"
+              name="goal"
+              required
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="select-audit-goal"
+            >
+              <option value="">Select your main goal</option>
+              <option value="increase-traffic">Increase Traffic</option>
+              <option value="improve-conversions">Improve Conversions</option>
+              <option value="better-performance">Better Performance</option>
+              <option value="modernize-design">Modernize Design</option>
+              <option value="add-ecommerce">Add E-commerce</option>
+              <option value="mobile-optimization">Mobile Optimization</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
+              Timeline *
+            </label>
+            <select
+              id="audit-timeline"
+              name="timeline"
+              required
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="select-audit-timeline"
+            >
+              <option value="">When do you need this?</option>
+              <option value="asap">ASAP</option>
+              <option value="this-month">This Month</option>
+              <option value="next-month">Next Month</option>
+              <option value="this-quarter">This Quarter</option>
+              <option value="exploring">Just Exploring</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
+              Budget Range *
+            </label>
+            <select
+              id="audit-budget"
+              name="budget"
+              required
+              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+              data-testid="select-audit-budget"
+            >
+              <option value="">Select budget range</option>
+              <option value="200-500">$200 - $500</option>
+              <option value="500-1000">$500 - $1,000</option>
+              <option value="1000-2000">$1,000 - $2,000</option>
+              <option value="2000-3000">$2,000 - $3,000</option>
+              <option value="3000-4000">$3,000 - $4,000</option>
+              <option value="4000-5000">$4,000 - $5,000</option>
+              <option value="5000-plus">$5,000+</option>
+            </select>
+          </div>
         </div>
-        
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setIsCalendlyOpen(true)}
-          className="bg-white border-2 border-electric-blue text-electric-blue px-8 py-3 rounded-xl font-semibold hover:bg-electric-blue hover:text-white transition-all duration-300"
-          data-testid="button-schedule-call"
-        >
-          <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Schedule Strategy Call
-        </Button>
-      </div>
-    </form>
-    
-    {/* Calendly Popup */}
-    <CalendlyPopup
-      isOpen={isCalendlyOpen}
-      onClose={() => setIsCalendlyOpen(false)}
-      url="https://calendly.com/infolaunchin7/30min"
-    />
-  </>
+
+        {/* Submit Button */}
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+            data-testid="button-audit-submit"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Analyzing...
+              </div>
+            ) : (
+              "Get My Free Audit"
+            )}
+          </button>
+
+          <button
+            type="button"
+            className="sm:w-auto bg-gradient-to-r from-success-green to-tech-orange hover:from-success-green/90 hover:to-tech-orange/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
+            data-testid="button-book-call"
+          >
+            Book a Call Instead
+          </button>
+        </div>
+      </form>
+    </>
   );
 }

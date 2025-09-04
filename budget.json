@@ -1,0 +1,12 @@
+{
+  "resourceSizes": [
+    { "resourceType": "script", "budget": 60 },
+    { "resourceType": "stylesheet", "budget": 8 },
+    { "resourceType": "font", "budget": 5 }
+  ],
+  "resourceCounts": [
+    { "resourceType": "script", "budget": 5 },
+    { "resourceType": "stylesheet", "budget": 1 },
+    { "resourceType": "font", "budget": 1 }
+  ]
+}

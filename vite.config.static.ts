@@ -18,7 +18,7 @@ export default defineConfig({
     sourcemap: false,
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -33,18 +33,19 @@ export default defineConfig({
       },
     },
     rollupOptions: {
+      external: [],
       output: {
-        // Aggressive chunking for main-thread optimization
-        manualChunks: {
-          'react': ['react', 'react-dom'],
-          'motion': ['framer-motion'],
-          'query': ['@tanstack/react-query'],
-          'router': ['wouter'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'ui-tooltip': ['@radix-ui/react-tooltip'],
-          'ui-basic': ['@radix-ui/react-slot'],
-          'ui-form': ['@radix-ui/react-label', '@radix-ui/react-select'],
-          'ui-feedback': ['@radix-ui/react-toast'],
+        // Ultra-minimal chunking - maximum 3 files
+        manualChunks: (id) => {
+          // Only put heavy audit form in separate chunk
+          if (id.includes('audit-form')) {
+            return 'audit';
+          }
+          // All React and vendor code in one bundle
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+          // All app code in main bundle
         },
         entryFileNames: '[name]-[hash].js',
         chunkFileNames: '[name]-[hash].js',

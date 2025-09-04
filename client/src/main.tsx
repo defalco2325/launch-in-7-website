@@ -5,16 +5,15 @@ import { Switch, Route } from "wouter";
 import { Suspense, lazy } from "react";
 import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
-import "./index.css";
 
 // CRITICAL PATH: Eagerly load shell + above-the-fold components
 import Header from "@/components/layout/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-// Lazy load below-the-fold content to reduce critical chain
-const Home = lazy(() => import("@/pages/home"));
+// Inline most components, only lazy load heavy ones
+import Home from "@/pages/home";
+import Footer from "@/components/layout/footer";
 const NotFound = lazy(() => import("@/pages/not-found"));
-const Footer = lazy(() => import("@/components/layout/footer"));
 
 function Router() {
   return (
@@ -42,10 +41,8 @@ function App() {
             <main id="main-content" className="pt-16" role="main">
               <Router />
             </main>
-            {/* Footer lazy loaded since it's below-the-fold */}
-            <Suspense fallback={<div className="h-[600px] bg-slate-900"></div>}>
-              <Footer />
-            </Suspense>
+            {/* Footer inlined */}
+            <Footer />
           </div>
         </SEOProvider>
       </TooltipProvider>
