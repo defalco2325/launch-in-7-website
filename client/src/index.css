@@ -1,3 +1,141 @@
+/* Video Splash Screen Styles */
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Prevent mobile bounce scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* Improve mobile performance */
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+#splash-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Desktop screens - better fit without excessive cropping */
+@media (min-width: 769px) {
+  #splash-video {
+    object-fit: cover;
+    object-position: center center;
+    transform: scale(1.05);
+  }
+  
+  #splash {
+    background-color: black;
+  }
+}
+
+/* Mobile-optimized video display */
+@media (max-width: 768px) {
+  #splash-video {
+    /* Proper fit for mobile */
+    object-fit: cover;
+    object-position: center center;
+    /* Force hardware acceleration on mobile */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* Portrait mobile devices */
+@media (max-width: 480px) and (orientation: portrait) {
+  #splash-video {
+    /* Better fit for narrow mobile screens */
+    object-fit: cover;
+    object-position: center center;
+    /* Proper sizing for portrait */
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+/* Landscape mobile devices */
+@media (max-width: 768px) and (orientation: landscape) {
+  #splash-video {
+    /* Adjust for landscape mobile viewing */
+    object-fit: cover;
+    object-position: center center;
+    /* Proper coverage in landscape */
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+
+/* Very small mobile screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  #splash-video {
+    /* Optimize for very small screens */
+    object-fit: cover;
+    object-position: center center;
+    /* Proper fit for small screens */
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  #splash {
+    /* Ensure container is properly sized */
+    min-height: 100vh;
+    min-width: 100%;
+  }
+}
+
+/* Handle notched devices (iPhone X+) */
+@media (max-width: 768px) {
+  #splash {
+    /* Support notched devices */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    /* Ensure video covers entire viewport including notch areas */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+/* Fade out animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.splash-fade-out {
+  animation: fadeOut 1s ease-out forwards;
+}
+
+/* Hide splash completely after fade out */
+.splash-hidden {
+  display: none !important;
+}
+
+/* Disable scrolling when splash is active */
+body.splash-active {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* System fonts only - no preloading */
 
 /* Enhanced focus styles for accessibility */
@@ -103,10 +241,10 @@ form, .form-field, .input-group {
 
 /* Fixed footer dimensions to eliminate CLS */
 #footer-section {
-  height: 600px !important; /* Fixed height prevents layout shifts */
+  min-height: auto; /* Allow footer to expand naturally */
   contain: layout style paint;
   will-change: auto;
-  overflow: hidden; /* Prevent content overflow causing shifts */
+  overflow: visible; /* Allow footer content to display fully */
 }
 
 /* Ensure footer components maintain stable layout */

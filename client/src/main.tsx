@@ -53,6 +53,118 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
+// Splash Screen Logic
+let splashInitialized = false;
+const initializeSplashScreen = () => {
+  // Prevent multiple initializations (important for HMR in development)
+  if (splashInitialized) {
+    return;
+  }
+  
+  const splash = document.getElementById('splash');
+  const video = document.getElementById('splash-video') as HTMLVideoElement;
+  const body = document.body;
+
+  if (!splash || !video) {
+    console.log('Splash elements not found');
+    return;
+  }
+
+  // Mark as initialized before proceeding
+  splashInitialized = true;
+  console.log('Initializing splash screen');
+
+  // Disable scrolling initially
+  body.classList.add('splash-active');
+  
+  let hasStartedPlaying = false;
+  let playAttempted = false;
+
+  const hideSplash = () => {
+    console.log('Hiding splash screen');
+    splash.classList.add('splash-fade-out');
+    setTimeout(() => {
+      splash.classList.add('splash-hidden');
+      body.classList.remove('splash-active');
+    }, 1000);
+  };
+
+  // Attempt to play video
+  const attemptPlay = async () => {
+    if (playAttempted) return;
+    playAttempted = true;
+    
+    try {
+      console.log('Attempting to play video');
+      video.currentTime = 0;
+      video.muted = true; // Ensure muted for autoplay
+      
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        await playPromise;
+        hasStartedPlaying = true;
+        console.log('Video started playing successfully');
+        
+        // Set timer to hide splash after video duration
+        setTimeout(() => {
+          console.log('Video finished - hiding splash');
+          hideSplash();
+        }, 4000); // 4 seconds for the rocket launch video
+      }
+    } catch (error) {
+      console.log('Video autoplay failed:', error);
+      hideSplash();
+    }
+  };
+
+  // Try to play immediately if video is ready
+  if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+    console.log('Video is ready - attempting immediate play');
+    attemptPlay();
+  } else {
+    // Wait for video to be ready
+    video.addEventListener('canplay', () => {
+      console.log('Video can play');
+      attemptPlay();
+    }, { once: true });
+  }
+
+  // Handle when video actually starts playing
+  video.addEventListener('playing', () => {
+    console.log('Video is playing');
+    hasStartedPlaying = true;
+  });
+
+  // Handle video errors
+  video.addEventListener('error', (e) => {
+    console.log('Video error:', e);
+    hideSplash();
+  });
+
+  // Fallback: if video hasn't started playing within 2 seconds, hide splash
+  setTimeout(() => {
+    if (!hasStartedPlaying) {
+      console.log('Video timeout - hiding splash');
+      hideSplash();
+    }
+  }, 2000);
+
+  // Absolute fallback: always hide after 8 seconds max
+  setTimeout(() => {
+    console.log('Maximum timeout reached - hiding splash');
+    hideSplash();
+  }, 8000);
+};
+
+// Initialize splash screen when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeSplashScreen);
+} else {
+  // DOM is already loaded
+  initializeSplashScreen();
+}
+
 // Defer all non-critical scripts to after initial render
 const deferNonCriticalScripts = () => {
   // Setup Netlify Forms progressive enhancement
