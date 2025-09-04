@@ -1,0 +1,66 @@
+Implement a mission-control ‘Countdown to Launch’ splash page for the LaunchIn7 site.
+
+Tech
+	•	React + Vite + Tailwind CSS
+	•	Framer Motion for animation
+	•	No external CSS frameworks
+	•	Works with existing LaunchIn7 branding (white background site, deep-navy accents, blue gradient on the ‘7’, ‘i’ and ‘n’ black)
+
+Behavior Overview
+	•	On first page load, show a full-screen splash for ~2–3s, then reveal the site.
+	•	The ‘7’ in the logo acts as a rocket nozzle with smoke + exhaust glow.
+	•	A 7→1 countdown plays briefly, in sync with subtle pulses.
+	•	On “1”, splash launches upward (accelerating ease) and fades; main app fades/slides in.
+	•	Show splash once per load (use sessionStorage key l7_splash_seen=true).
+
+Visual & Motion Details
+	1.	Backdrop (mission control vibe)
+	•	Deep-navy gradient backdrop with very subtle animated stars (tiny blurred dots moving at 0.2–0.4px/s).
+	•	Faint HUD lines/constellations (SVG paths, low opacity).
+	2.	Centered Logo
+	•	LaunchIn7 logo centered; ‘i’ and ‘n’ black, ‘7’ gradient blue, soft outer glow.
+	3.	Countdown
+	•	7,6,5,4,3,2,1 in a sleek mono font; each tick: quick scale 0.92→1.0 with glow flash (120 ms).
+	•	Aria-live polite text mirrors countdown for SRs.
+	4.	Ignition
+	•	Smoke (blurred, semi-transparent gray puffs) emits beneath the ‘7’; expands and dissipates.
+	•	Exhaust particles (small bright dots) + blue-white glow pulse for ~600–800 ms.
+	5.	Launch
+	•	Entire splash (container) translates Y: 0→-120vh, opacity 1→0, easeIn cubic with velocity.
+	•	A vertical smoke column lingers 300–500 ms then fades.
+	6.	Reveal
+	•	Underlying page content was rendered behind splash; on splash exit, page opacity 0→1 and translateY 8px→0 (200–300 ms).
+
+Accessibility
+	•	Respect prefers-reduced-motion: if true, skip animation; use quick fade in/out w/ no movement.
+	•	Splash is aria-hidden="true"; countdown mirrored via aria-live="polite" offscreen text.
+	•	Keep contrast AA compliant; ensure focus is not trapped by splash.
+	•	All interactive elements on the page remain non-focusable while splash is visible.
+
+Performance
+	•	Keep animation to transform/opacity only (no layout thrash).
+	•	Throttle particles on low-end devices (cap count).
+	•	Preload logo SVG/PNG; avoid heavy Lottie—prefer lightweight SVG + Framer Motion.
+	•	Total extra JS for splash ≤ 12KB gz if possible.
+	•	Ensure no CLS: splash uses position: fixed; inset: 0.
+
+Files & Structure
+	•	src/components/splash/SplashScreen.tsx
+	•	src/components/splash/SmokeTrail.tsx (procedural puffs via arrays)
+	•	src/components/splash/ExhaustParticles.tsx
+	•	Hook: src/hooks/usePrefersReducedMotion.ts
+	•	Gate in App.tsx: showSplash = !sessionStorage.getItem('l7_splash_seen')
+
+Implementation Notes (code-level)
+	•	Tailwind utilities for sizing/z-index:
+	•	Splash root: fixed inset-0 z-[9999] bg-white dark:bg-deep-navy
+	•	Starfield: absolutely positioned canvas or divs; very subtle.
+	•	Smoke puffs:
+	•	Render N divs (absolute bottom-24 left-1/2) with randomized x offsets and scale/opacity keyframes.
+	•	Particles:
+	•	Map ~10–20 dots with short lifetime (200–500 ms), translateY and slight X jitter.
+	•	Timings (approx):
+	•	0–200ms: logo fade/pulse in
+	•	200–1600ms: countdown ticks
+	•	1200–1900ms: ignition (smoke + particles + glow)
+	•	1700–2200ms: launch up + site reveal

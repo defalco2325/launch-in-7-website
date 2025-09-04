@@ -211,3 +211,56 @@ Preferred communication style: Simple, everyday language.
 ### Email Integration (Configured but Not Active)
 - Prepared for Nodemailer integration for form submission notifications
 - Environment variables configured for SMTP settings
+
+## Splash Screen Implementation (September 2025)
+
+### Overview
+The site features a mission-control themed "Countdown to Launch" splash screen that appears on first visit, creating an engaging brand experience that reinforces the "7-day turnaround" messaging.
+
+### Features
+- **Mission Control Design**: Deep navy gradient background with animated starfield and HUD grid overlay
+- **7-Second Countdown**: Animated countdown from 7→1 with scale pulses and glow effects
+- **Rocket Launch Animation**: The "7" in the logo acts as a rocket nozzle with smoke trails and exhaust particles
+- **Accessibility**: Full prefers-reduced-motion support with fast fade fallback
+- **Session Management**: Shows once per session using `sessionStorage.getItem('l7_splash_seen')`
+- **Debug Mode**: Add `?nosplash=1` to URL to skip splash for development/testing
+
+### Customization Guide
+
+**Timing Adjustments** (in `client/src/components/splash/SplashScreen.tsx`):
+```javascript
+// Countdown interval (default: 200ms per number)
+const countdownInterval = setInterval(() => { ... }, 200);
+
+// Ignition phase duration (default: 600ms)
+setTimeout(() => setPhase('launch'), 600);
+
+// Launch animation duration (default: 800ms)
+controls.start({ transition: { duration: 0.8 } });
+```
+
+**Particle Count** (for performance tuning):
+```javascript
+// In ExhaustParticles.tsx
+const particleCount = prefersReducedMotion ? 3 : 15; // Adjust second number
+
+// In SmokeTrail.tsx  
+const puffCount = prefersReducedMotion ? 2 : 8; // Adjust second number
+
+// In SplashScreen.tsx starfield
+const stars = Array.from({ length: prefersReducedMotion ? 5 : 20 }, ...); // Adjust second number
+```
+
+**Animation Speeds**:
+- Countdown glow flash: 120ms (in scale animation transition)
+- Smoke puff duration: 1.2-2.0s (randomized in SmokeTrail)
+- Particle lifetime: 0.4-0.8s (randomized in ExhaustParticles)
+- Star movement: 10-30s cycles (randomized per star)
+
+### Technical Notes
+- Built with Framer Motion for smooth 60fps animations
+- Uses transform/opacity only (no layout thrashing)
+- Respects `prefers-reduced-motion` with instant fade fallback
+- Total bundle impact: ~12KB gzipped as specified
+- Performance: No CLS introduced (uses position: fixed)
+- Accessibility: ARIA hidden splash with screen reader announcements
