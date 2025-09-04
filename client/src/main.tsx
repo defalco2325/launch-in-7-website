@@ -64,37 +64,45 @@ const initializeSplashScreen = () => {
   // Disable scrolling initially
   body.classList.add('splash-active');
 
-  // Handle video end event
-  video.addEventListener('ended', () => {
-    // Start fade out animation
-    splash.classList.add('splash-fade-out');
-    
-    // After animation completes, hide splash and enable scrolling
-    setTimeout(() => {
-      splash.classList.add('splash-hidden');
-      body.classList.remove('splash-active');
-    }, 1000); // Match the CSS animation duration
-  });
-
-  // Fallback: if video fails to load or play, hide splash after 3 seconds
-  setTimeout(() => {
-    if (!video.ended && splash.style.display !== 'none') {
-      splash.classList.add('splash-fade-out');
-      setTimeout(() => {
-        splash.classList.add('splash-hidden');
-        body.classList.remove('splash-active');
-      }, 1000);
+  // Force immediate play when video can start
+  const forcePlay = async () => {
+    try {
+      video.currentTime = 0;
+      await video.play();
+    } catch (error) {
+      console.log('Video autoplay prevented by browser');
+      // If autoplay fails, hide splash immediately
+      hideSplash();
     }
-  }, 3000);
+  };
 
-  // Handle video load errors
-  video.addEventListener('error', () => {
+  const hideSplash = () => {
     splash.classList.add('splash-fade-out');
     setTimeout(() => {
       splash.classList.add('splash-hidden');
       body.classList.remove('splash-active');
     }, 1000);
-  });
+  };
+
+  // Try to play immediately when video loads enough data
+  video.addEventListener('loadeddata', forcePlay);
+  video.addEventListener('canplay', forcePlay);
+
+  // Handle video end event
+  video.addEventListener('ended', hideSplash);
+
+  // Handle video load errors
+  video.addEventListener('error', hideSplash);
+
+  // Fallback: if video doesn't start within 1 second, hide splash
+  setTimeout(() => {
+    if (video.paused || video.currentTime === 0) {
+      hideSplash();
+    }
+  }, 1000);
+
+  // Backup fallback: always hide after 6 seconds max
+  setTimeout(hideSplash, 6000);
 };
 
 // Initialize splash screen immediately
