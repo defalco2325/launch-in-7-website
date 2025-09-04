@@ -60,6 +60,7 @@ const HeroSection = memo(function HeroSection() {
     return () => clearInterval(interval);
   }, [isVisible]);
 
+  // Memoized callbacks to reduce re-renders
   const handleStartBuild = useCallback(() => {
     const auditSection = document.querySelector('#audit-section');
     auditSection?.scrollIntoView({ behavior: 'smooth' });
@@ -74,6 +75,9 @@ const HeroSection = memo(function HeroSection() {
     const nextSection = document.querySelector('#guarantee-section');
     nextSection?.scrollIntoView({ behavior: 'smooth' });
   }, []);
+
+  // Memoized current process for performance
+  const currentProcess = useMemo(() => dayProcesses[currentDay - 1], [currentDay, dayProcesses]);
 
   return (
     <section 

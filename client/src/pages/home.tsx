@@ -43,6 +43,12 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null);
   const auditRef = useRef<HTMLDivElement>(null);
   
+  // Delayed mounting - wait for first paint to reduce main-thread work
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    requestAnimationFrame(() => setReady(true));
+  }, []);
+  
   const guaranteeInView = useInViewport(guaranteeRef, '300px');
   const servicesInView = useInViewport(servicesRef, '400px');
   const auditInView = useInViewport(auditRef, '500px');
@@ -58,35 +64,26 @@ export default function Home() {
     <div>
       <HeroSection />
       
-      <div ref={guaranteeRef} id="guarantee-section">
-        {guaranteeInView && (
-          <Suspense fallback={
-            <div 
-              className="h-96 bg-gradient-to-b from-slate-50 to-white flex items-center justify-center"
-              style={{ minHeight: '384px' }}
-            >
-              <div className="animate-pulse">Loading...</div>
-            </div>
-          }>
-            <GuaranteeExplainer />
-          </Suspense>
-        )}
-      </div>
-      
-      <div ref={servicesRef}>
-        {servicesInView && (
-          <Suspense fallback={
-            <div 
-              className="h-96 bg-white flex items-center justify-center"
-              style={{ minHeight: '384px' }}
-            >
-              <div className="animate-pulse">Loading...</div>
-            </div>
-          }>
-            <ServicesSnapshot />
-          </Suspense>
-        )}
-      </div>
+      {/* Delayed mounting - only render after first paint */}
+      {ready && (
+        <>
+          <div ref={guaranteeRef} id="guarantee-section" style={{ contentVisibility: 'auto', containIntrinsicSize: '800px 1px' }}>
+            {guaranteeInView && (
+              <Suspense fallback={null}>
+                <GuaranteeExplainer />
+              </Suspense>
+            )}
+          </div>
+          
+          <div ref={servicesRef} style={{ contentVisibility: 'auto', containIntrinsicSize: '800px 1px' }}>
+            {servicesInView && (
+              <Suspense fallback={null}>
+                <ServicesSnapshot />
+              </Suspense>
+            )}
+          </div>
+        </>
+      )}
       <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">

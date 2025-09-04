@@ -13,9 +13,11 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname, "client"),
   build: {
+    target: 'es2020',
+    sourcemap: false,
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    cssCodeSplit: true, // Split CSS for better caching
+    cssCodeSplit: true,
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -31,17 +33,18 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Simple chunking - prioritize functionality over optimization
+        // Aggressive chunking for main-thread optimization
         manualChunks: {
           'react': ['react', 'react-dom'],
-          'vendor': ['wouter', '@tanstack/react-query'],
-          // Critical UI - needed for initial page load (Button, TooltipProvider)
-          'ui-critical': ['@radix-ui/react-slot', '@radix-ui/react-tooltip'],
-          // Deferred UI - only needed for forms and other lazy-loaded sections
-          'ui-deferred': ['@radix-ui/react-label', '@radix-ui/react-select', '@radix-ui/react-toast'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod']
+          'motion': ['framer-motion'],
+          'query': ['@tanstack/react-query'],
+          'router': ['wouter'],
+          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'ui-tooltip': ['@radix-ui/react-tooltip'],
+          'ui-basic': ['@radix-ui/react-slot'],
+          'ui-form': ['@radix-ui/react-label', '@radix-ui/react-select'],
+          'ui-feedback': ['@radix-ui/react-toast'],
         },
-        // Optimize asset naming
         entryFileNames: '[name]-[hash].js',
         chunkFileNames: '[name]-[hash].js',
         assetFileNames: '[name]-[hash].[ext]'

@@ -1,0 +1,73 @@
+I’m getting console errors:
+
+Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "application/octet-stream".
+
+The script has an unsupported MIME type ('text/html').
+
+Please audit and fix the build/deploy so all JS is served with a JavaScript MIME type and no 404/HTML is returned for script requests.
+
+Tasks
+
+Verify script tags & paths
+
+In index.html, ensure the entry uses ES modules and a valid path:
+
+<link rel="modulepreload" href="/src/main.jsx">
+<script type="module" src="/src/main.jsx"></script>
+
+
+Remove/repair any <script src="..."> that points to a route that returns HTML (404/index.html). Confirm all asset URLs exist in dist/.
+
+Fix data/Blob scripts
+
+Search for any code that creates script URLs via Blob or data: (e.g., URL.createObjectURL(new Blob([...]))).
+
+If used, set a JS MIME:
+
+const blob = new Blob([code], { type: 'text/javascript' }); // for classic
+// for modules, prefer real files; if unavoidable:
+const url = 'data:text/javascript;base64,' + btoa(code);
+
+
+Ensure <script type="module"> is only used with JS MIME sources.
+
+Netlify headers (content types)
+
+Add _headers or netlify.toml to force correct MIME types:
+
+/*.js
+  Content-Type: text/javascript; charset=utf-8
+/*.mjs
+  Content-Type: text/javascript; charset=utf-8
+/*.css
+  Content-Type: text/css; charset=utf-8
+
+
+Redeploy and verify response headers for built JS files.
+
+SPA redirects (avoid capturing assets)
+
+Ensure redirects don’t rewrite asset requests to HTML:
+_redirects
+
+/assets/*   /assets/:splat   200
+/*          /index.html      200
+
+
+(Adjust /assets to your build folder; remove any 200! that forces HTML for assets.)
+
+Vite config sanity
+
+Confirm base path and module output:
+
+// vite.config.js
+export default { base: '/', build: { target: 'es2020' } }
+
+
+Entry in index.html should match the Vite entry (no hashed file hard-coding).
+
+Acceptance
+
+All JS requests return Content-Type: text/javascript (or application/javascript) and no longer application/octet-stream or text/html.
+
+No console MIME errors; app loads normally in Lighthouse/Chrome.

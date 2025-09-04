@@ -53,7 +53,7 @@ body {
   font-kerning: none;
 }
 
-/* Apply containment selectively to reduce overhead */
+/* Apply containment and content-visibility for performance */
 .hero-section, .footer, .main-content, .section {
   contain: layout style;
 }
@@ -62,6 +62,26 @@ body {
 .timeline-container, .card-grid, .form-container, .services-grid {
   contain: layout style paint;
   /* Isolate heavy interactive components */
+}
+
+/* Content visibility for offscreen sections - skip layout/paint */
+.deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 1px;
+}
+
+/* Optimize animations - transforms only, no top/left/width changes */
+.animate-fade-in-up {
+  transform: translate3d(0, 20px, 0);
+  opacity: 0;
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
 }
 
 /* Optimize form elements to prevent layout recalculation */
@@ -410,15 +430,11 @@ body, p, div, span {
     }
   }
   
-  /* Reduced motion preference - but keep glow pulse */
+  /* Respect prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
-    *:not(.glow-effect):not(.cutting-edge-gradient):not(.glass-card) {
+    * {
       animation: none !important;
       transition: none !important;
-    }
-    /* Keep glow pulse even with reduced motion */
-    .glow-effect {
-      animation: pulse-glow 4s ease-in-out infinite !important;
     }
   }
 

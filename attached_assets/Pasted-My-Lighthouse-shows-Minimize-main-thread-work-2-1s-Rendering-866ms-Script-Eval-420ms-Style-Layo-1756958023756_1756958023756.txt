@@ -1,0 +1,98 @@
+My Lighthouse shows Minimize main-thread work ≈ 2.1s (Rendering 866ms, Script Eval 420ms, Style/Layout 349ms). Optimize the codebase to shrink JS work and paint faster.
+
+Do exactly this
+
+Defer non-critical JS & split bundles
+
+Remove non-essential scripts from the critical path; load them after load with requestIdleCallback.
+
+<script>
+  window.addEventListener('load', () => {
+    (window.requestIdleCallback||setTimeout)(() => import('/ui-critic.js'));
+  });
+</script>
+
+
+In Vite, create smaller chunks:
+
+// vite.config.js
+export default {
+  build: {
+    target: 'es2020',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react','react-dom'],
+          motion: ['framer-motion'],
+        }
+      }
+    }
+  }
+}
+
+
+Lazy-load below-the-fold UI
+
+Keep only Header, Hero, and the LCP media in the initial bundle. Lazy-load the rest.
+
+const Features = React.lazy(() => import('./sections/Features'));
+const Pricing  = React.lazy(() => import('./sections/Pricing'));
+const Footer   = React.lazy(() => import('./sections/Footer'));
+// Mount lazies only after first paint:
+const [ready,setReady] = React.useState(false);
+React.useEffect(()=> requestAnimationFrame(()=>setReady(true)),[]);
+{ready && (
+  <React.Suspense fallback={null}>
+    <Features/><Pricing/><Footer/>
+  </React.Suspense>
+)}
+
+
+Reduce rendering work
+
+Memoize stable components/props; avoid re-renders from context churn.
+
+export default React.memo(Card);
+const expensive = React.useMemo(()=>compute(items),[items]);
+const onClick = React.useCallback(()=> setOpen(true),[]);
+
+
+Avoid deriving state during render; move heavy mapping/filtering into useMemo.
+
+Style/Layout thrash fixes
+
+Use CSS transforms instead of top/left/width in animations.
+
+Add content-visibility:auto to offscreen sections to skip layout/paint until scrolled into view.
+
+.deferred { content-visibility: auto; contain-intrinsic-size: 800px 1px; }
+
+<section className="deferred">...</section>
+
+
+Lightweight animations
+
+Prefer CSS keyframes; cap Framer Motion spring stiffness/bounces. Respect prefers-reduced-motion.
+
+@media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+
+Trim JS execution
+
+Remove unused libraries; replace utility libs with native APIs.
+
+Ensure prod build only (NODE_ENV=production), and drop dev-only code/console.
+
+Images & fonts
+
+Preload the LCP image and primary font; use font-display: swap.
+
+<link rel="preload" as="image" href="/img/hero.webp" fetchpriority="high">
+<link rel="preload" as="font" href="/fonts/Inter.woff2" type="font/woff2" crossorigin>
+
+Acceptance criteria
+
+Main-thread work ≤ 1.0s, Rendering ≤ 600ms, Script Eval ≤ 250ms on repeat Lighthouse runs.
+
+No functional regressions; layout and interactions unchanged above the fold.
