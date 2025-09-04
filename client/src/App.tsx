@@ -2,13 +2,11 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import MobileCTA from "@/components/layout/mobile-cta";
-import SplashScreen from "@/components/splash-screen";
 import { SEOProvider } from "@/lib/seo";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 // Lazy load all pages to keep initial bundle small
 const Home = lazy(() => import("@/pages/home"));
@@ -30,19 +28,6 @@ function Router() {
 }
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
-  const isMobile = useIsMobile();
-
-
-  const handleSplashComplete = () => {
-    setShowSplash(false);
-  };
-
-  // Only show splash screen on mobile devices
-  if (showSplash && (isMobile === undefined || isMobile === true)) {
-    return <SplashScreen onComplete={handleSplashComplete} />;
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
