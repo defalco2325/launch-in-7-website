@@ -1,4 +1,4 @@
-/* Video Splash Screen Styles */
+/* Optimized splash screen - minimal reflows */
 #splash {
   position: fixed;
   top: 0;
@@ -11,11 +11,11 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Prevent mobile bounce scrolling */
-  -webkit-overflow-scrolling: touch;
-  /* Improve mobile performance */
+  /* Use GPU compositing but only when animating */
   will-change: opacity;
-  transform: translateZ(0);
+  transform: translate3d(0,0,0);
+  /* Prevent layout recalculation */
+  contain: strict;
 }
 
 #splash-video {
@@ -111,18 +111,22 @@
   }
 }
 
-/* Fade out animation */
+/* Hardware accelerated fade animation */
 @keyframes fadeOut {
   from {
     opacity: 1;
+    transform: translate3d(0,0,0);
   }
   to {
     opacity: 0;
+    transform: translate3d(0,0,0);
   }
 }
 
 .splash-fade-out {
   animation: fadeOut 1s ease-out forwards;
+  /* Force hardware layer only during animation */
+  will-change: opacity;
 }
 
 /* Hide splash completely after fade out */
@@ -239,17 +243,18 @@ form, .form-field, .input-group {
   /* Simplified glass effect to reduce GPU overhead */
 }
 
-/* Fixed footer dimensions to eliminate CLS */
+/* Optimized footer for performance */
 #footer-section {
   min-height: auto; /* Allow footer to expand naturally */
-  contain: layout style paint;
+  contain: layout style;
   will-change: auto;
   overflow: visible; /* Allow footer content to display fully */
+  /* Remove paint containment to reduce rendering work */
 }
 
-/* Ensure footer components maintain stable layout */
+/* Remove containment to reduce rendering overhead */
 #footer-section * {
-  contain: style;
+  contain: none;
 }
 
 /* Minimal hardware acceleration - only when needed */

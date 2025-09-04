@@ -9,26 +9,41 @@ const AuditForm = lazy(() =>
   import("@/components/forms/audit-form").then(module => ({ default: module.default }))
 );
 
-// Use Intersection Observer hook for lazy loading
+// Optimized Intersection Observer with performance improvements
 function useInViewport(ref: React.RefObject<HTMLElement>, rootMargin = "200px") {
   const [isIntersecting, setIntersecting] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIntersecting(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin }
-    );
+    // Use requestIdleCallback to avoid blocking main thread
+    const setupObserver = () => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            // Use requestAnimationFrame to defer state update
+            requestAnimationFrame(() => {
+              setIntersecting(true);
+              observer.disconnect();
+            });
+          }
+        },
+        { rootMargin, threshold: 0 }
+      );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => observer.disconnect();
+    };
+
+    if (typeof requestIdleCallback === 'function') {
+      const handle = requestIdleCallback(setupObserver, { timeout: 1000 });
+      return () => {
+        cancelIdleCallback(handle);
+      };
+    } else {
+      return setupObserver();
     }
-
-    return () => observer.disconnect();
   }, [ref, rootMargin]);
 
   return isIntersecting;

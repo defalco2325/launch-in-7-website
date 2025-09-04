@@ -84,20 +84,30 @@ const initializeSplashScreen = () => {
 
   const hideSplash = () => {
     console.log('Hiding splash screen');
-    splash.classList.add('splash-fade-out');
-    setTimeout(() => {
-      splash.classList.add('splash-hidden');
-      body.classList.remove('splash-active');
-    }, 1000);
+    // Use requestAnimationFrame to avoid blocking main thread
+    requestAnimationFrame(() => {
+      splash.classList.add('splash-fade-out');
+      // Use requestAnimationFrame instead of setTimeout for better performance
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          splash.classList.add('splash-hidden');
+          body.classList.remove('splash-active');
+        }, 1000);
+      });
+    });
   };
 
-  // Attempt to play video
+  // Attempt to play video with yielding to prevent main-thread blocking
   const attemptPlay = async () => {
     if (playAttempted) return;
     playAttempted = true;
     
     try {
       console.log('Attempting to play video');
+      
+      // Yield to main thread before heavy operations
+      await new Promise(resolve => setTimeout(resolve, 0));
+      
       video.currentTime = 0;
       video.muted = true; // Ensure muted for autoplay
       
@@ -108,15 +118,24 @@ const initializeSplashScreen = () => {
         hasStartedPlaying = true;
         console.log('Video started playing successfully');
         
-        // Set timer to hide splash after video duration
-        setTimeout(() => {
+        // Use requestIdleCallback if available, fallback to setTimeout
+        const scheduleHide = () => {
           console.log('Video finished - hiding splash');
           hideSplash();
-        }, 4000); // 4 seconds for the rocket launch video
+        };
+        
+        if (typeof requestIdleCallback === 'function') {
+          setTimeout(() => {
+            requestIdleCallback(scheduleHide, { timeout: 4000 });
+          }, 4000);
+        } else {
+          setTimeout(scheduleHide, 4000);
+        }
       }
     } catch (error) {
       console.log('Video autoplay failed:', error);
-      hideSplash();
+      // Defer error handling to not block main thread
+      requestAnimationFrame(() => hideSplash());
     }
   };
 
@@ -144,19 +163,33 @@ const initializeSplashScreen = () => {
     hideSplash();
   });
 
-  // Fallback: if video hasn't started playing within 2 seconds, hide splash
-  setTimeout(() => {
+  // Use requestIdleCallback for fallback timers to avoid blocking main thread
+  const scheduleVideoTimeout = () => {
     if (!hasStartedPlaying) {
       console.log('Video timeout - hiding splash');
       hideSplash();
     }
-  }, 2000);
+  };
 
-  // Absolute fallback: always hide after 8 seconds max
-  setTimeout(() => {
+  const scheduleMaxTimeout = () => {
     console.log('Maximum timeout reached - hiding splash');
     hideSplash();
-  }, 8000);
+  };
+
+  // Fallback: if video hasn't started playing within 2 seconds, hide splash
+  if (typeof requestIdleCallback === 'function') {
+    setTimeout(() => {
+      requestIdleCallback(scheduleVideoTimeout, { timeout: 2000 });
+    }, 2000);
+    
+    // Absolute fallback: always hide after 8 seconds max
+    setTimeout(() => {
+      requestIdleCallback(scheduleMaxTimeout, { timeout: 8000 });
+    }, 8000);
+  } else {
+    setTimeout(scheduleVideoTimeout, 2000);
+    setTimeout(scheduleMaxTimeout, 8000);
+  }
 };
 
 // Initialize splash screen when DOM is ready
@@ -167,27 +200,62 @@ if (document.readyState === 'loading') {
   initializeSplashScreen();
 }
 
-// Defer all non-critical scripts to after initial render
-const deferNonCriticalScripts = () => {
-  // Setup Netlify Forms progressive enhancement
-  setupNetlifyForms();
-
-  // Register service worker for PWA functionality (deferred)
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered successfully:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
+// Break up non-critical scripts to prevent main-thread blocking
+const setupNetlifyFormsAsync = () => {
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(() => {
+      setupNetlifyForms();
+    }, { timeout: 1000 });
+  } else {
+    setTimeout(() => setupNetlifyForms(), 500);
   }
 };
 
-// Use requestIdleCallback with fallback for better browser support
-if (typeof requestIdleCallback === 'function') {
-  requestIdleCallback(deferNonCriticalScripts, { timeout: 2000 });
-} else {
-  // Fallback for older browsers
-  setTimeout(deferNonCriticalScripts, 1000);
-}
+const setupServiceWorkerAsync = () => {
+  if ('serviceWorker' in navigator) {
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(() => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered successfully:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Service Worker registration failed:', error);
+          });
+      }, { timeout: 3000 });
+    } else {
+      setTimeout(() => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered successfully:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Service Worker registration failed:', error);
+          });
+      }, 1000);
+    }
+  }
+};
+
+// Stagger non-critical script initialization to spread main-thread work
+requestAnimationFrame(() => {
+  setupNetlifyFormsAsync();
+  
+  // Add delay between heavy operations
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      setupServiceWorkerAsync();
+      
+      // Initialize performance optimizations after everything loads
+      import('./utils/performance').then(({ optimizeWillChange }) => {
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(() => {
+            optimizeWillChange();
+          }, { timeout: 5000 });
+        } else {
+          setTimeout(() => optimizeWillChange(), 2000);
+        }
+      });
+    });
+  }, 100);
+});
