@@ -27,41 +27,39 @@ export default function Footer() {
                 premium, mobile-ready website that converts visitors into customers from day one.
               </p>
             </div>
-            <div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
-            >
-              <div className="p-6 mb-6 md:mb-0 flex flex-col justify-center">
-                <div className="text-4xl font-bold text-electric-blue mb-2">7</div>
-                <div className="text-xl font-semibold mb-2">Day Guarantee</div>
-                <div className="text-gray-200 text-sm">Fast, reliable delivery without cutting corners</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
+                <div className="text-4xl font-bold text-electric-blue mb-3">7</div>
+                <div className="text-xl font-semibold text-white mb-3">Day Guarantee</div>
+                <div className="text-gray-200">Fast, reliable delivery without cutting corners</div>
               </div>
-              <div className="p-6 mb-6 md:mb-0 flex flex-col justify-center">
-                <div className="text-4xl font-bold text-neon-cyan mb-2">100%</div>
-                <div className="text-xl font-semibold mb-2">SEO Optimized</div>
-                <div className="text-gray-200 text-sm">Built for search engines and user experience</div>
+              <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
+                <div className="text-4xl font-bold text-neon-cyan mb-3">100%</div>
+                <div className="text-xl font-semibold text-white mb-3">SEO Optimized</div>
+                <div className="text-gray-200">Built for search engines and user experience</div>
               </div>
-              <div className="p-6 mb-6 md:mb-0 flex flex-col justify-center">
-                <div className="text-4xl font-bold text-success-green mb-2">∞</div>
-                <div className="text-xl font-semibold mb-2">Conversion Focus</div>
-                <div className="text-gray-200 text-sm">Designed to turn visitors into customers</div>
+              <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
+                <div className="text-4xl font-bold text-success-green mb-3">∞</div>
+                <div className="text-xl font-semibold text-white mb-3">Conversion Focus</div>
+                <div className="text-gray-200">Designed to turn visitors into customers</div>
               </div>
             </div>
           </div>
 
           {/* Contact Section */}
-          <div id="contact-section" className="mb-16 pt-8 border-t border-white/20">
-            <h3 className="font-poppins font-bold text-2xl mb-6 text-center text-white">Get In Touch</h3>
-            <div className="text-center space-y-4">
-              <p className="text-gray-200 text-lg">Ready to launch your website in just 7 days?</p>
+          <div id="contact-section" className="mb-16 pt-12 border-t border-white/20 bg-deep-navy/30 rounded-lg p-8">
+            <h3 className="font-poppins font-bold text-3xl mb-8 text-center text-white">Get In Touch</h3>
+            <div className="text-center space-y-6">
+              <p className="text-white text-xl font-medium">Ready to launch your website in just 7 days?</p>
               <a 
                 href="tel:7025826584" 
-                className="text-sky-300 hover:text-cyan-200 underline underline-offset-2 transition-colors font-semibold text-xl flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
+                className="bg-electric-blue hover:bg-electric-blue/80 text-white font-bold text-2xl py-4 px-8 rounded-xl flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white max-w-md mx-auto"
                 data-testid="footer-phone-contact"
               >
-                <Phone className="w-5 h-5 mr-2 text-sky-300" width="20" height="20" />
+                <Phone className="w-6 h-6 mr-3 text-white" width="24" height="24" />
                 702-582-6584
               </a>
-              <p className="text-gray-200">Available Monday-Friday, 9 AM - 6 PM PST</p>
+              <p className="text-gray-200 text-lg">Available Monday-Friday, 9 AM - 6 PM PST</p>
             </div>
           </div>
 
