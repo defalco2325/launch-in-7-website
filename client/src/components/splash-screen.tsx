@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import splashVideo from '@/assets/splash.mp4';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -17,7 +16,10 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     document.body.style.overflow = 'hidden';
     
     const video = videoRef.current;
-    if (!video) return;
+    if (!video) {
+      console.log('Video element not found');
+      return;
+    }
 
     // Set up video event listeners
     const handleCanPlay = () => {
@@ -93,7 +95,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         preload="auto"
         data-testid="splash-video"
       >
-        <source src={splashVideo} type="video/mp4" />
+        <source src="/splash.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
