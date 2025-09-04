@@ -7,9 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check } from "lucide-react";
+import CalendlyPopup from "@/components/ui/calendly-popup";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
 
   const form = useForm<AuditFormData>({
     resolver: zodResolver(auditFormSchema),
@@ -246,7 +248,7 @@ export default function AuditForm() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => window.open('https://calendly.com/launchin7', '_blank')}
+            onClick={() => setIsCalendlyOpen(true)}
             className="w-full bg-white border-2 border-gray-300 text-deep-navy hover:bg-gray-50 hover:border-gray-400 font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-schedule-consultation"
           >
@@ -254,6 +256,13 @@ export default function AuditForm() {
           </Button>
         </div>
       </form>
+
+      {/* Calendly Popup */}
+      <CalendlyPopup
+        isOpen={isCalendlyOpen}
+        onClose={() => setIsCalendlyOpen(false)}
+        url="https://calendly.com/infolaunchin7/30min"
+      />
     </>
   );
 }
