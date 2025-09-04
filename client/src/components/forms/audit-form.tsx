@@ -1,21 +1,49 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { auditFormSchema, type AuditFormData } from "@/lib/validations";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check } from "lucide-react";
 
 export default function AuditForm() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
+  const form = useForm<AuditFormData>({
+    resolver: zodResolver(auditFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      website: "",
+      goal: undefined,
+      timeline: undefined,
+      budget: undefined,
+    },
+  });
+
+  const onSubmit = async (data: AuditFormData) => {
     try {
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-      
+      // Prepare data for Netlify Forms submission
+      const formData = {
+        "form-name": "launchin7-audit",
+        "bot-field": "",
+        name: data.name,
+        email: data.email,
+        website: data.website,
+        goal: data.goal || "",
+        timeline: data.timeline || "",
+        budget: data.budget || ""
+      };
+
+      // Submit to Netlify Forms
       const response = await fetch("/", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: Object.keys(formData)
+          .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(formData[key as keyof typeof formData]))
+          .join("&"),
       });
 
       if (response.ok) {
@@ -26,8 +54,6 @@ export default function AuditForm() {
       }
     } catch (error) {
       console.error('Form submission error:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -50,7 +76,7 @@ export default function AuditForm() {
   return (
     <>
       <form 
-        onSubmit={handleSubmit} 
+        onSubmit={form.handleSubmit(onSubmit)} 
         className="space-y-6"
         data-netlify="true"
         name="launchin7-audit"
@@ -67,123 +93,144 @@ export default function AuditForm() {
         {/* Form Fields Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="audit-name" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label htmlFor="audit-name" className="block text-sm font-semibold text-deep-navy mb-3">
               Full Name *
-            </label>
-            <input
+            </Label>
+            <Input
               id="audit-name"
-              name="name"
               type="text"
-              required
               placeholder="Enter your full name"
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               data-testid="input-audit-name"
+              {...form.register("name")}
             />
+            {form.formState.errors.name && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.name.message}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="audit-email" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label htmlFor="audit-email" className="block text-sm font-semibold text-deep-navy mb-3">
               Email Address *
-            </label>
-            <input
+            </Label>
+            <Input
               id="audit-email"
-              name="email"
               type="email"
-              required
               placeholder="your@email.com"
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               data-testid="input-audit-email"
+              {...form.register("email")}
             />
+            {form.formState.errors.email && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.email.message}</p>
+            )}
           </div>
 
-          <div>
-            <label htmlFor="audit-website" className="block text-sm font-semibold text-deep-navy mb-3">
+          <div className="md:col-span-2">
+            <Label htmlFor="audit-website" className="block text-sm font-semibold text-deep-navy mb-3">
               Website URL *
-            </label>
-            <input
+            </Label>
+            <Input
               id="audit-website"
-              name="website"
               type="url"
-              required
               placeholder="https://yourwebsite.com"
               className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy placeholder-gray-500 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               data-testid="input-audit-website"
+              {...form.register("website")}
             />
+            {form.formState.errors.website && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.website.message}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label htmlFor="audit-goal" className="block text-sm font-semibold text-deep-navy mb-3">
               Primary Goal *
-            </label>
-            <select
-              id="audit-goal"
-              name="goal"
-              required
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              data-testid="select-audit-goal"
-            >
-              <option value="">Select your main goal</option>
-              <option value="increase-traffic">Increase Traffic</option>
-              <option value="improve-conversions">Improve Conversions</option>
-              <option value="better-performance">Better Performance</option>
-              <option value="modernize-design">Modernize Design</option>
-              <option value="add-ecommerce">Add E-commerce</option>
-              <option value="mobile-optimization">Mobile Optimization</option>
-            </select>
+            </Label>
+            <Select onValueChange={(value) => form.setValue("goal", value)} value={form.watch("goal")}>
+              <SelectTrigger 
+                id="audit-goal"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-goal"
+              >
+                <SelectValue placeholder="Select your main goal" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="increase-traffic">Increase Traffic</SelectItem>
+                <SelectItem value="improve-conversions">Improve Conversions</SelectItem>
+                <SelectItem value="better-performance">Better Performance</SelectItem>
+                <SelectItem value="modernize-design">Modernize Design</SelectItem>
+                <SelectItem value="add-ecommerce">Add E-commerce</SelectItem>
+                <SelectItem value="mobile-optimization">Mobile Optimization</SelectItem>
+              </SelectContent>
+            </Select>
+            {form.formState.errors.goal && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.goal.message}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
+            <Label htmlFor="audit-timeline" className="block text-sm font-semibold text-deep-navy mb-3">
               Timeline *
-            </label>
-            <select
-              id="audit-timeline"
-              name="timeline"
-              required
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              data-testid="select-audit-timeline"
-            >
-              <option value="">When do you need this?</option>
-              <option value="asap">ASAP</option>
-              <option value="this-month">This Month</option>
-              <option value="next-month">Next Month</option>
-              <option value="this-quarter">This Quarter</option>
-              <option value="exploring">Just Exploring</option>
-            </select>
+            </Label>
+            <Select onValueChange={(value) => form.setValue("timeline", value)} value={form.watch("timeline")}>
+              <SelectTrigger 
+                id="audit-timeline"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-timeline"
+              >
+                <SelectValue placeholder="When do you need this?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asap">ASAP</SelectItem>
+                <SelectItem value="this-month">This Month</SelectItem>
+                <SelectItem value="next-month">Next Month</SelectItem>
+                <SelectItem value="this-quarter">This Quarter</SelectItem>
+                <SelectItem value="exploring">Just Exploring</SelectItem>
+              </SelectContent>
+            </Select>
+            {form.formState.errors.timeline && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.timeline.message}</p>
+            )}
           </div>
 
-          <div>
-            <label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
+          <div className="md:col-span-2">
+            <Label htmlFor="audit-budget" className="block text-sm font-semibold text-deep-navy mb-3">
               Budget Range *
-            </label>
-            <select
-              id="audit-budget"
-              name="budget"
-              required
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              data-testid="select-audit-budget"
-            >
-              <option value="">Select budget range</option>
-              <option value="200-500">$200 - $500</option>
-              <option value="500-1000">$500 - $1,000</option>
-              <option value="1000-2000">$1,000 - $2,000</option>
-              <option value="2000-3000">$2,000 - $3,000</option>
-              <option value="3000-4000">$3,000 - $4,000</option>
-              <option value="4000-5000">$4,000 - $5,000</option>
-              <option value="5000-plus">$5,000+</option>
-            </select>
+            </Label>
+            <Select onValueChange={(value) => form.setValue("budget", value)} value={form.watch("budget")}>
+              <SelectTrigger 
+                id="audit-budget"
+                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-deep-navy focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
+                data-testid="select-audit-budget"
+              >
+                <SelectValue placeholder="Select budget range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="200-500">$200 - $500</SelectItem>
+                <SelectItem value="500-1000">$500 - $1,000</SelectItem>
+                <SelectItem value="1000-2000">$1,000 - $2,000</SelectItem>
+                <SelectItem value="2000-3000">$2,000 - $3,000</SelectItem>
+                <SelectItem value="3000-4000">$3,000 - $4,000</SelectItem>
+                <SelectItem value="4000-5000">$4,000 - $5,000</SelectItem>
+                <SelectItem value="5000-plus">$5,000+</SelectItem>
+              </SelectContent>
+            </Select>
+            {form.formState.errors.budget && (
+              <p className="text-red-500 text-sm mt-1 font-medium">{form.formState.errors.budget.message}</p>
+            )}
           </div>
         </div>
 
         {/* Submit Button */}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
-          <button
+          <Button
             type="submit"
-            disabled={isSubmitting}
-            className="flex-1 bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+            disabled={form.formState.isSubmitting}
+            className="flex-1 bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-audit-submit"
           >
-            {isSubmitting ? (
+            {form.formState.isSubmitting ? (
               <div className="flex items-center justify-center">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                 Analyzing...
@@ -191,15 +238,16 @@ export default function AuditForm() {
             ) : (
               "Get My Free Audit"
             )}
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="outline"
             className="sm:w-auto bg-gradient-to-r from-success-green to-tech-orange hover:from-success-green/90 hover:to-tech-orange/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-book-call"
           >
             Book a Call Instead
-          </button>
+          </Button>
         </div>
       </form>
     </>

@@ -5,6 +5,7 @@ import { Switch, Route } from "wouter";
 import { Suspense, lazy } from "react";
 import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
+import "./index.css";
 
 // CRITICAL PATH: Eagerly load shell + above-the-fold components
 import Header from "@/components/layout/header";
