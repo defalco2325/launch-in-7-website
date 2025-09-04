@@ -25,26 +25,10 @@
     <link rel="dns-prefetch" href="//netlify.app">
     <link rel="preconnect" href="https://calendly.com" crossorigin>
     
-    <!-- Modulepreload for entry JS to break critical chain -->
-    <link rel="modulepreload" href="/src/main.tsx">
-    
+    <!-- Entry JS will be handled by Vite build process -->
     <!-- Preload main CSS after critical inline styles -->
     <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
-    
-    <!-- Defer non-critical JS with requestIdleCallback -->
-    <script>
-      window.addEventListener('load', () => {
-        (window.requestIdleCallback || setTimeout)(() => {
-          import('/src/components/layout/footer.tsx');
-          import('/src/components/forms/audit-form.tsx');
-        });
-      });
-    </script>
-    
-    <!-- Prefetch non-critical lazy-loaded chunks -->
-    <link rel="prefetch" href="/src/pages/home.tsx" as="script">
-    <link rel="prefetch" href="/src/components/layout/footer.tsx" as="script">
     
     <!-- LCP optimizations with priority hints -->
     <link rel="preload" as="font" href="/assets/inter-latin-400-normal-C38fXH4l.woff2" type="font/woff2" crossorigin>
