@@ -291,12 +291,12 @@ body, p, div, span {
   
   /* Custom brand colors - Professional & Cutting Edge */
   --deep-navy: hsl(217, 33%, 8%);
-  --electric-blue: hsl(222, 84%, 58%);
+  --electric-blue: hsl(222, 84%, 70%);
   --aqua: hsl(198, 76%, 52%);
-  --success-green: hsl(145, 63%, 49%);
+  --success-green: hsl(145, 63%, 65%);
   --light-gray: hsl(210, 20%, 98%);
-  --accent-purple: hsl(263, 70%, 60%);
-  --neon-cyan: hsl(178, 100%, 50%);
+  --accent-purple: hsl(263, 70%, 75%);
+  --neon-cyan: hsl(178, 100%, 70%);
   --tech-orange: hsl(24, 100%, 60%);
   --gradient-dark: linear-gradient(135deg, hsl(217, 33%, 8%) 0%, hsl(230, 25%, 12%) 100%);
   --glass-bg: rgba(255, 255, 255, 0.05);

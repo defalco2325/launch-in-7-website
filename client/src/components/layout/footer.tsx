@@ -19,7 +19,7 @@ export default function Footer() {
                 About Launch in 7
               </h2>
               <p 
-                className="text-gray-200 text-lg max-w-4xl mx-auto leading-relaxed"
+                className="text-gray-100 text-lg max-w-4xl mx-auto leading-relaxed"
               >
                 We're a conversion-focused website development company that believes quality shouldn't take months. 
                 Our streamlined 7-day process combines cutting-edge design, SEO optimization, and performance excellence 
@@ -31,17 +31,17 @@ export default function Footer() {
               <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
                 <div className="text-4xl font-bold text-electric-blue mb-3">7</div>
                 <div className="text-xl font-semibold text-white mb-3">Day Guarantee</div>
-                <div className="text-gray-200">Fast, reliable delivery without cutting corners</div>
+                <div className="text-gray-100">Fast, reliable delivery without cutting corners</div>
               </div>
               <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
                 <div className="text-4xl font-bold text-neon-cyan mb-3">100%</div>
                 <div className="text-xl font-semibold text-white mb-3">SEO Optimized</div>
-                <div className="text-gray-200">Built for search engines and user experience</div>
+                <div className="text-gray-100">Built for search engines and user experience</div>
               </div>
               <div className="bg-deep-navy/50 p-6 rounded-lg border border-white/10 text-white">
                 <div className="text-4xl font-bold text-success-green mb-3">∞</div>
                 <div className="text-xl font-semibold text-white mb-3">Conversion Focus</div>
-                <div className="text-gray-200">Designed to turn visitors into customers</div>
+                <div className="text-gray-100">Designed to turn visitors into customers</div>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function Footer() {
                 <Phone className="w-6 h-6 mr-3 text-white" width="24" height="24" />
                 702-582-6584
               </a>
-              <p className="text-gray-200 text-lg">Available Monday-Friday, 9 AM - 6 PM PST</p>
+              <p className="text-gray-100 text-lg">Available Monday-Friday, 9 AM - 6 PM PST</p>
             </div>
           </div>
 
