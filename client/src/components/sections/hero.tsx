@@ -54,7 +54,7 @@ const HeroSection = memo(function HeroSection() {
   useEffect(() => {
     if (!isVisible) return;
     
-    // Optimized progress animation with reduced frequency
+    // Smooth progress animation
     const totalCycleDuration = 17500; // 7 days * 2.5 seconds each
     const startTime = Date.now();
     
@@ -71,8 +71,7 @@ const HeroSection = memo(function HeroSection() {
       setCurrentDay(Math.min(dayProgress, 7));
     };
     
-    // Reduce animation frequency to 30fps to decrease main-thread work
-    const animationFrame = setInterval(updateProgress, 33);
+    const animationFrame = setInterval(updateProgress, 16); // ~60fps
     
     return () => clearInterval(animationFrame);
   }, [isVisible]);

@@ -35,50 +35,17 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
-        // Optimized chunking - reduced vendor bundle
+        // Ultra-minimal chunking - maximum 3 files
         manualChunks: (id) => {
-          // Minimal critical vendor - only React core
-          if (id.includes('node_modules') && (
-            id.includes('react/') || id.includes('react-dom/') || 
-            id.includes('wouter') || id.includes('scheduler') ||
-            id.includes('react/jsx')
-          )) {
+          // Only put heavy audit form in separate chunk
+          if (id.includes('audit-form')) {
+            return 'audit';
+          }
+          // All React and vendor code in one bundle
+          if (id.includes('node_modules')) {
             return 'vendor';
           }
-          
-          // UI chunk - radix components and icons (defer until used)
-          if (id.includes('node_modules') && (
-            id.includes('@radix-ui') || id.includes('lucide-react')
-          )) {
-            return 'ui';
-          }
-          
-          // Utils chunk - styling utilities
-          if (id.includes('node_modules') && (
-            id.includes('class-variance-authority') || id.includes('clsx') ||
-            id.includes('tailwind-merge')
-          )) {
-            return 'utils';
-          }
-          
-          // Forms chunk - form libraries
-          if (id.includes('audit-form') || id.includes('calendly-popup') ||
-              id.includes('react-hook-form') || id.includes('@hookform/resolvers') ||
-              id.includes('zod')) {
-            return 'forms';
-          }
-          
-          // Query chunk - data management
-          if (id.includes('node_modules') && (
-            id.includes('@tanstack/react-query')
-          )) {
-            return 'query';
-          }
-          
-          // Defer all other node_modules
-          if (id.includes('node_modules')) {
-            return 'deferred';
-          }
+          // All app code in main bundle
         },
         entryFileNames: '[name]-[hash].js',
         chunkFileNames: '[name]-[hash].js',
