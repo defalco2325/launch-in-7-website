@@ -72,7 +72,19 @@ const initializeSplashScreen = () => {
 
   // Mark as initialized before proceeding
   splashInitialized = true;
-  console.log('Initializing splash screen');
+
+  // Check if device is desktop (768px or larger) and skip splash screen
+  const MOBILE_BREAKPOINT = 768;
+  const isDesktop = window.innerWidth >= MOBILE_BREAKPOINT;
+  
+  if (isDesktop) {
+    console.log('Desktop detected - skipping splash screen');
+    splash.classList.add('splash-hidden');
+    body.classList.remove('splash-active');
+    return;
+  }
+
+  console.log('Mobile detected - initializing splash screen');
 
   // Disable scrolling initially
   body.classList.add('splash-active');
