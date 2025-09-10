@@ -81,7 +81,6 @@ export default function Footer() {
               {/* Business Info */}
               <div className="text-center md:text-right text-gray-200 text-sm">
                 <div>Professional Website Development Since 2024</div>
-                <div>Licensed • Insured • Guaranteed</div>
               </div>
             </div>
           </div>
