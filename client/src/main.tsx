@@ -61,26 +61,30 @@ const initializeSplashScreen = () => {
     return;
   }
   
+  // Mark as initialized before proceeding
+  splashInitialized = true;
+
+  // Check if device is desktop (768px or larger) and completely remove splash screen
+  const MOBILE_BREAKPOINT = 768;
+  const isDesktop = window.innerWidth >= MOBILE_BREAKPOINT;
+  
+  if (isDesktop) {
+    console.log('Desktop detected - completely removing splash screen');
+    const splash = document.getElementById('splash');
+    if (splash) {
+      splash.remove(); // Completely remove from DOM
+    }
+    document.body.classList.remove('splash-active');
+    return;
+  }
+
+  // Mobile: Initialize splash screen normally
   const splash = document.getElementById('splash');
   const video = document.getElementById('splash-video') as HTMLVideoElement;
   const body = document.body;
 
   if (!splash || !video) {
     console.log('Splash elements not found');
-    return;
-  }
-
-  // Mark as initialized before proceeding
-  splashInitialized = true;
-
-  // Check if device is desktop (768px or larger) and skip splash screen
-  const MOBILE_BREAKPOINT = 768;
-  const isDesktop = window.innerWidth >= MOBILE_BREAKPOINT;
-  
-  if (isDesktop) {
-    console.log('Desktop detected - skipping splash screen');
-    splash.classList.add('splash-hidden');
-    body.classList.remove('splash-active');
     return;
   }
 

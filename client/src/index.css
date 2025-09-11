@@ -25,16 +25,14 @@
   object-position: center;
 }
 
-/* Desktop screens - better fit without excessive cropping */
-@media (min-width: 769px) {
-  #splash-video {
-    object-fit: cover;
-    object-position: center center;
-    transform: scale(1.05);
+/* Desktop screens - completely hide splash screen */
+@media (min-width: 768px) {
+  #splash {
+    display: none !important;
   }
   
-  #splash {
-    background-color: black;
+  #splash-video {
+    display: none !important;
   }
 }
 
