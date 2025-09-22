@@ -55,7 +55,7 @@ export default function Footer() {
               data-testid="footer-phone-contact"
             >
               <Phone className="w-5 h-5 mr-3 text-white" />
-              Call 702-582-6584
+              Call (702)-582-6584
             </a>
             <p className="text-gray-200 text-sm mt-4">Available Monday-Friday, 9 AM - 6 PM PST</p>
           </div>

@@ -220,7 +220,7 @@ const HeroSection = memo(function HeroSection() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     </div>
-                    <div className="text-xs text-gray-400 font-mono">launchin7.com</div>
+                    <div className="text-xs text-gray-400 font-mono">launchin7.io</div>
                   </div>
 
                   {/* Code Editor Mockup */}
