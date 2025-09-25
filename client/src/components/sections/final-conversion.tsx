@@ -81,7 +81,7 @@ export default function FinalConversion() {
     <CalendlyPopup
       isOpen={isCalendlyOpen}
       onClose={() => setIsCalendlyOpen(false)}
-      url="https://calendly.com/infolaunchin7/30min"
+      url="https://calendly.com/team-launchin7/30min"
     />
   </>
   );
