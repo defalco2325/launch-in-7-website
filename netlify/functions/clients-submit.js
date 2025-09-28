@@ -1,5 +1,3 @@
-const sgMail = require('@sendgrid/mail');
-
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -20,111 +18,73 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Configure SendGrid
-    if (!process.env.SENDGRID_API_KEY) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "SendGrid API key not configured in Netlify environment variables" 
-        })
-      };
+    // Step 1: Check environment variables
+    const envCheck = {
+      hasSendGridKey: !!process.env.SENDGRID_API_KEY,
+      keyPrefix: process.env.SENDGRID_API_KEY ? process.env.SENDGRID_API_KEY.substring(0, 8) + '...' : 'none',
+      nodeEnv: process.env.NODE_ENV || 'undefined'
+    };
+
+    // Step 2: Test SendGrid import
+    let sgMailTest = 'not tested';
+    try {
+      const sgMail = require('@sendgrid/mail');
+      sgMailTest = 'import successful';
+      
+      if (process.env.SENDGRID_API_KEY) {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        sgMailTest = 'configured successfully';
+      }
+    } catch (sgError) {
+      sgMailTest = 'failed: ' + sgError.message;
     }
 
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    // Extract form data
-    const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
-    
-    // Simple field extraction
-    const extractField = (name) => {
-      const regex = new RegExp(`name="${name}"[\\s\\S]*?\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`, 'i');
-      const match = body.match(regex);
-      return match ? match[1].trim() : '';
-    };
-
-    const formData = {
-      businessName: extractField('businessName') || 'Unknown Business',
-      email: extractField('email'),
-      contactName: extractField('contactName'),
-      phone: extractField('phone'),
-      website: extractField('website'),
-      shortDescription: extractField('shortDescription'),
-      pagesSelected: extractField('pagesSelected'),
-      featuresSelected: extractField('featuresSelected'),
-      copywriting: extractField('copywriting'),
-      seo: extractField('seo'),
-      timeline: extractField('timeline'),
-      packageInterest: extractField('packageInterest')
-    };
-
-    // Basic validation
-    if (!formData.email || !formData.contactName) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Email and contact name are required" 
-        })
-      };
+    // Step 3: Extract basic form data
+    let formExtraction = 'not tested';
+    let extractedEmail = 'none';
+    try {
+      const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
+      
+      const emailMatch = body.match(/name="email"[^]*?\r\n\r\n([^]*?)\r\n--/);
+      if (emailMatch && emailMatch[1]) {
+        extractedEmail = emailMatch[1].trim();
+        formExtraction = 'successful';
+      } else {
+        formExtraction = 'no email field found';
+      }
+    } catch (extractError) {
+      formExtraction = 'failed: ' + extractError.message;
     }
 
-    // Create email
-    const emailBody = `
-<h2>New Client Onboarding Submission</h2>
-
-<h3>Business Information</h3>
-<p><strong>Business Name:</strong> ${formData.businessName}</p>
-<p><strong>Website:</strong> ${formData.website || 'Not provided'}</p>
-<p><strong>Description:</strong> ${formData.shortDescription || 'Not provided'}</p>
-
-<h3>Contact Information</h3>
-<p><strong>Contact Name:</strong> ${formData.contactName}</p>
-<p><strong>Email:</strong> ${formData.email}</p>
-<p><strong>Phone:</strong> ${formData.phone || 'Not provided'}</p>
-
-<h3>Project Details</h3>
-<p><strong>Pages Needed:</strong> ${formData.pagesSelected || 'Not specified'}</p>
-<p><strong>Features:</strong> ${formData.featuresSelected || 'Not specified'}</p>
-<p><strong>Copywriting:</strong> ${formData.copywriting || 'Not specified'}</p>
-<p><strong>SEO Level:</strong> ${formData.seo || 'Not specified'}</p>
-<p><strong>Timeline:</strong> ${formData.timeline || 'Not specified'}</p>
-<p><strong>Package Interest:</strong> ${formData.packageInterest || 'Not specified'}</p>
-
-<hr>
-<p><em>Submitted: ${new Date().toLocaleString()}</em></p>
-`;
-
-    // Send email
-    const msg = {
-      to: 'team@launchin7.io',
-      from: 'noreply@launchin7.io',
-      subject: `New Onboarding — ${formData.businessName}`,
-      html: emailBody
-    };
-
-    await sgMail.send(msg);
-
+    // For now, return diagnostic info instead of sending email
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
         ok: true, 
-        message: "Thank you! Your submission has been received and we'll be in touch soon." 
+        message: "Diagnostic mode - function is working",
+        diagnostics: {
+          environment: envCheck,
+          sendgrid: sgMailTest,
+          formParsing: formExtraction,
+          extractedEmail: extractedEmail,
+          timestamp: new Date().toISOString()
+        }
       })
     };
 
   } catch (error) {
-    console.error('Error:', error);
-    
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         ok: false, 
-        message: "Error processing submission. Please try again." 
+        message: "Diagnostic error: " + error.message,
+        error: {
+          name: error.name,
+          message: error.message,
+          stack: error.stack ? error.stack.substring(0, 300) : 'no stack'
+        }
       })
     };
   }
