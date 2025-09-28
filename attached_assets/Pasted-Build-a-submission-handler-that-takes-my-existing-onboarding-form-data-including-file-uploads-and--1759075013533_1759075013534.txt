@@ -1,0 +1,72 @@
+Build a submission handler that takes my existing onboarding form data (including file uploads) and sends a single email via SendGrid to team@launchin7.io
+ with all uploaded files attached. The email subject must be the customer’s Website field value (fallback to Business Name if Website is empty). Keep it minimal and production-ready.
+
+Requirements:
+
+Tech: Next.js (API route) or Node serverless function; TypeScript preferred.
+
+Read these environment variables:
+
+SENDGRID_API_KEY (required)
+
+EMAIL_TO=team@launchin7.io (default)
+
+EMAIL_FROM=onboarding@launchin7.io (default)
+
+Accept multipart/form-data from my existing form. Expected fields:
+
+businessName (text), website (text/URL), contactName (text), email (text), phone (text, optional), shortDescription (textarea, optional)
+
+pages[] (checkbox list), features[] (checkbox list)
+
+copywriting (single select), seo (single select), timeline (single select), packageInterest (single select)
+
+File inputs (any may be absent): logoFiles[], brandGuide, photos[], otherAssets[]
+
+Email:
+
+To: team@launchin7.io
+
+From: onboarding@launchin7.io
+
+Subject: use website value (cleaned). If missing, use businessName. Example: New Onboarding — {website or businessName}
+
+HTML body: neat summary of all fields (Business Basics, Contact, Pages, Features, Copywriting, SEO, Timeline, Package, Short Description) with lists joined by commas.
+
+Attachments: include every uploaded file as a SendGrid attachment (base64). Respect SendGrid’s ~30MB total email limit.
+
+If total attachments exceed 28MB: send the email without attachments, but list all filenames/sizes under a “Attachments too large” note in the body. Do not fail.
+
+Validations:
+
+Required: email and at least one of website or businessName.
+
+Basic email pattern check. Trim and sanitize all text fields.
+
+Per-file size cap 10MB; allowed types: images (png, jpg, jpeg, svg, webp), pdf, docx. Reject executables.
+
+UX/Responses:
+
+On success: return JSON { ok: true } so my frontend can redirect to a success page.
+
+On error: return JSON { ok: false, message: "…" } with a safe, non-technical message.
+
+Security:
+
+Add a simple honeypot field (e.g., botField)—if filled, drop the request.
+
+Rate-limit by IP (simple in-memory throttle is fine).
+
+Implementation details:
+
+Parse multipart/form-data; stream files; convert to base64 for SendGrid.
+
+Join array fields (pages[], features[]) into comma-separated strings in the email body.
+
+Clean the subject line (remove protocols from website, e.g., https:// → launchin7.com).
+
+Deliverables:
+
+A single API route/function that receives the form submission, composes the SendGrid email with attachments, and responds with JSON per the above.
+
+Brief comments at the top listing required env vars and where to configure them.

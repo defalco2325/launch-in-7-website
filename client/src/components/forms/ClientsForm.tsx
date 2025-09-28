@@ -95,7 +95,11 @@ const PACKAGE_OPTIONS = [
   { value: "not-sure", label: "Not Sure" }
 ];
 
-export default function ClientsForm() {
+interface ClientsFormProps {
+  onPackageChange?: (packageValue: string) => void;
+}
+
+export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const [formData, setFormData] = useState<ClientsFormData>(INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,11 +112,15 @@ export default function ClientsForm() {
       try {
         const parsed = JSON.parse(savedDraft);
         setFormData(prev => ({ ...prev, ...parsed }));
+        // Notify parent of loaded package selection
+        if (parsed.packageInterest && onPackageChange) {
+          onPackageChange(parsed.packageInterest);
+        }
       } catch (error) {
         console.error('Error loading draft:', error);
       }
     }
-  }, []);
+  }, [onPackageChange]);
 
   // Save draft to localStorage
   useEffect(() => {
@@ -157,6 +165,11 @@ export default function ClientsForm() {
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: "" }));
+    }
+    
+    // Notify parent when package selection changes
+    if (field === 'packageInterest' && onPackageChange) {
+      onPackageChange(value);
     }
   };
 
