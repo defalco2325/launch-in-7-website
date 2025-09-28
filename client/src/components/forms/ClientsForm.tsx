@@ -246,15 +246,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('[CLIENT] Form submission started');
-    console.log('[CLIENT] Form validation:', {
-      businessName: formData.businessName,
-      contactName: formData.contactName,
-      email: formData.email
-    });
-    
     if (!validateForm()) {
-      console.log('[CLIENT] Validation failed');
       return;
     }
 
@@ -262,7 +254,6 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     setErrors({}); // Clear any previous errors
     
     try {
-      console.log('[CLIENT] Creating FormData...');
       // Clear draft from localStorage before submitting
       localStorage.removeItem('client-onboarding-draft');
       
@@ -301,18 +292,24 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         formDataToSubmit.append('otherAssets', file);
       });
       
-      // Submit to our API endpoint
-      console.log('[CLIENT] Submitting to /api/clients/submit');
-      console.log('[CLIENT] FormData keys:', Array.from(formDataToSubmit.keys()));
-      
+      // Submit to our API endpoint with better error handling
       const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
       
-      console.log('[CLIENT] Response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        let result;
+        try {
+          result = JSON.parse(errorText);
+        } catch {
+          result = { message: `Server error: ${response.statusText}` };
+        }
+        throw new Error(result.message || 'Submission failed');
+      }
+      
       const result = await response.json();
-      console.log('[CLIENT] Response data:', result);
       
       if (result.ok) {
         // Success - navigate to success page
@@ -324,7 +321,8 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       
     } catch (error) {
       console.error('Submission error:', error);
-      setErrors({ submit: 'There was an error submitting your form. Please try again.' });
+      const errorMessage = error instanceof Error ? error.message : 'There was an error submitting your form. Please try again.';
+      setErrors({ submit: errorMessage });
     } finally {
       setIsSubmitting(false);
     }
