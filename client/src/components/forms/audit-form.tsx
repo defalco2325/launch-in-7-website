@@ -258,7 +258,14 @@ export default function AuditForm() {
               // Redirect immediately to scanner
               window.open('https://launchin7scanner.replit.app/', '_blank');
             }}
-            disabled={false}
+            disabled={
+              !form.watch("name")?.trim() || 
+              !form.watch("email")?.trim() || 
+              !form.watch("website")?.trim() || 
+              !form.watch("goal") || 
+              !form.watch("timeline") || 
+              !form.watch("budget")
+            }
             className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             data-testid="button-audit-submit"
           >
