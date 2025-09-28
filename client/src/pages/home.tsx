@@ -1,6 +1,7 @@
 import HeroSection from "@/components/sections/hero";
 import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
 import ServicesSnapshot from "@/components/sections/services-snapshot";
+import PackageFitWizard from "@/components/PackageFitWizard";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
@@ -63,6 +64,18 @@ export default function Home() {
       {/* Render sections directly for better reliability */}
       <GuaranteeExplainer />
       <ServicesSnapshot />
+      
+      {/* Package Fit Wizard Section */}
+      <div id="package-fit-section" className="py-32 bg-gradient-to-b from-white to-slate-50 relative">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 tech-grid-bg"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <PackageFitWizard onResult={(data) => console.log('Package Fit Result:', data)} />
+        </div>
+      </div>
+      
       <div id="audit-section" className="py-32 bg-gradient-to-b from-slate-50 to-white relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
