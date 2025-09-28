@@ -1,14 +1,11 @@
-// Netlify Function for client onboarding form submission
 const sgMail = require('@sendgrid/mail');
 
 // Initialize SendGrid
 if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-} else {
-  console.warn('WARNING: SENDGRID_API_KEY not found in environment variables');
 }
 
-// Rate limiting store (simple in-memory)
+// Rate limiting store
 const rateLimitStore = new Map();
 
 function checkRateLimit(ip) {
@@ -29,54 +26,16 @@ function checkRateLimit(ip) {
   return true;
 }
 
-function cleanSubject(website, businessName) {
-  let subject = website || businessName;
-  subject = subject.replace(/^https?:\/\//i, '');
-  subject = subject.replace(/\/$/, '');
-  return `New Onboarding — ${subject}`;
-}
-
 function sanitizeText(text) {
+  if (!text) return '';
   return text.toString().trim().replace(/[<>]/g, '');
 }
 
-// Parse multipart form data from Netlify
-function parseMultipart(body, boundary) {
-  const parts = body.split(`--${boundary}`);
-  const fields = {};
-  const files = [];
-
-  parts.forEach(part => {
-    if (!part.includes('Content-Disposition')) return;
-
-    const lines = part.split('\r\n');
-    const disposition = lines.find(line => line.includes('Content-Disposition'));
-    if (!disposition) return;
-
-    const nameMatch = disposition.match(/name="([^"]+)"/);
-    if (!nameMatch) return;
-
-    const fieldName = nameMatch[1];
-    const contentStart = lines.findIndex(line => line === '') + 1;
-    const content = lines.slice(contentStart, -1).join('\r\n');
-
-    if (disposition.includes('filename=')) {
-      const filenameMatch = disposition.match(/filename="([^"]+)"/);
-      const contentTypeMatch = lines.find(line => line.includes('Content-Type:'));
-      
-      if (filenameMatch && content.length > 0) {
-        files.push({
-          filename: filenameMatch[1],
-          content: content,
-          contentType: contentTypeMatch ? contentTypeMatch.split(':')[1].trim() : 'application/octet-stream'
-        });
-      }
-    } else {
-      fields[fieldName] = content;
-    }
-  });
-
-  return { fields, files };
+function cleanSubject(website, businessName) {
+  let subject = website || businessName || 'New Client';
+  subject = subject.replace(/^https?:\/\//i, '');
+  subject = subject.replace(/\/$/, '');
+  return `New Onboarding — ${subject}`;
 }
 
 exports.handler = async (event, context) => {
@@ -86,21 +45,28 @@ exports.handler = async (event, context) => {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
 
+  // Handle preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
 
+  // Only accept POST
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
+      body: JSON.stringify({ 
+        ok: false, 
+        error: 'Method not allowed' 
+      })
     };
   }
 
   try {
+    // Basic setup
     const clientIP = event.headers['x-forwarded-for'] || event.headers['x-real-ip'] || 'unknown';
     
+    // Rate limiting
     if (!checkRateLimit(clientIP)) {
       return {
         statusCode: 429,
@@ -112,45 +78,46 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Parse the request body
-    let fields = {};
-    let files = [];
-    
+    // For now, let's simplify and just handle the form data without files
+    // This will help us identify if the issue is with file parsing
     const contentType = event.headers['content-type'] || event.headers['Content-Type'] || '';
     
+    let formData = {};
+    
     if (contentType.includes('multipart/form-data')) {
-      const boundary = contentType.split('boundary=')[1];
-      if (boundary) {
-        const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
-        const parsed = parseMultipart(body, boundary);
-        fields = parsed.fields;
-        files = parsed.files;
-      }
+      // Simplified approach - extract text fields only for now
+      const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
+      
+      // Extract basic form fields using regex (simple approach)
+      const extractField = (fieldName) => {
+        const regex = new RegExp(`name="${fieldName}"[\\s\\S]*?\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`, 'i');
+        const match = body.match(regex);
+        return match ? match[1].trim() : '';
+      };
+      
+      formData = {
+        businessName: extractField('businessName'),
+        tagline: extractField('tagline'),
+        website: extractField('website'),
+        shortDescription: extractField('shortDescription'),
+        contactName: extractField('contactName'),
+        email: extractField('email'),
+        phone: extractField('phone'),
+        pagesSelected: extractField('pagesSelected'),
+        featuresSelected: extractField('featuresSelected'),
+        copywriting: extractField('copywriting'),
+        seo: extractField('seo'),
+        timeline: extractField('timeline'),
+        packageInterest: extractField('packageInterest'),
+        honeypot: extractField('bot-field') || extractField('honeypot')
+      };
     } else {
-      // Fallback to URL-encoded data
+      // URL-encoded fallback
       const params = new URLSearchParams(event.body);
       for (const [key, value] of params) {
-        fields[key] = value;
+        formData[key] = value;
       }
     }
-
-    // Extract form data
-    const formData = {
-      businessName: fields.businessName || '',
-      tagline: fields.tagline || '',
-      website: fields.website || '',
-      shortDescription: fields.shortDescription || '',
-      contactName: fields.contactName || '',
-      email: fields.email || '',
-      phone: fields.phone || '',
-      pages: fields.pagesSelected ? fields.pagesSelected.split(',') : [],
-      features: fields.featuresSelected ? fields.featuresSelected.split(',') : [],
-      copywriting: fields.copywriting || '',
-      seo: fields.seo || '',
-      timeline: fields.timeline || '',
-      packageInterest: fields.packageInterest || '',
-      honeypot: fields['bot-field'] || fields.honeypot || ''
-    };
 
     // Honeypot check
     if (formData.honeypot) {
@@ -164,7 +131,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Validation
+    // Basic validation
     if (!formData.businessName || !formData.email || !formData.contactName) {
       return {
         statusCode: 400,
@@ -176,6 +143,7 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       return {
@@ -188,10 +156,25 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Prepare email
+    // Check if SendGrid is configured
+    if (!process.env.SENDGRID_API_KEY) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          ok: false, 
+          message: "Email service not configured. Please contact support." 
+        })
+      };
+    }
+
+    // Prepare email content
     const subject = cleanSubject(formData.website, formData.businessName);
     
-    let emailBody = `
+    const pages = formData.pagesSelected ? formData.pagesSelected.split(',').map(p => p.trim()) : [];
+    const features = formData.featuresSelected ? formData.featuresSelected.split(',').map(f => f.trim()) : [];
+    
+    const emailBody = `
 <h2>New Client Onboarding Submission</h2>
 
 <h3>Business Information</h3>
@@ -206,62 +189,27 @@ exports.handler = async (event, context) => {
 <p><strong>Phone:</strong> ${sanitizeText(formData.phone || 'Not provided')}</p>
 
 <h3>Project Details</h3>
-<p><strong>Pages Needed:</strong> ${formData.pages.map(p => sanitizeText(p)).join(', ') || 'None specified'}</p>
-<p><strong>Features:</strong> ${formData.features.map(f => sanitizeText(f)).join(', ') || 'None specified'}</p>
+<p><strong>Pages Needed:</strong> ${pages.map(p => sanitizeText(p)).join(', ') || 'None specified'}</p>
+<p><strong>Features:</strong> ${features.map(f => sanitizeText(f)).join(', ') || 'None specified'}</p>
 <p><strong>Copywriting:</strong> ${sanitizeText(formData.copywriting || 'Not specified')}</p>
 <p><strong>SEO Level:</strong> ${sanitizeText(formData.seo || 'Not specified')}</p>
 <p><strong>Timeline:</strong> ${sanitizeText(formData.timeline || 'Not specified')}</p>
 <p><strong>Package Interest:</strong> ${sanitizeText(formData.packageInterest || 'Not specified')}</p>
 
-<h3>Submitted Files</h3>
-`;
+<h3>Files</h3>
+<p><em>File attachments will be supported in the next version.</em></p>
 
-    // Process attachments
-    const attachments = [];
-    files.forEach(file => {
-      if (file && file.content && file.filename) {
-        try {
-          attachments.push({
-            content: Buffer.from(file.content, 'binary').toString('base64'),
-            filename: file.filename,
-            type: file.contentType,
-            disposition: 'attachment'
-          });
-          emailBody += `<p>• ${file.filename}</p>`;
-        } catch (error) {
-          emailBody += `<p>• ${file.filename} (processing error)</p>`;
-        }
-      }
-    });
-
-    if (attachments.length === 0) {
-      emailBody += '<p>No files were uploaded.</p>';
-    }
-
-    emailBody += `
 <hr>
 <p><em>Submitted on ${new Date().toLocaleString()}</em></p>
 <p><em>IP Address: ${clientIP}</em></p>
 `;
 
-    if (!process.env.SENDGRID_API_KEY) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Email service not configured. Please try again later." 
-        })
-      };
-    }
-
-    // Send email
+    // Send email via SendGrid
     const msg = {
       to: 'team@launchin7.io',
       from: 'noreply@launchin7.io',
       subject: subject,
-      html: emailBody,
-      attachments: attachments
+      html: emailBody
     };
 
     await sgMail.send(msg);
@@ -276,14 +224,24 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Function error:', error);
+    // More detailed error logging for debugging
+    console.error('Function error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
+    // Check if it's a SendGrid specific error
+    if (error.code && error.response) {
+      console.error('SendGrid error:', error.response.body);
+    }
     
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         ok: false, 
-        message: "There was an error processing your submission. Please try again." 
+        message: "There was an error processing your submission. Please try again or contact support if the problem persists." 
       })
     };
   }
