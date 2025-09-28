@@ -203,11 +203,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Client onboarding form submission with file uploads
-  app.post("/api/clients/submit", upload.any(), async (req, res) => {
-    console.log('=== CLIENT SUBMISSION REQUEST RECEIVED ===');
-    console.log('Request body keys:', Object.keys(req.body || {}));
-    console.log('Request files count:', (req.files as Express.Multer.File[])?.length || 0);
+  app.post("/api/clients/submit", (req, res, next) => {
+    console.log('=== PRE-MULTER: CLIENT SUBMISSION REQUEST ===');
     console.log('Content-Type:', req.get('Content-Type'));
+    console.log('Headers:', req.headers);
+    next();
+  }, upload.any(), async (req, res) => {
+    console.log('=== POST-MULTER: CLIENT SUBMISSION REQUEST RECEIVED ===');
+    console.log('Request body keys:', Object.keys(req.body || {}));
+    console.log('Request body:', req.body);
+    console.log('Request files count:', (req.files as Express.Multer.File[])?.length || 0);
     
     try {
       // Rate limiting

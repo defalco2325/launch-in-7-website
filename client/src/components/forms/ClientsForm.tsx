@@ -246,7 +246,15 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('[CLIENT] Form submission started');
+    console.log('[CLIENT] Form validation:', {
+      businessName: formData.businessName,
+      contactName: formData.contactName,
+      email: formData.email
+    });
+    
     if (!validateForm()) {
+      console.log('[CLIENT] Validation failed');
       return;
     }
 
@@ -254,6 +262,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     setErrors({}); // Clear any previous errors
     
     try {
+      console.log('[CLIENT] Creating FormData...');
       // Clear draft from localStorage before submitting
       localStorage.removeItem('client-onboarding-draft');
       
@@ -293,12 +302,17 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       });
       
       // Submit to our API endpoint
+      console.log('[CLIENT] Submitting to /api/clients/submit');
+      console.log('[CLIENT] FormData keys:', Array.from(formDataToSubmit.keys()));
+      
       const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
       
+      console.log('[CLIENT] Response status:', response.status);
       const result = await response.json();
+      console.log('[CLIENT] Response data:', result);
       
       if (result.ok) {
         // Success - navigate to success page
