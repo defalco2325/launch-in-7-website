@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Upload, Check, AlertCircle } from "lucide-react";
+import { useLocation } from "wouter";
 
 interface ClientsFormData {
   // Business Basics
@@ -104,6 +105,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  const [, navigate] = useLocation();
 
   // Load draft from localStorage
   useEffect(() => {
@@ -201,17 +203,69 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     }
 
     setIsSubmitting(true);
+    setErrors({}); // Clear any previous errors
     
-    // Clear draft from localStorage before submitting
-    localStorage.removeItem('client-onboarding-draft');
-    
-    // Let the browser handle the natural form submission to Netlify
-    // We'll use a slight delay to show the loading state, then submit naturally
-    setTimeout(() => {
-      // Create a new FormData and submit using the browser's native form submission
-      const form = e.target as HTMLFormElement;
-      form.submit();
-    }, 500);
+    try {
+      // Clear draft from localStorage before submitting
+      localStorage.removeItem('client-onboarding-draft');
+      
+      // Create FormData for file upload
+      const formDataToSubmit = new FormData();
+      
+      // Add text fields
+      formDataToSubmit.append('businessName', formData.businessName);
+      formDataToSubmit.append('tagline', formData.tagline);
+      formDataToSubmit.append('website', formData.website);
+      formDataToSubmit.append('shortDescription', formData.shortDescription);
+      formDataToSubmit.append('contactName', formData.contactName);
+      formDataToSubmit.append('email', formData.email);
+      formDataToSubmit.append('phone', formData.phone);
+      formDataToSubmit.append('pagesSelected', formData.pages.join(', '));
+      formDataToSubmit.append('featuresSelected', formData.features.join(', '));
+      formDataToSubmit.append('copywriting', formData.copywriting);
+      formDataToSubmit.append('seo', formData.seo);
+      formDataToSubmit.append('timeline', formData.timeline);
+      formDataToSubmit.append('packageInterest', formData.packageInterest);
+      
+      // Add files
+      formData.logoFiles.forEach(file => {
+        formDataToSubmit.append('logoFiles', file);
+      });
+      
+      if (formData.brandGuide) {
+        formDataToSubmit.append('brandGuide', formData.brandGuide);
+      }
+      
+      formData.photos.forEach(file => {
+        formDataToSubmit.append('photos', file);
+      });
+      
+      formData.otherAssets.forEach(file => {
+        formDataToSubmit.append('otherAssets', file);
+      });
+      
+      // Submit to our API endpoint
+      const response = await fetch('/api/clients/submit', {
+        method: 'POST',
+        body: formDataToSubmit,
+      });
+      
+      const result = await response.json();
+      
+      if (result.ok) {
+        // Success - navigate to success page
+        navigate('/clients/success');
+      } else {
+        // Handle error response
+        setErrors({ submit: result.message || 'Submission failed. Please try again.' });
+      }
+      
+    } catch (error) {
+      console.error('Submission error:', error);
+      setErrors({ submit: 'There was an error submitting your form. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isFormValid = formData.businessName.trim() && formData.contactName.trim() && 
@@ -221,18 +275,9 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     <form 
       onSubmit={handleSubmit}
       className="space-y-8"
-      name="client-onboarding"
-      method="POST"
-      action="/clients/success"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      encType="multipart/form-data"
     >
-      {/* Hidden fields for Netlify */}
-      <input type="hidden" name="form-name" value="client-onboarding" />
-      <p className="hidden">
-        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-      </p>
+      {/* Honeypot field for spam protection */}
+      <input type="hidden" name="bot-field" />
 
       {/* Business Basics */}
       <div className="space-y-6">
@@ -487,12 +532,6 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             ))}
           </SelectContent>
         </Select>
-        {/* Hidden input for Netlify Forms */}
-        <input type="hidden" name="packageInterest" value={formData.packageInterest} />
-        
-        {/* Hidden inputs for array data */}
-        <input type="hidden" name="pagesSelected" value={formData.pages.join(', ')} />
-        <input type="hidden" name="featuresSelected" value={formData.features.join(', ')} />
       </div>
 
       {/* File Uploads */}
