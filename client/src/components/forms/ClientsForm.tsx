@@ -185,7 +185,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   };
 
   const handleFileChange = (field: keyof Pick<ClientsFormData, 'logoFiles' | 'brandGuide' | 'photos' | 'otherAssets'>, files: FileList | null) => {
-    if (!files) return;
+    if (!files || files.length === 0) return;
 
     if (field === 'brandGuide') {
       setFormData(prev => ({ ...prev, [field]: files[0] || null }));

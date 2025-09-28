@@ -97,8 +97,19 @@ const upload = multer({
 
 // Initialize SendGrid
 const mailService = new MailService();
+console.log('Environment check:', {
+  sendGridConfigured: !!process.env.SENDGRID_API_KEY,
+  sendGridKeyLength: process.env.SENDGRID_API_KEY?.length || 0,
+  emailTo: process.env.EMAIL_TO,
+  emailFrom: process.env.EMAIL_FROM,
+  nodeEnv: process.env.NODE_ENV
+});
+
 if (process.env.SENDGRID_API_KEY) {
   mailService.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log('SendGrid API initialized successfully');
+} else {
+  console.warn('WARNING: SENDGRID_API_KEY not found in environment variables');
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -311,6 +322,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error("Client submission error:", error);
+      console.error("Error details:", {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        sendGridConfigured: !!process.env.SENDGRID_API_KEY,
+        emailTo: process.env.EMAIL_TO || 'team@launchin7.io',
+        emailFrom: process.env.EMAIL_FROM || 'onboarding@launchin7.io'
+      });
       res.status(500).json({ 
         ok: false, 
         message: "There was an error processing your submission. Please try again." 
