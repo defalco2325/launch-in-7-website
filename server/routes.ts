@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema, insertAuditRequestSchema } from "@shared/schema";
 import { z } from "zod";
+import multer from "multer";
+import { MailService } from '@sendgrid/mail';
 
 // Enhanced contact form schema with validation
 const contactFormSchema = insertLeadSchema.extend({
@@ -35,6 +37,69 @@ const auditFormSchema = insertAuditRequestSchema.extend({
     "exploring"
   ]),
 });
+
+// Rate limiting store (simple in-memory)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const key = ip;
+  const limit = rateLimitStore.get(key);
+  
+  if (!limit || now > limit.resetTime) {
+    rateLimitStore.set(key, { count: 1, resetTime: now + 60000 }); // 1 minute window
+    return true;
+  }
+  
+  if (limit.count >= 3) { // Max 3 submissions per minute
+    return false;
+  }
+  
+  limit.count++;
+  return true;
+}
+
+function cleanSubject(website: string, businessName: string): string {
+  let subject = website || businessName;
+  // Remove protocols
+  subject = subject.replace(/^https?:\/\//i, '');
+  // Remove trailing slash
+  subject = subject.replace(/\/$/, '');
+  return `New Onboarding — ${subject}`;
+}
+
+function sanitizeText(text: string): string {
+  return text.trim().replace(/[<>]/g, '');
+}
+
+// Configure multer for file handling
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB per file
+    files: 20 // Max 20 files
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /\.(png|jpe?g|svg|webp|pdf|docx?)$/i;
+    const allowedMimes = [
+      'image/png', 'image/jpeg', 'image/svg+xml', 'image/webp',
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    
+    if (allowedTypes.test(file.originalname) && allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File type not allowed: ${file.originalname}`));
+    }
+  }
+});
+
+// Initialize SendGrid
+const mailService = new MailService();
+if (process.env.SENDGRID_API_KEY) {
+  mailService.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form submission
@@ -117,6 +182,139 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching audit requests:", error);
       res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Client onboarding form submission with file uploads
+  app.post("/api/clients/submit", upload.any(), async (req, res) => {
+    try {
+      // Rate limiting
+      const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+      if (!checkRateLimit(clientIp)) {
+        return res.status(429).json({ 
+          ok: false, 
+          message: "Too many requests. Please try again later." 
+        });
+      }
+
+      // Honeypot check
+      if (req.body.botField || req.body['bot-field']) {
+        return res.status(400).json({ ok: false, message: "Invalid request" });
+      }
+
+      // Validate required fields
+      const businessName = sanitizeText(req.body.businessName || '');
+      const website = sanitizeText(req.body.website || '');
+      const contactName = sanitizeText(req.body.contactName || '');
+      const email = sanitizeText(req.body.email || '');
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ ok: false, message: "Valid email is required" });
+      }
+
+      if (!businessName && !website) {
+        return res.status(400).json({ ok: false, message: "Business name or website is required" });
+      }
+
+      // Get environment variables
+      const emailTo = process.env.EMAIL_TO || 'team@launchin7.io';
+      const emailFrom = process.env.EMAIL_FROM || 'onboarding@launchin7.io';
+      
+      if (!process.env.SENDGRID_API_KEY) {
+        console.error('SENDGRID_API_KEY not configured');
+        return res.status(500).json({ ok: false, message: "Email service not configured" });
+      }
+
+      // Process files
+      const files = req.files as Express.Multer.File[] || [];
+      let totalSize = 0;
+      const attachments: any[] = [];
+      let attachmentsTooBig = false;
+      const fileList: string[] = [];
+
+      for (const file of files) {
+        const sizeInMB = file.size / (1024 * 1024);
+        totalSize += file.size;
+        fileList.push(`${file.originalname} (${sizeInMB.toFixed(2)}MB)`);
+        
+        // Check if total size exceeds 28MB (SendGrid limit buffer)
+        if (totalSize <= 28 * 1024 * 1024) {
+          attachments.push({
+            content: file.buffer.toString('base64'),
+            filename: file.originalname,
+            type: file.mimetype,
+            disposition: 'attachment'
+          });
+        } else {
+          attachmentsTooBig = true;
+        }
+      }
+
+      // Build HTML email body
+      const htmlBody = `
+        <h2>New Client Onboarding Submission</h2>
+        
+        <h3>Business Basics</h3>
+        <ul>
+          <li><strong>Business Name:</strong> ${businessName}</li>
+          <li><strong>Website:</strong> ${website}</li>
+          <li><strong>Tagline:</strong> ${sanitizeText(req.body.tagline || '')}</li>
+          <li><strong>Short Description:</strong> ${sanitizeText(req.body.shortDescription || '')}</li>
+        </ul>
+
+        <h3>Contact Information</h3>
+        <ul>
+          <li><strong>Contact Name:</strong> ${contactName}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Phone:</strong> ${sanitizeText(req.body.phone || 'Not provided')}</li>
+        </ul>
+
+        <h3>Project Details</h3>
+        <ul>
+          <li><strong>Pages Needed:</strong> ${sanitizeText(req.body.pagesSelected || 'Not specified')}</li>
+          <li><strong>Features:</strong> ${sanitizeText(req.body.featuresSelected || 'Not specified')}</li>
+          <li><strong>Copywriting:</strong> ${sanitizeText(req.body.copywriting || 'Not specified')}</li>
+          <li><strong>SEO:</strong> ${sanitizeText(req.body.seo || 'Not specified')}</li>
+          <li><strong>Timeline:</strong> ${sanitizeText(req.body.timeline || 'Not specified')}</li>
+          <li><strong>Package Interest:</strong> ${sanitizeText(req.body.packageInterest || 'Not specified')}</li>
+        </ul>
+
+        ${attachmentsTooBig ? `
+        <h3>⚠️ Attachments Too Large</h3>
+        <p>The following files were uploaded but exceeded the email size limit:</p>
+        <ul>
+          ${fileList.map(file => `<li>${file}</li>`).join('')}
+        </ul>
+        <p>Please contact the client directly to obtain these files.</p>
+        ` : fileList.length > 0 ? `
+        <h3>Uploaded Files</h3>
+        <ul>
+          ${fileList.map(file => `<li>${file}</li>`).join('')}
+        </ul>
+        ` : '<p><em>No files uploaded</em></p>'}
+      `;
+
+      // Send email
+      const emailData = {
+        to: emailTo,
+        from: emailFrom,
+        subject: cleanSubject(website, businessName),
+        html: htmlBody,
+        attachments: attachmentsTooBig ? [] : attachments
+      };
+
+      await mailService.send(emailData);
+      
+      console.log(`Client onboarding submission sent: ${email} for ${website || businessName}`);
+      
+      res.json({ ok: true });
+
+    } catch (error) {
+      console.error("Client submission error:", error);
+      res.status(500).json({ 
+        ok: false, 
+        message: "There was an error processing your submission. Please try again." 
+      });
     }
   });
 
