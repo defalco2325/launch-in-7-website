@@ -267,11 +267,10 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       // Clear draft from localStorage before submitting
       localStorage.removeItem('client-onboarding-draft');
       
-      // Create FormData for file upload
-      const formDataToSubmit = new FormData();
-      
-      // Add text fields with validation
-      const requiredFields = {
+      // Prepare data for Netlify Forms submission (like your contact form)
+      const submissionData = {
+        "form-name": "launchin7-clients",
+        "bot-field": "", // Honeypot field (empty for humans)
         businessName: formData.businessName?.trim() || '',
         tagline: formData.tagline?.trim() || '',
         website: formData.website?.trim() || '',
@@ -284,62 +283,25 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         copywriting: formData.copywriting || '',
         seo: formData.seo || '',
         timeline: formData.timeline || '',
-        packageInterest: formData.packageInterest || ''
+        packageInterest: formData.packageInterest || '',
+        // Note about files (Netlify Forms has limitations with file uploads)
+        filesNote: `Files: ${formData.logoFiles.length} logos, ${formData.photos.length} photos, ${formData.otherAssets.length} other assets${formData.brandGuide ? ', 1 brand guide' : ''}`
       };
-
-      // Add all fields to FormData
-      Object.entries(requiredFields).forEach(([key, value]) => {
-        formDataToSubmit.append(key, value);
-      });
       
-      // Add files with validation
-      if (formData.logoFiles && Array.isArray(formData.logoFiles)) {
-        formData.logoFiles.forEach(file => {
-          if (file instanceof File) {
-            formDataToSubmit.append('logoFiles', file);
-          }
-        });
-      }
-      
-      if (formData.brandGuide && formData.brandGuide instanceof File) {
-        formDataToSubmit.append('brandGuide', formData.brandGuide);
-      }
-      
-      if (formData.photos && Array.isArray(formData.photos)) {
-        formData.photos.forEach(file => {
-          if (file instanceof File) {
-            formDataToSubmit.append('photos', file);
-          }
-        });
-      }
-      
-      if (formData.otherAssets && Array.isArray(formData.otherAssets)) {
-        formData.otherAssets.forEach(file => {
-          if (file instanceof File) {
-            formDataToSubmit.append('otherAssets', file);
-          }
-        });
-      }
-      
-      
-      // Submit to Netlify Function endpoint
-      const response = await fetch('/.netlify/functions/clients-submit', {
+      // Submit to Netlify Forms (same method as contact form)
+      const response = await fetch('/', {
         method: 'POST',
-        body: formDataToSubmit,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: Object.keys(submissionData)
+          .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(submissionData[key as keyof typeof submissionData]))
+          .join("&"),
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const result = await response.json();
-      
-      if (result.ok) {
+      if (response.ok) {
         // Success - navigate to success page
         navigate('/clients/success');
       } else {
-        // Handle error response
-        setErrors({ submit: result.message || 'Submission failed. Please try again.' });
+        throw new Error(`Form submission failed. Status: ${response.status}`);
       }
       
     } catch (error) {
@@ -357,9 +319,17 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     <form 
       onSubmit={handleSubmit}
       className="space-y-8"
+      data-netlify="true"
+      name="launchin7-clients"
+      method="POST"
+      netlify-honeypot="bot-field"
     >
-      {/* Honeypot field for spam protection */}
-      <input type="hidden" name="bot-field" />
+      {/* Hidden input for Netlify form detection */}
+      <input type="hidden" name="form-name" value="launchin7-clients" />
+      {/* Honeypot field for spam protection (hidden from users) */}
+      <p className="hidden">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
 
       {/* Business Basics */}
       <div className="space-y-6">

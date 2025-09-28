@@ -1,12 +1,13 @@
+// Netlify Function - completely standalone
 exports.handler = async (event, context) => {
-  // Simple CORS headers
+  // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type'
   };
 
-  // Handle preflight
+  // Handle preflight requests
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -15,26 +16,44 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Handle POST
-  if (event.httpMethod === 'POST') {
+  // Only allow POST
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ message: 'Method not allowed' })
+    };
+  }
+
+  try {
+    // Get basic info from the request
+    const timestamp = new Date().toISOString();
+    const userAgent = event.headers['user-agent'] || 'unknown';
+    
+    // For now, just return success to test if function works
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         ok: true,
-        message: "Function is working! Ready to process forms.",
-        timestamp: new Date().toISOString()
+        message: 'Function is working! Form submission received.',
+        debug: {
+          timestamp,
+          userAgent,
+          method: event.httpMethod,
+          hasBody: !!event.body
+        }
+      })
+    };
+
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        ok: false,
+        message: 'Function error: ' + error.message
       })
     };
   }
-
-  // Handle other methods
-  return {
-    statusCode: 405,
-    headers,
-    body: JSON.stringify({
-      ok: false,
-      message: "Method not allowed"
-    })
-  };
 };
