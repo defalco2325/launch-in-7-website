@@ -257,11 +257,9 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
 
     // Validate form
     if (!validateForm()) {
-      console.log('Form validation failed');
       return;
     }
 
-    console.log('Starting submission process');
     setIsSubmitting(true);
     setErrors({}); // Clear any previous errors
     

@@ -66,15 +66,12 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    console.log('=== CLIENT SUBMISSION FUNCTION CALLED ===');
-    console.log('Headers:', event.headers);
     
     // Get client IP for rate limiting
     const clientIP = event.headers['x-forwarded-for'] || event.headers['x-real-ip'] || 'unknown';
     
     // Check rate limiting
     if (!checkRateLimit(clientIP)) {
-      console.log('Rate limit exceeded for IP:', clientIP);
       return {
         statusCode: 429,
         headers,
@@ -101,8 +98,6 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('Parsed fields:', Object.keys(parsed));
-    console.log('Parsed files:', parsed.files ? parsed.files.length : 0);
 
     // Extract form data using the correct field names from frontend
     const formData = {
@@ -124,7 +119,6 @@ exports.handler = async (event, context) => {
 
     // Honeypot check
     if (formData.honeypot) {
-      console.log('Honeypot triggered, likely spam');
       return {
         statusCode: 400,
         headers,
@@ -194,7 +188,6 @@ exports.handler = async (event, context) => {
     if (parsed.files && parsed.files.length > 0) {
       parsed.files.forEach(file => {
         if (file && file.content && file.content.length > 0) {
-          console.log(`Processing file: ${file.filename} (${file.content.length} bytes)`);
           
           attachments.push({
             content: Buffer.from(file.content).toString('base64'),
@@ -239,9 +232,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('Sending email via SendGrid...');
     await sgMail.send(msg);
-    console.log('Email sent successfully');
 
     return {
       statusCode: 200,
@@ -253,7 +244,6 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Function error:', error);
     
     return {
       statusCode: 500,
