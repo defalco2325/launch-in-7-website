@@ -46,6 +46,12 @@
   to = "/sitemap.xml"
   status = 200
 
+# Exclude functions from SPA fallback
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
 # SPA fallback for all other routes (after asset protection)
 [[redirects]]
   from = "/*"
