@@ -1,6 +1,8 @@
 import HeroSection from "@/components/sections/hero";
 import GuaranteeExplainer from "@/components/sections/guarantee-explainer";
 import ServicesSnapshot from "@/components/sections/services-snapshot";
+import PricingTable from "@/components/sections/pricing-table";
+import FinalConversion from "@/components/sections/final-conversion";
 import { updateSEO } from "@/lib/seo";
 import { useEffect, lazy, Suspense, useState, useRef } from "react";
 
@@ -140,6 +142,12 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
+      {/* Pricing Table */}
+      <PricingTable />
+      
+      {/* Final Conversion */}
+      <FinalConversion />
     </div>
   );
 }
