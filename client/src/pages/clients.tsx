@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { updateSEO } from "@/lib/seo";
 import ClientsForm from "@/components/forms/ClientsForm";
 import { CheckCircle, Star, Zap, Shield } from "lucide-react";
 
 export default function Clients() {
+  const [selectedPackage, setSelectedPackage] = useState<string>("");
+  
   useEffect(() => {
     updateSEO({
       title: "Client Onboarding - Launch in 7 | Let's Get Started",
@@ -11,18 +13,60 @@ export default function Clients() {
     });
   }, []);
 
-  const includedFeatures = [
-    "Professional website design & development",
-    "Mobile-responsive across all devices",
-    "SEO optimization & performance tuning", 
-    "Contact forms & lead capture",
-    "Social media integration",
-    "Hosting & domain setup assistance",
-    "7-day delivery guarantee",
-    "30 days of free support",
-    "Training & documentation",
-    "SSL security & backups"
-  ];
+  const packageFeatures = {
+    starter: [
+      "Professional website design & development",
+      "Mobile-responsive across all devices", 
+      "Basic SEO optimization",
+      "Contact forms & lead capture",
+      "7-day delivery guarantee",
+      "30 days of free support",
+      "SSL security"
+    ],
+    professional: [
+      "Professional website design & development",
+      "Mobile-responsive across all devices",
+      "SEO optimization & performance tuning", 
+      "Contact forms & lead capture",
+      "Social media integration",
+      "Hosting & domain setup assistance",
+      "7-day delivery guarantee",
+      "30 days of free support",
+      "Training & documentation",
+      "SSL security & backups"
+    ],
+    premium: [
+      "Professional website design & development",
+      "Mobile-responsive across all devices",
+      "Advanced SEO optimization & performance tuning", 
+      "Contact forms & lead capture",
+      "Social media integration",
+      "Hosting & domain setup assistance",
+      "E-commerce functionality",
+      "Advanced analytics setup",
+      "Custom integrations",
+      "7-day delivery guarantee",
+      "30 days of free support",
+      "Priority support & maintenance",
+      "Training & documentation",
+      "SSL security & backups"
+    ],
+    "not-sure": [
+      "Professional website design & development",
+      "Mobile-responsive across all devices",
+      "SEO optimization & performance tuning", 
+      "Contact forms & lead capture",
+      "Social media integration",
+      "Hosting & domain setup assistance",
+      "7-day delivery guarantee",
+      "30 days of free support",
+      "Training & documentation",
+      "SSL security & backups",
+      "We'll recommend the best package for your needs"
+    ]
+  };
+
+  const currentFeatures = packageFeatures[selectedPackage as keyof typeof packageFeatures] || packageFeatures.professional;
 
   const steps = [
     { number: "1", title: "Details", active: true },
@@ -76,7 +120,7 @@ export default function Clients() {
             {/* Form Column */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-12">
-                <ClientsForm />
+                <ClientsForm onPackageChange={setSelectedPackage} />
               </div>
             </div>
 
@@ -95,7 +139,7 @@ export default function Clients() {
                   </div>
                   
                   <div className="space-y-3">
-                    {includedFeatures.map((feature, index) => (
+                    {currentFeatures.map((feature, index) => (
                       <div key={index} className="flex items-start space-x-3">
                         <div className="flex-shrink-0 mt-1">
                           <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
