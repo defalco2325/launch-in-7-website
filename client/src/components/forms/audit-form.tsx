@@ -232,7 +232,8 @@ export default function AuditForm() {
           <Button
             type="button"
             onClick={() => window.open('https://launchin7scanner.replit.app/', '_blank')}
-            className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
+            disabled={!form.formState.isValid}
+            className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             data-testid="button-audit-submit"
           >
             Get My Free Audit
