@@ -234,34 +234,31 @@ export default function AuditForm() {
             onClick={async () => {
               const formData = form.getValues();
               
-              // Submit to Netlify Forms
-              try {
-                const netlifyData = {
-                  "form-name": "launchin7-audit",
-                  "bot-field": "",
-                  name: formData.name,
-                  email: formData.email,
-                  website: formData.website,
-                  goal: formData.goal || "",
-                  timeline: formData.timeline || "",
-                  budget: formData.budget || ""
-                };
+              // Submit to Netlify Forms in background and redirect immediately
+              const netlifyData = {
+                "form-name": "launchin7-audit",
+                "bot-field": "",
+                name: formData.name,
+                email: formData.email,
+                website: formData.website,
+                goal: formData.goal || "",
+                timeline: formData.timeline || "",
+                budget: formData.budget || ""
+              };
 
-                await fetch("/", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                  body: Object.keys(netlifyData)
-                    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(netlifyData[key as keyof typeof netlifyData]))
-                    .join("&"),
-                });
-              } catch (error) {
-                console.error('Form submission error:', error);
-              }
+              // Submit form data without waiting
+              fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: Object.keys(netlifyData)
+                  .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(netlifyData[key as keyof typeof netlifyData]))
+                  .join("&"),
+              }).catch(error => console.error('Form submission error:', error));
               
-              // Redirect to scanner
+              // Redirect immediately to scanner
               window.open('https://launchin7scanner.replit.app/', '_blank');
             }}
-            disabled={!form.formState.isValid}
+            disabled={!form.formState.isValid || !form.watch("name") || !form.watch("email") || !form.watch("website") || !form.watch("goal") || !form.watch("timeline") || !form.watch("budget")}
             className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             data-testid="button-audit-submit"
           >
