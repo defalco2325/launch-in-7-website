@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail');
-const formidable = require('formidable');
+const multipartParser = require('aws-lambda-multipart-parser');
 
 // Initialize SendGrid
 if (process.env.SENDGRID_API_KEY) {
@@ -85,16 +85,10 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Parse multipart form data
-    const form = formidable({
-      maxFileSize: 50 * 1024 * 1024, // 50MB
-      maxFiles: 20,
-      allowEmptyFiles: false,
-    });
-
-    let fields, files;
+    // Parse multipart form data for Netlify Functions
+    let parsed;
     try {
-      [fields, files] = await form.parse(event.body);
+      parsed = multipartParser.parse(event, true);
     } catch (error) {
       console.error('Form parsing error:', error);
       return {
@@ -107,27 +101,25 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('Parsed fields:', Object.keys(fields));
-    console.log('Parsed files:', Object.keys(files));
+    console.log('Parsed fields:', Object.keys(parsed));
+    console.log('Parsed files:', parsed.files ? parsed.files.length : 0);
 
-    // Extract form data (formidable returns arrays for each field)
-    const getData = (field) => Array.isArray(fields[field]) ? fields[field][0] : fields[field];
-    
+    // Extract form data using the correct field names from frontend
     const formData = {
-      businessName: getData('businessName'),
-      tagline: getData('tagline'),
-      website: getData('website'),
-      shortDescription: getData('shortDescription'),
-      contactName: getData('contactName'),
-      email: getData('email'),
-      phone: getData('phone'),
-      pages: getData('pages') ? getData('pages').split(',') : [],
-      features: getData('features') ? getData('features').split(',') : [],
-      copywriting: getData('copywriting'),
-      seo: getData('seo'),
-      timeline: getData('timeline'),
-      packageInterest: getData('packageInterest'),
-      honeypot: getData('honeypot')
+      businessName: parsed.businessName,
+      tagline: parsed.tagline,
+      website: parsed.website,
+      shortDescription: parsed.shortDescription,
+      contactName: parsed.contactName,
+      email: parsed.email,
+      phone: parsed.phone,
+      pages: parsed.pagesSelected ? parsed.pagesSelected.split(',') : [],
+      features: parsed.featuresSelected ? parsed.featuresSelected.split(',') : [],
+      copywriting: parsed.copywriting,
+      seo: parsed.seo,
+      timeline: parsed.timeline,
+      packageInterest: parsed.packageInterest,
+      honeypot: parsed['bot-field'] || parsed.honeypot
     };
 
     // Honeypot check
@@ -198,27 +190,23 @@ exports.handler = async (event, context) => {
 
     // Process file attachments
     const attachments = [];
-    const fileCategories = ['logoFiles', 'brandGuide', 'photos', 'otherAssets'];
     
-    fileCategories.forEach(category => {
-      if (files[category]) {
-        const categoryFiles = Array.isArray(files[category]) ? files[category] : [files[category]];
-        categoryFiles.forEach(file => {
-          if (file && file.size > 0) {
-            console.log(`Processing ${category} file: ${file.originalFilename} (${file.size} bytes)`);
-            
-            attachments.push({
-              content: require('fs').readFileSync(file.filepath).toString('base64'),
-              filename: file.originalFilename,
-              type: file.mimetype,
-              disposition: 'attachment'
-            });
-            
-            emailBody += `<p>• ${file.originalFilename} (${category})</p>`;
-          }
-        });
-      }
-    });
+    if (parsed.files && parsed.files.length > 0) {
+      parsed.files.forEach(file => {
+        if (file && file.content && file.content.length > 0) {
+          console.log(`Processing file: ${file.filename} (${file.content.length} bytes)`);
+          
+          attachments.push({
+            content: Buffer.from(file.content).toString('base64'),
+            filename: file.filename,
+            type: file.contentType,
+            disposition: 'attachment'
+          });
+          
+          emailBody += `<p>• ${file.filename}</p>`;
+        }
+      });
+    }
 
     if (attachments.length === 0) {
       emailBody += '<p>No files were uploaded.</p>';

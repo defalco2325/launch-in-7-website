@@ -249,11 +249,9 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       e.stopPropagation();
     }
     
-    console.log('Submit button clicked'); // Debug log
     
     // Check if already submitting
     if (isSubmitting) {
-      console.log('Already submitting, ignoring click');
       return;
     }
 
@@ -325,61 +323,31 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         });
       }
       
-      console.log('Sending request to /api/clients/submit');
-      console.log('FormData contents:');
-      const entries = Array.from(formDataToSubmit.entries());
-      entries.forEach(([key, value]) => {
-        console.log(`${key}:`, value instanceof File ? `File: ${value.name}` : value);
-      });
       
-      // Test if basic fetch works first
-      try {
-        const testResponse = await fetch('/api/clients/test', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ test: true }),
-        });
-        console.log('Test endpoint response:', testResponse.status);
-      } catch (testError) {
-        console.error('Test endpoint failed:', testError);
-        throw new Error('Cannot connect to server. Please check your connection.');
-      }
-      
-      // Submit to our API endpoint with proper error handling
-      const response = await fetch('/api/clients/submit', {
+      // Submit to Netlify Function endpoint
+      const response = await fetch('/.netlify/functions/clients-submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
-      
-      console.log('Raw response:', response);
-      
-      console.log('Response status:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const result = await response.json();
-      console.log('Response result:', result);
       
       if (result.ok) {
-        console.log('Submission successful, navigating to success page');
         // Success - navigate to success page
         navigate('/clients/success');
       } else {
-        console.log('Server returned error:', result.message);
         // Handle error response
         setErrors({ submit: result.message || 'Submission failed. Please try again.' });
       }
       
     } catch (error) {
-      console.error('Submission error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setErrors({ submit: `There was an error submitting your form: ${errorMessage}. Please try again.` });
     } finally {
-      console.log('Submission process complete');
       setIsSubmitting(false);
     }
   };
