@@ -292,30 +292,13 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         formDataToSubmit.append('otherAssets', file);
       });
       
-      // Submit to our API endpoint with better error handling
-      console.log('[CLIENT] About to submit form...');
-      
+      // Submit to our API endpoint
       const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
       
-      console.log('[CLIENT] Response received:', response.status, response.statusText);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('[CLIENT] Error response text:', errorText);
-        let result;
-        try {
-          result = JSON.parse(errorText);
-        } catch {
-          result = { message: `Server error: ${response.statusText}` };
-        }
-        throw new Error(result.message || 'Submission failed');
-      }
-      
       const result = await response.json();
-      console.log('[CLIENT] Success response:', result);
       
       if (result.ok) {
         // Success - navigate to success page
@@ -327,11 +310,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       
     } catch (error) {
       console.error('Submission error:', error);
-      console.error('Error type:', typeof error);
-      console.error('Error toString:', error?.toString());
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
-      const errorMessage = error instanceof Error ? error.message : 'There was an error submitting your form. Please try again.';
-      setErrors({ submit: errorMessage });
+      setErrors({ submit: 'There was an error submitting your form. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

@@ -113,12 +113,6 @@ if (process.env.SENDGRID_API_KEY) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Test route to verify API routing is working
-  app.get("/api/test", (req, res) => {
-    console.log("Test API route hit!");
-    res.json({ status: "API routing working" });
-  });
-
   // Contact form submission
   app.post("/api/lead", async (req, res) => {
     try {
