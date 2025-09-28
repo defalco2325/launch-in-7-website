@@ -1,0 +1,88 @@
+Deliverables:
+
+components/ClientsForm.tsx – onboarding form + file uploads (Netlify Forms).
+
+pages/clients.tsx (or app/clients/page.tsx if using Next 13+) – wraps the form with branding.
+
+pages/clients/success.tsx (or app/clients/success/page.tsx) – confirmation page.
+
+components/NavClientsLink.tsx – styled nav button linking to /clients.
+
+Optional: components/ui/FormField.tsx for consistent input styling.
+
+Requirements:
+
+Match existing site style (typography, spacing, buttons, shadows). Keep all styling in Tailwind utility classes inside the new components.
+
+Mobile-first, responsive, accessible (labels, aria, focus rings).
+
+No external UI libraries.
+
+Clients page (/clients):
+
+Hero title: “Let’s Launch in 7 Days” with subtitle: “Fill out this form and upload your brand assets. We’ll handle the rest.”
+
+Step indicator: “Step 1: Details • Step 2: Files • Step 3: Confirm” (visual only).
+
+Layout: two-column on desktop (form left, sticky summary right), stacked on mobile.
+
+Sticky summary: placeholder bullet list of what’s included.
+
+Form spec (single Netlify form):
+
+Netlify setup:
+
+<form name="client-onboarding" method="POST" action="/clients/success" data-netlify="true" data-netlify-honeypot="bot-field" encType="multipart/form-data">
+
+
+Fields:
+
+Business Basics: businessName (required), tagline, website, shortDescription (textarea).
+
+Contact: contactName (required), email (required, validate), phone.
+
+Pages Needed (checkboxes): Home, About, Services, Blog, Contact, Portfolio/Case Studies, Other.
+
+Features (checkboxes): Contact Form, Email Opt-in, Calendar Booking, Payments/Checkout, Member Area, Blog+CMS, Other.
+
+Copywriting (radio): Have Copy / Need Polish / Need Full Copy.
+
+SEO (radio): Basic / Deeper.
+
+Timeline (radio): 7 Days / 2–3 Weeks / Flexible.
+
+Package Interest (dropdown): Starter / Professional / Premium / Not Sure.
+
+File uploads: logoFiles (multiple), brandGuide (single), photos (multiple), otherAssets (multiple).
+
+Add honeypot field.
+
+Validate required fields, disable submit until valid.
+
+Store draft answers in localStorage so progress isn’t lost.
+
+Submit button: loading state → redirect to /clients/success.
+
+Success page (/clients/success):
+
+Confirmation headline: “We received your info and files! 🎉”
+
+Paragraph: “We’ll review and confirm your 7-day launch plan within 24 hours.”
+
+Checklist of next steps.
+
+Primary CTA: “Book Your Kickoff Call” → Calendly link.
+
+Secondary link: “Return to Homepage.”
+
+Nav link (NavClientsLink.tsx):
+
+Styled button <Link href="/clients">Clients</Link> that matches my existing header style.
+
+Constraints:
+
+Use React 18 + TypeScript.
+
+Tailwind utilities only; don’t modify global Tailwind config.
+
+No analytics or pixel code.
