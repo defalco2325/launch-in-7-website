@@ -267,41 +267,65 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       // Clear draft from localStorage before submitting
       localStorage.removeItem('client-onboarding-draft');
       
-      // Prepare data for Netlify Forms submission (like your contact form)
-      const submissionData = {
-        "form-name": "launchin7-clients",
-        "bot-field": "", // Honeypot field (empty for humans)
-        businessName: formData.businessName?.trim() || '',
-        tagline: formData.tagline?.trim() || '',
-        website: formData.website?.trim() || '',
-        shortDescription: formData.shortDescription?.trim() || '',
-        contactName: formData.contactName?.trim() || '',
-        email: formData.email?.trim() || '',
-        phone: formData.phone?.trim() || '',
-        pagesSelected: formData.pages?.join(', ') || '',
-        featuresSelected: formData.features?.join(', ') || '',
-        copywriting: formData.copywriting || '',
-        seo: formData.seo || '',
-        timeline: formData.timeline || '',
-        packageInterest: formData.packageInterest || '',
-        // Note about files (Netlify Forms has limitations with file uploads)
-        filesNote: `Files: ${formData.logoFiles.length} logos, ${formData.photos.length} photos, ${formData.otherAssets.length} other assets${formData.brandGuide ? ', 1 brand guide' : ''}`
-      };
+      // Create FormData for file upload to Netlify Function
+      const formDataToSubmit = new FormData();
       
-      // Submit to Netlify Forms (same method as contact form)
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: Object.keys(submissionData)
-          .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(submissionData[key as keyof typeof submissionData]))
-          .join("&"),
+      // Add text fields
+      formDataToSubmit.append('businessName', formData.businessName?.trim() || '');
+      formDataToSubmit.append('tagline', formData.tagline?.trim() || '');
+      formDataToSubmit.append('website', formData.website?.trim() || '');
+      formDataToSubmit.append('shortDescription', formData.shortDescription?.trim() || '');
+      formDataToSubmit.append('contactName', formData.contactName?.trim() || '');
+      formDataToSubmit.append('email', formData.email?.trim() || '');
+      formDataToSubmit.append('phone', formData.phone?.trim() || '');
+      formDataToSubmit.append('pagesSelected', formData.pages?.join(', ') || '');
+      formDataToSubmit.append('featuresSelected', formData.features?.join(', ') || '');
+      formDataToSubmit.append('copywriting', formData.copywriting || '');
+      formDataToSubmit.append('seo', formData.seo || '');
+      formDataToSubmit.append('timeline', formData.timeline || '');
+      formDataToSubmit.append('packageInterest', formData.packageInterest || '');
+      
+      // Add file attachments
+      formData.logoFiles.forEach((file, index) => {
+        if (file instanceof File) {
+          formDataToSubmit.append('logoFiles', file);
+        }
       });
       
-      if (response.ok) {
+      if (formData.brandGuide instanceof File) {
+        formDataToSubmit.append('brandGuide', formData.brandGuide);
+      }
+      
+      formData.photos.forEach((file, index) => {
+        if (file instanceof File) {
+          formDataToSubmit.append('photos', file);
+        }
+      });
+      
+      formData.otherAssets.forEach((file, index) => {
+        if (file instanceof File) {
+          formDataToSubmit.append('otherAssets', file);
+        }
+      });
+      
+      // Submit to Netlify Function (handles SendGrid email with attachments)
+      const response = await fetch('/.netlify/functions/client-onboarding', {
+        method: 'POST',
+        body: formDataToSubmit,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Form submission failed. Status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.ok) {
         // Success - navigate to success page
         navigate('/clients/success');
       } else {
-        throw new Error(`Form submission failed. Status: ${response.status}`);
+        throw new Error(result.message || 'Form submission failed');
       }
       
     } catch (error) {
