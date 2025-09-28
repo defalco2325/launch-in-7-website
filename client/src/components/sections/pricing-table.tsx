@@ -118,11 +118,11 @@ export default function PricingTable() {
                     {pkg.subtitle}
                   </p>
                   <div className="mb-6">
+                    <div className="text-gray-500 text-lg mb-2">
+                      Starting at
+                    </div>
                     <span className="text-4xl lg:text-5xl font-black text-deep-navy">
                       {pkg.price}
-                    </span>
-                    <span className="text-gray-500 text-lg ml-1">
-                      Starting at
                     </span>
                   </div>
                 </div>
