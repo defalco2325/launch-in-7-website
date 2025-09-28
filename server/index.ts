@@ -7,7 +7,15 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 
+// Add basic request logging for all requests  
 app.use((req, res, next) => {
+  // Only log API requests and POST requests to avoid spam
+  if (req.url.startsWith('/api') || req.method === 'POST') {
+    console.log(`=== INCOMING REQUEST ===`);
+    console.log(`${req.method} ${req.url}`);
+    console.log(`Content-Type:`, req.get('Content-Type'));
+  }
+  
   const start = Date.now();
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;

@@ -115,6 +115,8 @@ if (process.env.SENDGRID_API_KEY) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  console.log('=== REGISTERING ROUTES ===');
+  
   // Contact form submission
   app.post("/api/lead", async (req, res) => {
     try {
@@ -200,9 +202,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Test endpoint without multer first
   app.post("/api/clients/test", async (req, res) => {
-    console.log("Test endpoint hit");
+    console.log("=== TEST ENDPOINT HIT ===");
     res.json({ ok: true, message: "Test endpoint working" });
   });
+  console.log('Registered route: POST /api/clients/test');
 
   // Client onboarding form submission with file uploads
   app.post("/api/clients/submit", upload.any(), async (req, res) => {
@@ -348,7 +351,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+  console.log('Registered route: POST /api/clients/submit');
 
+  // Add CORS middleware for API routes
+  app.use('/api/*', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
+
+  // Catch-all route for API endpoints to debug what's being requested
+  app.all('/api/*', (req, res, next) => {
+    console.log(`=== API CATCH-ALL ===`);
+    console.log(`${req.method} ${req.originalUrl}`);
+    console.log('Body:', req.body);
+    console.log('Files:', req.files);
+    next();
+  });
+
+  // Fallback for unmatched API routes
+  app.all('/api/*', (req, res) => {
+    console.log(`=== UNMATCHED API ROUTE ===`);
+    console.log(`${req.method} ${req.originalUrl}`);
+    res.status(404).json({ 
+      error: 'API endpoint not found',
+      method: req.method,
+      path: req.originalUrl,
+      availableEndpoints: [
+        'POST /api/clients/test',
+        'POST /api/clients/submit',
+        'POST /api/lead',
+        'POST /api/audit'
+      ]
+    });
+  });
+
+  console.log('=== ALL ROUTES REGISTERED ===');
   const httpServer = createServer(app);
   return httpServer;
 }
