@@ -308,8 +308,8 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         }
       });
       
-      // Submit to Netlify Function (handles SendGrid email with attachments)
-      const response = await fetch('/.netlify/functions/client-onboarding', {
+      // Submit to existing local route (already has SendGrid integration)
+      const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
