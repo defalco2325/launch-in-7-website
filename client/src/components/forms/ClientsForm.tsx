@@ -189,68 +189,16 @@ export default function ClientsForm() {
 
     setIsSubmitting(true);
     
-    try {
-      const formDataToSubmit = new FormData();
-      
-      // Add form fields
-      formDataToSubmit.append('form-name', 'client-onboarding');
-      formDataToSubmit.append('bot-field', ''); // honeypot
-      
-      // Business basics
-      formDataToSubmit.append('businessName', formData.businessName);
-      formDataToSubmit.append('tagline', formData.tagline);
-      formDataToSubmit.append('website', formData.website);
-      formDataToSubmit.append('shortDescription', formData.shortDescription);
-      
-      // Contact
-      formDataToSubmit.append('contactName', formData.contactName);
-      formDataToSubmit.append('email', formData.email);
-      formDataToSubmit.append('phone', formData.phone);
-      
-      // Selections
-      formDataToSubmit.append('pages', formData.pages.join(', '));
-      formDataToSubmit.append('features', formData.features.join(', '));
-      formDataToSubmit.append('copywriting', formData.copywriting);
-      formDataToSubmit.append('seo', formData.seo);
-      formDataToSubmit.append('timeline', formData.timeline);
-      formDataToSubmit.append('packageInterest', formData.packageInterest);
-      
-      // Add files
-      formData.logoFiles.forEach((file, index) => {
-        formDataToSubmit.append(`logoFiles`, file);
-      });
-      
-      if (formData.brandGuide) {
-        formDataToSubmit.append('brandGuide', formData.brandGuide);
-      }
-      
-      formData.photos.forEach((file, index) => {
-        formDataToSubmit.append(`photos`, file);
-      });
-      
-      formData.otherAssets.forEach((file, index) => {
-        formDataToSubmit.append(`otherAssets`, file);
-      });
-
-      const response = await fetch('/clients/success', {
-        method: 'POST',
-        body: formDataToSubmit
-      });
-
-      if (response.ok) {
-        // Clear draft from localStorage
-        localStorage.removeItem('client-onboarding-draft');
-        // Redirect will be handled by Netlify
-        window.location.href = '/clients/success';
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setErrors({ submit: 'There was an error submitting your form. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Clear draft from localStorage before submitting
+    localStorage.removeItem('client-onboarding-draft');
+    
+    // Let the browser handle the natural form submission to Netlify
+    // We'll use a slight delay to show the loading state, then submit naturally
+    setTimeout(() => {
+      // Create a new FormData and submit using the browser's native form submission
+      const form = e.target as HTMLFormElement;
+      form.submit();
+    }, 500);
   };
 
   const isFormValid = formData.businessName.trim() && formData.contactName.trim() && 
@@ -284,6 +232,7 @@ export default function ClientsForm() {
             </Label>
             <Input
               id="businessName"
+              name="businessName"
               type="text"
               value={formData.businessName}
               onChange={(e) => handleInputChange('businessName', e.target.value)}
@@ -302,6 +251,7 @@ export default function ClientsForm() {
             </Label>
             <Input
               id="tagline"
+              name="tagline"
               type="text"
               value={formData.tagline}
               onChange={(e) => handleInputChange('tagline', e.target.value)}
@@ -317,6 +267,7 @@ export default function ClientsForm() {
           </Label>
           <Input
             id="website"
+            name="website"
             type="text"
             value={formData.website}
             onChange={(e) => handleInputChange('website', e.target.value)}
@@ -332,6 +283,7 @@ export default function ClientsForm() {
           </Label>
           <textarea
             id="shortDescription"
+            name="shortDescription"
             rows={4}
             value={formData.shortDescription}
             onChange={(e) => handleInputChange('shortDescription', e.target.value)}
@@ -353,6 +305,7 @@ export default function ClientsForm() {
             </Label>
             <Input
               id="contactName"
+              name="contactName"
               type="text"
               value={formData.contactName}
               onChange={(e) => handleInputChange('contactName', e.target.value)}
@@ -371,6 +324,7 @@ export default function ClientsForm() {
             </Label>
             <Input
               id="email"
+              name="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
@@ -390,6 +344,7 @@ export default function ClientsForm() {
           </Label>
           <Input
             id="phone"
+            name="phone"
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
@@ -407,6 +362,8 @@ export default function ClientsForm() {
             <label key={page} className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="checkbox"
+                name="pages"
+                value={page}
                 checked={formData.pages.includes(page)}
                 onChange={(e) => handleCheckboxChange('pages', page, e.target.checked)}
                 className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
@@ -426,6 +383,8 @@ export default function ClientsForm() {
             <label key={feature} className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="checkbox"
+                name="features"
+                value={feature}
                 checked={formData.features.includes(feature)}
                 onChange={(e) => handleCheckboxChange('features', feature, e.target.checked)}
                 className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
@@ -515,6 +474,12 @@ export default function ClientsForm() {
             ))}
           </SelectContent>
         </Select>
+        {/* Hidden input for Netlify Forms */}
+        <input type="hidden" name="packageInterest" value={formData.packageInterest} />
+        
+        {/* Hidden inputs for array data */}
+        <input type="hidden" name="pagesSelected" value={formData.pages.join(', ')} />
+        <input type="hidden" name="featuresSelected" value={formData.features.join(', ')} />
       </div>
 
       {/* File Uploads */}
@@ -529,6 +494,7 @@ export default function ClientsForm() {
           <div className="relative">
             <input
               id="logoFiles"
+              name="logoFiles"
               type="file"
               multiple
               accept="image/*,.pdf,.ai,.eps,.svg"
@@ -561,6 +527,7 @@ export default function ClientsForm() {
           <div className="relative">
             <input
               id="brandGuide"
+              name="brandGuide"
               type="file"
               accept=".pdf,.doc,.docx,.ppt,.pptx"
               onChange={(e) => handleFileChange('brandGuide', e.target.files)}
@@ -592,6 +559,7 @@ export default function ClientsForm() {
           <div className="relative">
             <input
               id="photos"
+              name="photos"
               type="file"
               multiple
               accept="image/*"
@@ -624,6 +592,7 @@ export default function ClientsForm() {
           <div className="relative">
             <input
               id="otherAssets"
+              name="otherAssets"
               type="file"
               multiple
               onChange={(e) => handleFileChange('otherAssets', e.target.files)}
