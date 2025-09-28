@@ -1,50 +1,3 @@
-const sgMail = require('@sendgrid/mail');
-
-// Initialize SendGrid
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
-
-// Rate limiting store
-const rateLimitStore = new Map();
-
-function checkRateLimit(ip) {
-  const now = Date.now();
-  const key = ip;
-  const limit = rateLimitStore.get(key);
-  
-  if (!limit || now > limit.resetTime) {
-    rateLimitStore.set(key, { count: 1, resetTime: now + 60000 });
-    return true;
-  }
-  
-  if (limit.count >= 3) {
-    return false;
-  }
-  
-  limit.count++;
-  return true;
-}
-
-function sanitizeText(text) {
-  if (!text) return '';
-  return text.toString().trim().replace(/[<>]/g, '');
-}
-
-function cleanSubject(website, businessName) {
-  let subject = website || businessName || 'New Client';
-  subject = subject.replace(/^https?:\/\//i, '');
-  subject = subject.replace(/\/$/, '');
-  return `New Onboarding — ${subject}`;
-}
-
-// Simple field extraction from multipart data
-function extractField(body, fieldName) {
-  const regex = new RegExp(`name="${fieldName}"[\\s\\S]*?\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`, 'i');
-  const match = body.match(regex);
-  return match ? match[1].trim() : '';
-}
-
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -68,129 +21,81 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const clientIP = event.headers['x-forwarded-for'] || event.headers['x-real-ip'] || 'unknown';
-    
-    if (!checkRateLimit(clientIP)) {
-      return {
-        statusCode: 429,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Too many submissions. Please wait a moment before trying again." 
-        })
-      };
-    }
-
-    // Parse form data
-    const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
-    
-    const formData = {
-      businessName: extractField(body, 'businessName'),
-      tagline: extractField(body, 'tagline'),
-      website: extractField(body, 'website'),
-      shortDescription: extractField(body, 'shortDescription'),
-      contactName: extractField(body, 'contactName'),
-      email: extractField(body, 'email'),
-      phone: extractField(body, 'phone'),
-      pagesSelected: extractField(body, 'pagesSelected'),
-      featuresSelected: extractField(body, 'featuresSelected'),
-      copywriting: extractField(body, 'copywriting'),
-      seo: extractField(body, 'seo'),
-      timeline: extractField(body, 'timeline'),
-      packageInterest: extractField(body, 'packageInterest'),
-      honeypot: extractField(body, 'bot-field') || extractField(body, 'honeypot')
-    };
-
-    // Honeypot check
-    if (formData.honeypot) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Invalid submission detected." 
-        })
-      };
-    }
-
-    // Validation
-    if (!formData.businessName || !formData.email || !formData.contactName) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Missing required fields: Business Name, Contact Name, and Email are required." 
-        })
-      };
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Please provide a valid email address." 
-        })
-      };
-    }
-
-    // Check SendGrid configuration
-    if (!process.env.SENDGRID_API_KEY) {
+    // Test 1: Check if SendGrid module can be imported
+    let sgMail;
+    try {
+      sgMail = require('@sendgrid/mail');
+    } catch (importError) {
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({ 
           ok: false, 
-          message: "Email service not configured. Please contact support." 
+          message: "SendGrid import failed: " + importError.message
         })
       };
     }
 
-    // Prepare email
-    const subject = cleanSubject(formData.website, formData.businessName);
+    // Test 2: Check if API key exists
+    const hasApiKey = !!process.env.SENDGRID_API_KEY;
+    if (!hasApiKey) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          ok: false, 
+          message: "SendGrid API key not found in environment variables"
+        })
+      };
+    }
+
+    // Test 3: Try to set API key
+    try {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    } catch (keyError) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          ok: false, 
+          message: "Failed to set SendGrid API key: " + keyError.message
+        })
+      };
+    }
+
+    // Test 4: Extract basic form data
+    let email = 'test@example.com';
+    let businessName = 'Test Business';
     
-    const pages = formData.pagesSelected ? formData.pagesSelected.split(',').map(p => p.trim()) : [];
-    const features = formData.featuresSelected ? formData.featuresSelected.split(',').map(f => f.trim()) : [];
-    
-    const emailBody = `
-<h2>New Client Onboarding Submission</h2>
+    try {
+      const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
+      
+      // Simple extraction
+      const emailMatch = body.match(/name="email"[^]*?\r\n\r\n([^]*?)\r\n--/);
+      const businessMatch = body.match(/name="businessName"[^]*?\r\n\r\n([^]*?)\r\n--/);
+      
+      if (emailMatch && emailMatch[1]) {
+        email = emailMatch[1].trim();
+      }
+      if (businessMatch && businessMatch[1]) {
+        businessName = businessMatch[1].trim();
+      }
+    } catch (parseError) {
+      // Continue with test values if parsing fails
+    }
 
-<h3>Business Information</h3>
-<p><strong>Business Name:</strong> ${sanitizeText(formData.businessName)}</p>
-<p><strong>Tagline:</strong> ${sanitizeText(formData.tagline || 'Not provided')}</p>
-<p><strong>Website:</strong> ${sanitizeText(formData.website || 'Not provided')}</p>
-<p><strong>Description:</strong> ${sanitizeText(formData.shortDescription || 'Not provided')}</p>
-
-<h3>Contact Information</h3>
-<p><strong>Contact Name:</strong> ${sanitizeText(formData.contactName)}</p>
-<p><strong>Email:</strong> ${sanitizeText(formData.email)}</p>
-<p><strong>Phone:</strong> ${sanitizeText(formData.phone || 'Not provided')}</p>
-
-<h3>Project Details</h3>
-<p><strong>Pages Needed:</strong> ${pages.map(p => sanitizeText(p)).join(', ') || 'None specified'}</p>
-<p><strong>Features:</strong> ${features.map(f => sanitizeText(f)).join(', ') || 'None specified'}</p>
-<p><strong>Copywriting:</strong> ${sanitizeText(formData.copywriting || 'Not specified')}</p>
-<p><strong>SEO Level:</strong> ${sanitizeText(formData.seo || 'Not specified')}</p>
-<p><strong>Timeline:</strong> ${sanitizeText(formData.timeline || 'Not specified')}</p>
-<p><strong>Package Interest:</strong> ${sanitizeText(formData.packageInterest || 'Not specified')}</p>
-
-<h3>Files</h3>
-<p><em>File attachments are being processed and will be added in the next update.</em></p>
-
-<hr>
-<p><em>Submitted on ${new Date().toLocaleString()}</em></p>
-<p><em>IP Address: ${clientIP}</em></p>
-`;
-
-    // Send email via SendGrid
+    // Test 5: Try to send a simple email
     const msg = {
       to: 'team@launchin7.io',
       from: 'noreply@launchin7.io',
-      subject: subject,
-      html: emailBody
+      subject: `Test Submission from ${businessName}`,
+      html: `
+        <h2>Test Client Submission</h2>
+        <p><strong>Business:</strong> ${businessName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+        <p><em>This is a test email from the Netlify function.</em></p>
+      `
     };
 
     await sgMail.send(msg);
@@ -200,24 +105,33 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ 
         ok: true, 
-        message: "Thank you! Your submission has been received and we'll be in touch soon." 
+        message: "Test email sent successfully! Check team@launchin7.io for the email."
       })
     };
 
   } catch (error) {
-    console.error('Function error:', error);
-    
-    // If it's a SendGrid error, log more details
+    // Detailed error logging
+    let errorDetails = {
+      name: error.name,
+      message: error.message
+    };
+
+    // SendGrid specific error details
     if (error.response && error.response.body) {
-      console.error('SendGrid error details:', error.response.body);
+      errorDetails.sendgrid = error.response.body;
     }
-    
+
+    if (error.code) {
+      errorDetails.code = error.code;
+    }
+
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         ok: false, 
-        message: "There was an error processing your submission. Please try again." 
+        message: "Error: " + error.message,
+        details: errorDetails
       })
     };
   }
