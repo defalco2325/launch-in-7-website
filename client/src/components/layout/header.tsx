@@ -2,6 +2,7 @@ import { useState, memo, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import NavClientsLink from "@/components/layout/NavClientsLink";
 import logoWebp from "@/assets/logo.webp";
 import logoPng from "@/assets/logo-optimized.png";
 
@@ -45,7 +46,10 @@ const Header = memo(function Header() {
             </Link>
           </div>
           
-          {/* Desktop Navigation - Removed About and Contact buttons */}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            <NavClientsLink />
+          </div>
           
           {/* CTA Button */}
           <div className="flex items-center space-x-4">
@@ -82,6 +86,9 @@ const Header = memo(function Header() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-200 shadow-sm">
             <div className="px-4 py-6 space-y-6">
+              <div onClick={() => setIsMobileMenuOpen(false)}>
+                <NavClientsLink />
+              </div>
               <Button 
                 onClick={() => {
                   handleStartBuild();

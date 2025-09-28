@@ -15,6 +15,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Footer from "@/components/layout/footer";
 const NotFound = lazy(() => import("@/pages/not-found"));
+const Clients = lazy(() => import("@/pages/clients"));
+const ClientsSuccess = lazy(() => import("@/pages/clients/success"));
 
 function Router() {
   return (
@@ -25,6 +27,8 @@ function Router() {
     }>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/clients" component={Clients} />
+        <Route path="/clients/success" component={ClientsSuccess} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
