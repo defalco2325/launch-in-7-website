@@ -317,11 +317,11 @@ export default function ClientsForm() {
           </Label>
           <Input
             id="website"
-            type="url"
+            type="text"
             value={formData.website}
             onChange={(e) => handleInputChange('website', e.target.value)}
             className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            placeholder="https://"
+            placeholder="example.com"
             data-testid="input-website"
           />
         </div>
