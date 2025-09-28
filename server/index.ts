@@ -4,8 +4,19 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
+// Only apply body parsing for non-multipart requests
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) {
+    // Skip body parsing for multipart requests - let multer handle them
+    next();
+  } else {
+    // Apply standard body parsing for other requests
+    express.json()(req, res, () => {
+      express.urlencoded({ extended: false })(req, res, next);
+    });
+  }
+});
 
 app.use((req, res, next) => {
   const start = Date.now();

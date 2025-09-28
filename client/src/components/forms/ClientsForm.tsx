@@ -246,16 +246,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('=== FORM SUBMISSION STARTED ===');
-    console.log('Form data state:', {
-      businessName: formData.businessName,
-      contactName: formData.contactName,
-      email: formData.email,
-      isFormValid: formData.businessName.trim() && formData.contactName.trim() && formData.email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
-    });
-    
     if (!validateForm()) {
-      console.log('Form validation failed, stopping submission');
       return;
     }
 
@@ -302,18 +293,12 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       });
       
       // Submit to our API endpoint
-      console.log('About to submit FormData with keys:', Array.from(formDataToSubmit.keys()));
-      console.log('Making fetch request to /api/clients/submit');
-      
       const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
       
-      console.log('Response received:', response.status, response.statusText);
-      
       const result = await response.json();
-      console.log('Response JSON:', result);
       
       if (result.ok) {
         // Success - navigate to success page
@@ -324,14 +309,10 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       }
       
     } catch (error) {
-      console.error('=== SUBMISSION ERROR ===');
-      console.error('Error type:', error?.constructor?.name);
-      console.error('Error message:', error?.message);
-      console.error('Full error:', error);
+      console.error('Submission error:', error);
       setErrors({ submit: 'There was an error submitting your form. Please try again.' });
     } finally {
       setIsSubmitting(false);
-      console.log('=== FORM SUBMISSION COMPLETED ===');
     }
   };
 
