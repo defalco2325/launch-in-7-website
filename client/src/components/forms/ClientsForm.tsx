@@ -287,7 +287,7 @@ export default function ClientsForm() {
               type="text"
               value={formData.businessName}
               onChange={(e) => handleInputChange('businessName', e.target.value)}
-              className={`${errors.businessName ? 'border-red-500' : ''}`}
+              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.businessName ? 'border-red-500' : ''}`}
               data-testid="input-business-name"
               required
             />
@@ -305,6 +305,7 @@ export default function ClientsForm() {
               type="text"
               value={formData.tagline}
               onChange={(e) => handleInputChange('tagline', e.target.value)}
+              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
               data-testid="input-tagline"
             />
           </div>
@@ -319,6 +320,7 @@ export default function ClientsForm() {
             type="url"
             value={formData.website}
             onChange={(e) => handleInputChange('website', e.target.value)}
+            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             placeholder="https://"
             data-testid="input-website"
           />
@@ -333,7 +335,7 @@ export default function ClientsForm() {
             rows={4}
             value={formData.shortDescription}
             onChange={(e) => handleInputChange('shortDescription', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-electric-blue focus:border-electric-blue"
+            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             placeholder="Tell us about your business..."
             data-testid="textarea-description"
           />
@@ -354,7 +356,7 @@ export default function ClientsForm() {
               type="text"
               value={formData.contactName}
               onChange={(e) => handleInputChange('contactName', e.target.value)}
-              className={`${errors.contactName ? 'border-red-500' : ''}`}
+              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.contactName ? 'border-red-500' : ''}`}
               data-testid="input-contact-name"
               required
             />
@@ -372,7 +374,7 @@ export default function ClientsForm() {
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              className={`${errors.email ? 'border-red-500' : ''}`}
+              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.email ? 'border-red-500' : ''}`}
               data-testid="input-email"
               required
             />
@@ -391,6 +393,7 @@ export default function ClientsForm() {
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
+            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
             data-testid="input-phone"
           />
         </div>
@@ -406,7 +409,7 @@ export default function ClientsForm() {
                 type="checkbox"
                 checked={formData.pages.includes(page)}
                 onChange={(e) => handleCheckboxChange('pages', page, e.target.checked)}
-                className="rounded border-gray-300 text-electric-blue focus:ring-electric-blue"
+                className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
                 data-testid={`checkbox-page-${page.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
               />
               <span className="text-sm text-gray-700">{page}</span>
@@ -425,7 +428,7 @@ export default function ClientsForm() {
                 type="checkbox"
                 checked={formData.features.includes(feature)}
                 onChange={(e) => handleCheckboxChange('features', feature, e.target.checked)}
-                className="rounded border-gray-300 text-electric-blue focus:ring-electric-blue"
+                className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
                 data-testid={`checkbox-feature-${feature.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
               />
               <span className="text-sm text-gray-700">{feature}</span>
@@ -446,7 +449,7 @@ export default function ClientsForm() {
                 value={option.value}
                 checked={formData.copywriting === option.value}
                 onChange={(e) => handleInputChange('copywriting', e.target.value)}
-                className="border-gray-300 text-electric-blue focus:ring-electric-blue"
+                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
                 data-testid={`radio-copywriting-${option.value}`}
               />
               <span className="text-sm text-gray-700">{option.label}</span>
@@ -467,7 +470,7 @@ export default function ClientsForm() {
                 value={option.value}
                 checked={formData.seo === option.value}
                 onChange={(e) => handleInputChange('seo', e.target.value)}
-                className="border-gray-300 text-electric-blue focus:ring-electric-blue"
+                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
                 data-testid={`radio-seo-${option.value}`}
               />
               <span className="text-sm text-gray-700">{option.label}</span>
@@ -488,7 +491,7 @@ export default function ClientsForm() {
                 value={option.value}
                 checked={formData.timeline === option.value}
                 onChange={(e) => handleInputChange('timeline', e.target.value)}
-                className="border-gray-300 text-electric-blue focus:ring-electric-blue"
+                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
                 data-testid={`radio-timeline-${option.value}`}
               />
               <span className="text-sm text-gray-700">{option.label}</span>
@@ -501,7 +504,7 @@ export default function ClientsForm() {
       <div className="space-y-4">
         <h3 className="text-xl font-semibold text-deep-navy">Package Interest</h3>
         <Select onValueChange={(value) => handleInputChange('packageInterest', value)} value={formData.packageInterest}>
-          <SelectTrigger data-testid="select-package-interest">
+          <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all" data-testid="select-package-interest">
             <SelectValue placeholder="Select package" />
           </SelectTrigger>
           <SelectContent>
