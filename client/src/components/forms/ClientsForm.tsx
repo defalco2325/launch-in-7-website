@@ -604,19 +604,20 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             />
             <label
               htmlFor="logoFiles"
-              className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
+              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
             >
               <div className="text-center">
-                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
                 <span className="text-sm text-gray-500">
                   {formData.logoFiles.length > 0 
-                    ? `${formData.logoFiles.length} file(s) selected`
+                    ? `Add more logo files (${formData.logoFiles.length} selected)`
                     : "Click to upload logo files"
                   }
                 </span>
               </div>
             </label>
           </div>
+          {renderFileList(formData.logoFiles, 'logoFiles')}
         </div>
 
         {/* Brand Guide */}
@@ -636,19 +637,37 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             />
             <label
               htmlFor="brandGuide"
-              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
+              className="flex items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
             >
               <div className="text-center">
-                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
-                <span className="text-sm text-gray-500">
+                <Upload className="mx-auto h-5 w-5 text-gray-400 mb-1" />
+                <span className="text-xs text-gray-500">
                   {formData.brandGuide 
-                    ? formData.brandGuide.name
+                    ? "Replace brand guide"
                     : "Click to upload brand guide"
                   }
                 </span>
               </div>
             </label>
           </div>
+          {formData.brandGuide && (
+            <div className="mt-3">
+              <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-700 truncate">{formData.brandGuide.name}</p>
+                  <p className="text-xs text-gray-500">{formatFileSize(formData.brandGuide.size)}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeFile('brandGuide', 0)}
+                  className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+                  data-testid="remove-file-brand-guide"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Photos */}
@@ -669,19 +688,20 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             />
             <label
               htmlFor="photos"
-              className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
+              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
             >
               <div className="text-center">
-                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
                 <span className="text-sm text-gray-500">
                   {formData.photos.length > 0 
-                    ? `${formData.photos.length} photo(s) selected`
+                    ? `Add more photos (${formData.photos.length} selected)`
                     : "Click to upload photos"
                   }
                 </span>
               </div>
             </label>
           </div>
+          {renderFileList(formData.photos, 'photos')}
         </div>
 
         {/* Other Assets */}
@@ -701,19 +721,20 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             />
             <label
               htmlFor="otherAssets"
-              className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
+              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
             >
               <div className="text-center">
-                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
                 <span className="text-sm text-gray-500">
                   {formData.otherAssets.length > 0 
-                    ? `${formData.otherAssets.length} file(s) selected`
+                    ? `Add more files (${formData.otherAssets.length} selected)`
                     : "Click to upload other assets"
                   }
                 </span>
               </div>
             </label>
           </div>
+          {renderFileList(formData.otherAssets, 'otherAssets')}
         </div>
       </div>
 
