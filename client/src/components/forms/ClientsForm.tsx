@@ -243,13 +243,27 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent | React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     
-    if (!validateForm()) {
+    console.log('Submit button clicked'); // Debug log
+    
+    // Check if already submitting
+    if (isSubmitting) {
+      console.log('Already submitting, ignoring click');
       return;
     }
 
+    // Validate form
+    if (!validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
+
+    console.log('Starting submission process');
     setIsSubmitting(true);
     setErrors({}); // Clear any previous errors
     
@@ -260,58 +274,90 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       // Create FormData for file upload
       const formDataToSubmit = new FormData();
       
-      // Add text fields
-      formDataToSubmit.append('businessName', formData.businessName);
-      formDataToSubmit.append('tagline', formData.tagline);
-      formDataToSubmit.append('website', formData.website);
-      formDataToSubmit.append('shortDescription', formData.shortDescription);
-      formDataToSubmit.append('contactName', formData.contactName);
-      formDataToSubmit.append('email', formData.email);
-      formDataToSubmit.append('phone', formData.phone);
-      formDataToSubmit.append('pagesSelected', formData.pages.join(', '));
-      formDataToSubmit.append('featuresSelected', formData.features.join(', '));
-      formDataToSubmit.append('copywriting', formData.copywriting);
-      formDataToSubmit.append('seo', formData.seo);
-      formDataToSubmit.append('timeline', formData.timeline);
-      formDataToSubmit.append('packageInterest', formData.packageInterest);
-      
-      // Add files
-      formData.logoFiles.forEach(file => {
-        formDataToSubmit.append('logoFiles', file);
+      // Add text fields with validation
+      const requiredFields = {
+        businessName: formData.businessName?.trim() || '',
+        tagline: formData.tagline?.trim() || '',
+        website: formData.website?.trim() || '',
+        shortDescription: formData.shortDescription?.trim() || '',
+        contactName: formData.contactName?.trim() || '',
+        email: formData.email?.trim() || '',
+        phone: formData.phone?.trim() || '',
+        pagesSelected: formData.pages?.join(', ') || '',
+        featuresSelected: formData.features?.join(', ') || '',
+        copywriting: formData.copywriting || '',
+        seo: formData.seo || '',
+        timeline: formData.timeline || '',
+        packageInterest: formData.packageInterest || ''
+      };
+
+      // Add all fields to FormData
+      Object.entries(requiredFields).forEach(([key, value]) => {
+        formDataToSubmit.append(key, value);
       });
       
-      if (formData.brandGuide) {
+      // Add files with validation
+      if (formData.logoFiles && Array.isArray(formData.logoFiles)) {
+        formData.logoFiles.forEach(file => {
+          if (file instanceof File) {
+            formDataToSubmit.append('logoFiles', file);
+          }
+        });
+      }
+      
+      if (formData.brandGuide && formData.brandGuide instanceof File) {
         formDataToSubmit.append('brandGuide', formData.brandGuide);
       }
       
-      formData.photos.forEach(file => {
-        formDataToSubmit.append('photos', file);
-      });
+      if (formData.photos && Array.isArray(formData.photos)) {
+        formData.photos.forEach(file => {
+          if (file instanceof File) {
+            formDataToSubmit.append('photos', file);
+          }
+        });
+      }
       
-      formData.otherAssets.forEach(file => {
-        formDataToSubmit.append('otherAssets', file);
-      });
+      if (formData.otherAssets && Array.isArray(formData.otherAssets)) {
+        formData.otherAssets.forEach(file => {
+          if (file instanceof File) {
+            formDataToSubmit.append('otherAssets', file);
+          }
+        });
+      }
       
-      // Submit to our API endpoint
+      console.log('Sending request to /api/clients/submit');
+      
+      // Submit to our API endpoint with proper error handling
       const response = await fetch('/api/clients/submit', {
         method: 'POST',
         body: formDataToSubmit,
       });
       
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const result = await response.json();
+      console.log('Response result:', result);
       
       if (result.ok) {
+        console.log('Submission successful, navigating to success page');
         // Success - navigate to success page
         navigate('/clients/success');
       } else {
+        console.log('Server returned error:', result.message);
         // Handle error response
         setErrors({ submit: result.message || 'Submission failed. Please try again.' });
       }
       
     } catch (error) {
       console.error('Submission error:', error);
-      setErrors({ submit: 'There was an error submitting your form. Please try again.' });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setErrors({ submit: `There was an error submitting your form: ${errorMessage}. Please try again.` });
     } finally {
+      console.log('Submission process complete');
       setIsSubmitting(false);
     }
   };
@@ -749,16 +795,17 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
           </div>
         )}
         
-        <Button
+        <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
           data-testid="button-submit-onboarding"
+          onClick={handleSubmit}
         >
           {isSubmitting ? (
             <div className="flex items-center justify-center">
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-              Submitting...
+              <span>Submitting...</span>
             </div>
           ) : (
             <div className="flex items-center justify-center">
@@ -766,7 +813,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
               <Check className="w-5 h-5 ml-2" />
             </div>
           )}
-        </Button>
+        </button>
       </div>
     </form>
   );
