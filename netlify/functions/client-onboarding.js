@@ -34,38 +34,64 @@ exports.handler = async (event, context) => {
     // Parse the multipart form data
     const parsed = multipart.parse(event, true);
     
-    // Extract form fields
-    const {
-      businessName = '',
-      tagline = '',
-      website = '',
-      shortDescription = '',
-      contactName = '',
-      email = '',
-      phone = '',
-      pagesSelected = '',
-      featuresSelected = '',
-      copywriting = '',
-      seo = '',
-      timeline = '',
-      packageInterest = ''
-    } = parsed;
+    // Log the parsed data for debugging
+    console.log('Parsed data:', JSON.stringify(parsed, null, 2));
+    console.log('Event body type:', typeof event.body);
+    console.log('Event headers:', JSON.stringify(event.headers, null, 2));
+    
+    // Extract form fields - handle both direct fields and nested structure
+    const businessName = parsed.businessName || parsed.fields?.businessName || '';
+    const tagline = parsed.tagline || parsed.fields?.tagline || '';
+    const website = parsed.website || parsed.fields?.website || '';
+    const shortDescription = parsed.shortDescription || parsed.fields?.shortDescription || '';
+    const contactName = parsed.contactName || parsed.fields?.contactName || '';
+    const email = parsed.email || parsed.fields?.email || '';
+    const phone = parsed.phone || parsed.fields?.phone || '';
+    const pagesSelected = parsed.pagesSelected || parsed.fields?.pagesSelected || '';
+    const featuresSelected = parsed.featuresSelected || parsed.fields?.featuresSelected || '';
+    const copywriting = parsed.copywriting || parsed.fields?.copywriting || '';
+    const seo = parsed.seo || parsed.fields?.seo || '';
+    const timeline = parsed.timeline || parsed.fields?.timeline || '';
+    const packageInterest = parsed.packageInterest || parsed.fields?.packageInterest || '';
+    
+    console.log('Extracted fields:', {
+      businessName,
+      contactName,
+      email,
+      hasBusinessName: !!businessName,
+      hasContactName: !!contactName,
+      hasEmail: !!email
+    });
 
     // Validate required fields
-    if (!businessName.trim() || !contactName.trim() || !email.trim()) {
+    const businessNameTrimmed = String(businessName || '').trim();
+    const contactNameTrimmed = String(contactName || '').trim();
+    const emailTrimmed = String(email || '').trim();
+    
+    console.log('Validation check:', {
+      businessNameTrimmed,
+      contactNameTrimmed,
+      emailTrimmed,
+      businessNameValid: !!businessNameTrimmed,
+      contactNameValid: !!contactNameTrimmed,
+      emailValid: !!emailTrimmed
+    });
+    
+    if (!businessNameTrimmed || !contactNameTrimmed || !emailTrimmed) {
+      console.log('Validation failed - missing required fields');
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ 
           ok: false, 
-          message: 'Business name, contact name, and email are required.' 
+          message: `Missing required fields. Received: business=${!!businessNameTrimmed}, contact=${!!contactNameTrimmed}, email=${!!emailTrimmed}` 
         })
       };
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
+    if (!emailRegex.test(emailTrimmed)) {
       return {
         statusCode: 400,
         headers,
@@ -137,21 +163,21 @@ exports.handler = async (event, context) => {
     }
 
     // Create the email subject
-    const subject = `New Client Onboarding — ${businessName.trim()}`;
+    const subject = `New Client Onboarding — ${businessNameTrimmed}`;
 
     // Create HTML email content
     const htmlContent = `
       <h2>New Client Onboarding Submission</h2>
       
       <h3>Business Information</h3>
-      <p><strong>Business Name:</strong> ${businessName}</p>
+      <p><strong>Business Name:</strong> ${businessNameTrimmed}</p>
       <p><strong>Tagline:</strong> ${tagline}</p>
       <p><strong>Website:</strong> ${website}</p>
       <p><strong>Description:</strong> ${shortDescription}</p>
       
       <h3>Contact Information</h3>
-      <p><strong>Name:</strong> ${contactName}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Name:</strong> ${contactNameTrimmed}</p>
+      <p><strong>Email:</strong> ${emailTrimmed}</p>
       <p><strong>Phone:</strong> ${phone}</p>
       
       <h3>Project Details</h3>
@@ -178,14 +204,14 @@ exports.handler = async (event, context) => {
 New Client Onboarding Submission
 
 Business Information:
-Business Name: ${businessName}
+Business Name: ${businessNameTrimmed}
 Tagline: ${tagline}
 Website: ${website}
 Description: ${shortDescription}
 
 Contact Information:
-Name: ${contactName}
-Email: ${email}
+Name: ${contactNameTrimmed}
+Email: ${emailTrimmed}
 Phone: ${phone}
 
 Project Details:
