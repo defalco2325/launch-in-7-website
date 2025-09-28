@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Check, AlertCircle } from "lucide-react";
+import { Upload, Check, AlertCircle, X } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface ClientsFormData {
@@ -191,8 +191,56 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       setFormData(prev => ({ ...prev, [field]: files[0] || null }));
     } else {
       const fileArray = Array.from(files);
-      setFormData(prev => ({ ...prev, [field]: fileArray }));
+      // Append new files to existing ones
+      setFormData(prev => ({ 
+        ...prev, 
+        [field]: [...(prev[field] as File[]), ...fileArray]
+      }));
     }
+  };
+
+  const removeFile = (field: keyof Pick<ClientsFormData, 'logoFiles' | 'brandGuide' | 'photos' | 'otherAssets'>, index: number) => {
+    if (field === 'brandGuide') {
+      setFormData(prev => ({ ...prev, [field]: null }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: (prev[field] as File[]).filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const renderFileList = (files: File[], field: keyof Pick<ClientsFormData, 'logoFiles' | 'photos' | 'otherAssets'>) => {
+    if (files.length === 0) return null;
+    
+    return (
+      <div className="mt-3 space-y-2">
+        {files.map((file, index) => (
+          <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-700 truncate">{file.name}</p>
+              <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => removeFile(field, index)}
+              className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+              data-testid={`remove-file-${field}-${index}`}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
