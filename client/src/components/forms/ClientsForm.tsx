@@ -326,6 +326,26 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       }
       
       console.log('Sending request to /api/clients/submit');
+      console.log('FormData contents:');
+      const entries = Array.from(formDataToSubmit.entries());
+      entries.forEach(([key, value]) => {
+        console.log(`${key}:`, value instanceof File ? `File: ${value.name}` : value);
+      });
+      
+      // Test if basic fetch works first
+      try {
+        const testResponse = await fetch('/api/clients/test', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ test: true }),
+        });
+        console.log('Test endpoint response:', testResponse.status);
+      } catch (testError) {
+        console.error('Test endpoint failed:', testError);
+        throw new Error('Cannot connect to server. Please check your connection.');
+      }
       
       // Submit to our API endpoint with proper error handling
       const response = await fetch('/api/clients/submit', {
