@@ -1,3 +1,5 @@
+const sgMail = require('@sendgrid/mail');
+
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -13,89 +15,94 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ 
-        ok: false, 
-        error: 'Method not allowed' 
-      })
+      body: JSON.stringify({ ok: false, error: 'Method not allowed' })
     };
   }
 
   try {
-    // Test 1: Check if SendGrid module can be imported
-    let sgMail;
-    try {
-      sgMail = require('@sendgrid/mail');
-    } catch (importError) {
+    // Configure SendGrid
+    if (!process.env.SENDGRID_API_KEY) {
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({ 
           ok: false, 
-          message: "SendGrid import failed: " + importError.message
+          message: "SendGrid API key not configured in Netlify environment variables" 
         })
       };
     }
 
-    // Test 2: Check if API key exists
-    const hasApiKey = !!process.env.SENDGRID_API_KEY;
-    if (!hasApiKey) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "SendGrid API key not found in environment variables"
-        })
-      };
-    }
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-    // Test 3: Try to set API key
-    try {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    } catch (keyError) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          ok: false, 
-          message: "Failed to set SendGrid API key: " + keyError.message
-        })
-      };
-    }
-
-    // Test 4: Extract basic form data
-    let email = 'test@example.com';
-    let businessName = 'Test Business';
+    // Extract form data
+    const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
     
-    try {
-      const body = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body;
-      
-      // Simple extraction
-      const emailMatch = body.match(/name="email"[^]*?\r\n\r\n([^]*?)\r\n--/);
-      const businessMatch = body.match(/name="businessName"[^]*?\r\n\r\n([^]*?)\r\n--/);
-      
-      if (emailMatch && emailMatch[1]) {
-        email = emailMatch[1].trim();
-      }
-      if (businessMatch && businessMatch[1]) {
-        businessName = businessMatch[1].trim();
-      }
-    } catch (parseError) {
-      // Continue with test values if parsing fails
+    // Simple field extraction
+    const extractField = (name) => {
+      const regex = new RegExp(`name="${name}"[\\s\\S]*?\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`, 'i');
+      const match = body.match(regex);
+      return match ? match[1].trim() : '';
+    };
+
+    const formData = {
+      businessName: extractField('businessName') || 'Unknown Business',
+      email: extractField('email'),
+      contactName: extractField('contactName'),
+      phone: extractField('phone'),
+      website: extractField('website'),
+      shortDescription: extractField('shortDescription'),
+      pagesSelected: extractField('pagesSelected'),
+      featuresSelected: extractField('featuresSelected'),
+      copywriting: extractField('copywriting'),
+      seo: extractField('seo'),
+      timeline: extractField('timeline'),
+      packageInterest: extractField('packageInterest')
+    };
+
+    // Basic validation
+    if (!formData.email || !formData.contactName) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ 
+          ok: false, 
+          message: "Email and contact name are required" 
+        })
+      };
     }
 
-    // Test 5: Try to send a simple email
+    // Create email
+    const emailBody = `
+<h2>New Client Onboarding Submission</h2>
+
+<h3>Business Information</h3>
+<p><strong>Business Name:</strong> ${formData.businessName}</p>
+<p><strong>Website:</strong> ${formData.website || 'Not provided'}</p>
+<p><strong>Description:</strong> ${formData.shortDescription || 'Not provided'}</p>
+
+<h3>Contact Information</h3>
+<p><strong>Contact Name:</strong> ${formData.contactName}</p>
+<p><strong>Email:</strong> ${formData.email}</p>
+<p><strong>Phone:</strong> ${formData.phone || 'Not provided'}</p>
+
+<h3>Project Details</h3>
+<p><strong>Pages Needed:</strong> ${formData.pagesSelected || 'Not specified'}</p>
+<p><strong>Features:</strong> ${formData.featuresSelected || 'Not specified'}</p>
+<p><strong>Copywriting:</strong> ${formData.copywriting || 'Not specified'}</p>
+<p><strong>SEO Level:</strong> ${formData.seo || 'Not specified'}</p>
+<p><strong>Timeline:</strong> ${formData.timeline || 'Not specified'}</p>
+<p><strong>Package Interest:</strong> ${formData.packageInterest || 'Not specified'}</p>
+
+<hr>
+<p><em>Submitted: ${new Date().toLocaleString()}</em></p>
+`;
+
+    // Send email
     const msg = {
       to: 'team@launchin7.io',
       from: 'noreply@launchin7.io',
-      subject: `Test Submission from ${businessName}`,
-      html: `
-        <h2>Test Client Submission</h2>
-        <p><strong>Business:</strong> ${businessName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Time:</strong> ${new Date().toISOString()}</p>
-        <p><em>This is a test email from the Netlify function.</em></p>
-      `
+      subject: `New Onboarding — ${formData.businessName}`,
+      html: emailBody
     };
 
     await sgMail.send(msg);
@@ -105,33 +112,19 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ 
         ok: true, 
-        message: "Test email sent successfully! Check team@launchin7.io for the email."
+        message: "Thank you! Your submission has been received and we'll be in touch soon." 
       })
     };
 
   } catch (error) {
-    // Detailed error logging
-    let errorDetails = {
-      name: error.name,
-      message: error.message
-    };
-
-    // SendGrid specific error details
-    if (error.response && error.response.body) {
-      errorDetails.sendgrid = error.response.body;
-    }
-
-    if (error.code) {
-      errorDetails.code = error.code;
-    }
-
+    console.error('Error:', error);
+    
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         ok: false, 
-        message: "Error: " + error.message,
-        details: errorDetails
+        message: "Error processing submission. Please try again." 
       })
     };
   }
