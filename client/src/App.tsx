@@ -12,9 +12,6 @@ import { SEOProvider } from "@/lib/seo";
 const Home = lazy(() => import("@/pages/home"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
-// Import pricing page directly to avoid lazy loading issues
-import PricingPage from "@/pages/pricing";
-
 function Router() {
   return (
     <Suspense fallback={
@@ -24,7 +21,6 @@ function Router() {
     }>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/pricing" component={PricingPage} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
