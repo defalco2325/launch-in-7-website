@@ -231,7 +231,36 @@ export default function AuditForm() {
         <div className="flex flex-col gap-4 pt-4">
           <Button
             type="button"
-            onClick={() => window.open('https://launchin7scanner.replit.app/', '_blank')}
+            onClick={async () => {
+              const formData = form.getValues();
+              
+              // Submit to Netlify Forms
+              try {
+                const netlifyData = {
+                  "form-name": "launchin7-audit",
+                  "bot-field": "",
+                  name: formData.name,
+                  email: formData.email,
+                  website: formData.website,
+                  goal: formData.goal || "",
+                  timeline: formData.timeline || "",
+                  budget: formData.budget || ""
+                };
+
+                await fetch("/", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                  body: Object.keys(netlifyData)
+                    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(netlifyData[key as keyof typeof netlifyData]))
+                    .join("&"),
+                });
+              } catch (error) {
+                console.error('Form submission error:', error);
+              }
+              
+              // Redirect to scanner
+              window.open('https://launchin7scanner.replit.app/', '_blank');
+            }}
             disabled={!form.formState.isValid}
             className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             data-testid="button-audit-submit"
