@@ -113,6 +113,12 @@ if (process.env.SENDGRID_API_KEY) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Test route to verify API routing is working
+  app.get("/api/test", (req, res) => {
+    console.log("Test API route hit!");
+    res.json({ status: "API routing working" });
+  });
+
   // Contact form submission
   app.post("/api/lead", async (req, res) => {
     try {
@@ -198,6 +204,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Client onboarding form submission with file uploads
   app.post("/api/clients/submit", upload.any(), async (req, res) => {
+    console.log('=== CLIENT SUBMISSION REQUEST RECEIVED ===');
+    console.log('Request body keys:', Object.keys(req.body || {}));
+    console.log('Request files count:', (req.files as Express.Multer.File[])?.length || 0);
+    console.log('Content-Type:', req.get('Content-Type'));
+    
     try {
       // Rate limiting
       const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
