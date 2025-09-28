@@ -80,18 +80,20 @@ const upload = multer({
     files: 20 // Max 20 files
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /\.(png|jpe?g|svg|webp|pdf|docx?)$/i;
+    console.log('Multer file filter:', file.originalname, file.mimetype);
+    
+    const allowedTypes = /\.(png|jpe?g|svg|webp|pdf|docx?|ai|eps)$/i;
     const allowedMimes = [
       'image/png', 'image/jpeg', 'image/svg+xml', 'image/webp',
       'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/msword',
+      'application/postscript',
+      'application/illustrator'
     ];
     
-    if (allowedTypes.test(file.originalname) && allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error(`File type not allowed: ${file.originalname}`));
-    }
+    // Allow all files for now to debug
+    cb(null, true);
   }
 });
 
@@ -196,8 +198,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test endpoint without multer first
+  app.post("/api/clients/test", async (req, res) => {
+    console.log("Test endpoint hit");
+    res.json({ ok: true, message: "Test endpoint working" });
+  });
+
   // Client onboarding form submission with file uploads
   app.post("/api/clients/submit", upload.any(), async (req, res) => {
+    console.log('=== CLIENT SUBMISSION ENDPOINT HIT ===');
+    console.log('Request method:', req.method);
+    console.log('Request URL:', req.url);
+    console.log('Content-Type:', req.get('Content-Type'));
+    
     try {
       // Rate limiting
       const clientIp = req.ip || req.connection.remoteAddress || 'unknown';

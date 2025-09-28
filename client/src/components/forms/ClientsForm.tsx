@@ -333,6 +333,8 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         body: formDataToSubmit,
       });
       
+      console.log('Raw response:', response);
+      
       console.log('Response status:', response.status);
       
       if (!response.ok) {
