@@ -230,19 +230,12 @@ export default function AuditForm() {
         {/* Submit Button */}
         <div className="flex flex-col gap-4 pt-4">
           <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
+            type="button"
+            onClick={() => window.open('https://launchin7scanner.replit.app/', '_blank')}
             className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl"
             data-testid="button-audit-submit"
           >
-            {form.formState.isSubmitting ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Analyzing...
-              </div>
-            ) : (
-              "Get My Free Audit"
-            )}
+            Get My Free Audit
           </Button>
 
           <Button
