@@ -309,7 +309,7 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       });
       
       // Submit to existing local route (already has SendGrid integration)
-      const response = await fetch('/api/clients/submit', {
+      const response = await fetch('/.netlify/functions/client-onboarding', {
         method: 'POST',
         body: formDataToSubmit,
       });
