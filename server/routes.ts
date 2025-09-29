@@ -239,6 +239,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ ok: false, message: "Valid email is required" });
       }
 
+      if (!contactName) {
+        return res.status(400).json({ ok: false, message: "Contact name is required" });
+      }
+
       if (!businessName && !website) {
         return res.status(400).json({ ok: false, message: "Business name or website is required" });
       }

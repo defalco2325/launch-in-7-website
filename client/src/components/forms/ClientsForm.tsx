@@ -143,36 +143,22 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    console.log('Form validation - checking values:', {
-      businessName: formData.businessName,
-      contactName: formData.contactName,
-      email: formData.email,
-      businessNameTrimmed: formData.businessName?.trim(),
-      contactNameTrimmed: formData.contactName?.trim(),
-      emailTrimmed: formData.email?.trim()
-    });
-
-    if (!formData.businessName.trim()) {
+    if (!formData.businessName || !formData.businessName.trim()) {
       newErrors.businessName = "Business name is required";
-      console.log('Validation failed: Business name missing');
     }
 
-    if (!formData.contactName.trim()) {
+    if (!formData.contactName || !formData.contactName.trim()) {
       newErrors.contactName = "Contact name is required";
-      console.log('Validation failed: Contact name missing');
     }
 
-    if (!formData.email.trim()) {
+    if (!formData.email || !formData.email.trim()) {
       newErrors.email = "Email is required";
-      console.log('Validation failed: Email missing');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
     setErrors(newErrors);
-    const isValid = Object.keys(newErrors).length === 0;
-    console.log('Form validation result:', isValid, 'Errors:', newErrors);
-    return isValid;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (field: keyof ClientsFormData, value: any) => {
@@ -270,12 +256,9 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     }
 
     // Validate form
-    console.log('About to validate form...');
     if (!validateForm()) {
-      console.log('Form validation failed, not submitting');
       return;
     }
-    console.log('Form validation passed, proceeding with submission');
 
     setIsSubmitting(true);
     setErrors({}); // Clear any previous errors
@@ -353,8 +336,8 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     }
   };
 
-  const isFormValid = formData.businessName.trim() && formData.contactName.trim() && 
-    formData.email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+  const isFormValid = formData.businessName?.trim() && formData.contactName?.trim() && 
+    formData.email?.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
 
   return (
     <form 
