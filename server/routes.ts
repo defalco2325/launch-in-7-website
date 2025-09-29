@@ -208,7 +208,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('Registered route: POST /api/clients/test');
 
   // Client onboarding form submission with file uploads
-  app.post("/api/clients/submit", upload.any(), async (req, res) => {
+  app.all("/api/clients/submit", upload.any(), async (req, res) => {
     console.log('=== CLIENT SUBMISSION ENDPOINT HIT ===');
     console.log('Request method:', req.method);
     console.log('Request URL:', req.url);
