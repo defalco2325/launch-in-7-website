@@ -1,3 +1,11 @@
+Goal: Make the /clients form submit work correctly in production. Keep the existing frontend and styling exactly as-is, but replace the Netlify backend so it reliably parses multipart form data and emails all fields + files to team@launchin7.io using SendGrid keys stored in Netlify environment variables.
+
+Do the following steps and report each result:
+
+A) Replace the Netlify function code
+1) Overwrite the file netlify/functions/client-onboarding.js with the EXACT content below.
+
+------------------ BEGIN FILE: netlify/functions/client-onboarding.js ------------------
 import * as multipart from 'aws-lambda-multipart-parser';
 import sgMail from '@sendgrid/mail';
 
@@ -177,3 +185,30 @@ export const handler = async (event) => {
     };
   }
 };
+------------------ END FILE ------------------
+
+B) Ensure dependencies
+1) Open package.json and confirm (add if missing, then install):
+   - "@sendgrid/mail"
+   - "aws-lambda-multipart-parser"
+
+C) Confirm build settings
+1) Open netlify.toml and confirm:
+[build]
+  functions = "netlify/functions"
+  publish   = "dist/public"
+
+D) Environment variables
+1) In Netlify dashboard, confirm these exist:
+   - SENDGRID_API_KEY
+   - FROM_EMAIL (e.g., "LaunchIn7 Team <team@launchin7.io>" and verified in SendGrid)
+   - ONBOARDING_TO_EMAIL (optional; defaults to team@launchin7.io)
+
+E) Redeploy and verify
+1) Trigger a fresh deploy.
+2) Visit https://launchin7.io/.netlify/functions/client-onboarding — expect 405 (exists).
+3) Submit the /clients form with a small image and a PDF.
+4) Report back:
+   - Response JSON from the POST (expect { ok: true }).
+   - Whether an email arrived at team@launchin7.io.
+   - If not, paste the last 50 lines of Netlify → Functions → client-onboarding logs.
