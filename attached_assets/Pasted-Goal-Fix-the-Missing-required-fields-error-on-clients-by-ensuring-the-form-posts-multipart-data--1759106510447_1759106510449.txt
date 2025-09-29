@@ -1,3 +1,19 @@
+Goal: Fix the “Missing required fields” error on /clients by ensuring the form posts multipart data that the Netlify function parses correctly, including files.
+
+Do the following and report each step:
+
+A) Verify frontend wiring
+1) Open client/src/components/forms/ClientsForm.tsx and confirm:
+   - handleSubmit uses: fetch('/.netlify/functions/client-onboarding', { method: 'POST', body: FormData })
+   - No manual Content-Type headers are set.
+   - The three required fields are appended exactly as:
+     businessName, contactName, email (trimmed strings).
+   - List the names for file inputs appended: logoFiles, brandGuide, photos, otherAssets.
+   - If the <form> element exists, confirm it does NOT set a manual enctype; we rely on FormData in JS.
+
+B) Replace the Netlify function with a hardened parser
+1) Overwrite the file netlify/functions/client-onboarding.js with the following exact content:
+------------------ BEGIN FILE: netlify/functions/client-onboarding.js ------------------
 import * as multipart from 'aws-lambda-multipart-parser';
 import sgMail from '@sendgrid/mail';
 
@@ -139,3 +155,36 @@ export const handler = async (event) => {
     };
   }
 };
+------------------ END FILE ------------------
+
+2) Ensure dependencies in package.json (add if missing):
+   - @sendgrid/mail
+   - aws-lambda-multipart-parser
+
+C) Environment variables
+1) Confirm these are set in Netlify (Site settings → Build & deploy → Environment):
+   - SENDGRID_API_KEY
+   - FROM_EMAIL  (e.g., Team <team@launchin7.io> and verified in SendGrid)
+   - ONBOARDING_TO_EMAIL (e.g., team@launchin7.io)
+
+D) Build config confirmation
+1) Confirm netlify.toml includes:
+[build]
+  functions = "netlify/functions"
+  publish   = "dist/public"
+
+E) Redeploy and verify
+1) Trigger a new deploy.
+2) After deploy, visit https://launchin7.io/.netlify/functions/client-onboarding
+   - Expect 405 (Method Not Allowed), which confirms the function exists.
+3) Submit the /clients form with a small file.
+4) Check Netlify → Functions → client-onboarding → Logs and paste the DEBUG lines shown:
+   - CT header line
+   - Required values object (should show non-empty)
+   - Files list (field & filename)
+
+F) Report
+Return a short status:
+- Whether the handler is now receiving non-empty businessName/contactName/email.
+- If the email sent via SendGrid (or any SendGrid error).
+- Any remaining mismatches or warnings.
