@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Check, AlertCircle, X } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface ClientsFormData {
@@ -35,12 +35,6 @@ interface ClientsFormData {
   
   // Package Interest
   packageInterest: string;
-  
-  // Files
-  logoFiles: File[];
-  brandGuide: File | null;
-  photos: File[];
-  otherAssets: File[];
 }
 
 const INITIAL_FORM_DATA: ClientsFormData = {
@@ -56,11 +50,7 @@ const INITIAL_FORM_DATA: ClientsFormData = {
   copywriting: "",
   seo: "",
   timeline: "",
-  packageInterest: "",
-  logoFiles: [],
-  brandGuide: null,
-  photos: [],
-  otherAssets: []
+  packageInterest: ""
 };
 
 const PAGES_OPTIONS = [
@@ -128,11 +118,6 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const dataToSave = { ...formData };
-      // Don't save files to localStorage
-      delete (dataToSave as any).logoFiles;
-      delete (dataToSave as any).brandGuide;
-      delete (dataToSave as any).photos;
-      delete (dataToSave as any).otherAssets;
       
       localStorage.setItem('client-onboarding-draft', JSON.stringify(dataToSave));
     }, 1000);
@@ -184,71 +169,9 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
     }));
   };
 
-  const handleFileChange = (field: keyof Pick<ClientsFormData, 'logoFiles' | 'brandGuide' | 'photos' | 'otherAssets'>, files: FileList | null) => {
-    if (!files || files.length === 0) return;
 
-    if (field === 'brandGuide') {
-      setFormData(prev => ({ ...prev, [field]: files[0] || null }));
-    } else {
-      const fileArray = Array.from(files);
-      // Append new files to existing ones
-      setFormData(prev => ({ 
-        ...prev, 
-        [field]: [...(prev[field] as File[]), ...fileArray]
-      }));
-    }
-  };
-
-  const removeFile = (field: keyof Pick<ClientsFormData, 'logoFiles' | 'brandGuide' | 'photos' | 'otherAssets'>, index: number) => {
-    if (field === 'brandGuide') {
-      setFormData(prev => ({ ...prev, [field]: null }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [field]: (prev[field] as File[]).filter((_, i) => i !== index)
-      }));
-    }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const renderFileList = (files: File[], field: keyof Pick<ClientsFormData, 'logoFiles' | 'photos' | 'otherAssets'>) => {
-    if (files.length === 0) return null;
-    
-    return (
-      <div className="mt-3 space-y-2">
-        {files.map((file, index) => (
-          <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-700 truncate">{file.name}</p>
-              <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => removeFile(field, index)}
-              className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
-              data-testid={`remove-file-${field}-${index}`}
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
-  const handleSubmit = async (e: React.FormEvent | React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     // Check if already submitting
     if (isSubmitting) {
@@ -267,65 +190,33 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
       // Clear draft from localStorage before submitting
       localStorage.removeItem('client-onboarding-draft');
       
-      // Create FormData for file upload to Netlify Function
-      const formDataToSubmit = new FormData();
-      
-      // Add text fields
-      formDataToSubmit.append('businessName', formData.businessName?.trim() || '');
-      formDataToSubmit.append('tagline', formData.tagline?.trim() || '');
-      formDataToSubmit.append('website', formData.website?.trim() || '');
-      formDataToSubmit.append('shortDescription', formData.shortDescription?.trim() || '');
-      formDataToSubmit.append('contactName', formData.contactName?.trim() || '');
-      formDataToSubmit.append('email', formData.email?.trim() || '');
-      formDataToSubmit.append('phone', formData.phone?.trim() || '');
-      formDataToSubmit.append('pagesSelected', formData.pages?.join(', ') || '');
-      formDataToSubmit.append('featuresSelected', formData.features?.join(', ') || '');
-      formDataToSubmit.append('copywriting', formData.copywriting || '');
-      formDataToSubmit.append('seo', formData.seo || '');
-      formDataToSubmit.append('timeline', formData.timeline || '');
-      formDataToSubmit.append('packageInterest', formData.packageInterest || '');
-      
-      // Add file attachments
-      formData.logoFiles.forEach((file, index) => {
-        if (file instanceof File) {
-          formDataToSubmit.append('logoFiles', file);
-        }
+      // Submit to Netlify Forms
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "launchin7-clients",
+          businessName: formData.businessName?.trim() || '',
+          tagline: formData.tagline?.trim() || '',
+          website: formData.website?.trim() || '',
+          shortDescription: formData.shortDescription?.trim() || '',
+          contactName: formData.contactName?.trim() || '',
+          email: formData.email?.trim() || '',
+          phone: formData.phone?.trim() || '',
+          pagesSelected: formData.pages?.join(', ') || '',
+          featuresSelected: formData.features?.join(', ') || '',
+          copywriting: formData.copywriting || '',
+          seo: formData.seo || '',
+          timeline: formData.timeline || '',
+          packageInterest: formData.packageInterest || ''
+        }).toString()
       });
       
-      if (formData.brandGuide instanceof File) {
-        formDataToSubmit.append('brandGuide', formData.brandGuide);
-      }
-      
-      formData.photos.forEach((file, index) => {
-        if (file instanceof File) {
-          formDataToSubmit.append('photos', file);
-        }
-      });
-      
-      formData.otherAssets.forEach((file, index) => {
-        if (file instanceof File) {
-          formDataToSubmit.append('otherAssets', file);
-        }
-      });
-      
-      // Submit to existing local route (already has SendGrid integration)
-      const response = await fetch('/.netlify/functions/client-onboarding', {
-        method: 'POST',
-        body: formDataToSubmit,
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Form submission failed. Status: ${response.status}`);
-      }
-      
-      const result = await response.json();
-      
-      if (result.ok) {
+      if (response.ok) {
         // Success - navigate to success page
         navigate('/clients/success');
       } else {
-        throw new Error(result.message || 'Form submission failed');
+        throw new Error(`Form submission failed. Status: ${response.status}`);
       }
       
     } catch (error) {
@@ -610,161 +501,6 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
         </Select>
       </div>
 
-      {/* File Uploads */}
-      <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-deep-navy">File Uploads</h3>
-        
-        {/* Logo Files */}
-        <div>
-          <Label htmlFor="logoFiles" className="block text-sm font-medium text-gray-700 mb-2">
-            Logo Files (multiple)
-          </Label>
-          <div className="relative">
-            <input
-              id="logoFiles"
-              name="logoFiles"
-              type="file"
-              multiple
-              accept="image/*,.pdf,.ai,.eps,.svg"
-              onChange={(e) => handleFileChange('logoFiles', e.target.files)}
-              className="hidden"
-              data-testid="file-logo"
-            />
-            <label
-              htmlFor="logoFiles"
-              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
-            >
-              <div className="text-center">
-                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
-                <span className="text-sm text-gray-500">
-                  {formData.logoFiles.length > 0 
-                    ? `Add more logo files (${formData.logoFiles.length} selected)`
-                    : "Click to upload logo files"
-                  }
-                </span>
-              </div>
-            </label>
-          </div>
-          {renderFileList(formData.logoFiles, 'logoFiles')}
-        </div>
-
-        {/* Brand Guide */}
-        <div>
-          <Label htmlFor="brandGuide" className="block text-sm font-medium text-gray-700 mb-2">
-            Brand Guide (single file)
-          </Label>
-          <div className="relative">
-            <input
-              id="brandGuide"
-              name="brandGuide"
-              type="file"
-              accept=".pdf,.doc,.docx,.ppt,.pptx"
-              onChange={(e) => handleFileChange('brandGuide', e.target.files)}
-              className="hidden"
-              data-testid="file-brand-guide"
-            />
-            <label
-              htmlFor="brandGuide"
-              className="flex items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
-            >
-              <div className="text-center">
-                <Upload className="mx-auto h-5 w-5 text-gray-400 mb-1" />
-                <span className="text-xs text-gray-500">
-                  {formData.brandGuide 
-                    ? "Replace brand guide"
-                    : "Click to upload brand guide"
-                  }
-                </span>
-              </div>
-            </label>
-          </div>
-          {formData.brandGuide && (
-            <div className="mt-3">
-              <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-700 truncate">{formData.brandGuide.name}</p>
-                  <p className="text-xs text-gray-500">{formatFileSize(formData.brandGuide.size)}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeFile('brandGuide', 0)}
-                  className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
-                  data-testid="remove-file-brand-guide"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Photos */}
-        <div>
-          <Label htmlFor="photos" className="block text-sm font-medium text-gray-700 mb-2">
-            Photos (multiple)
-          </Label>
-          <div className="relative">
-            <input
-              id="photos"
-              name="photos"
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={(e) => handleFileChange('photos', e.target.files)}
-              className="hidden"
-              data-testid="file-photos"
-            />
-            <label
-              htmlFor="photos"
-              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
-            >
-              <div className="text-center">
-                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
-                <span className="text-sm text-gray-500">
-                  {formData.photos.length > 0 
-                    ? `Add more photos (${formData.photos.length} selected)`
-                    : "Click to upload photos"
-                  }
-                </span>
-              </div>
-            </label>
-          </div>
-          {renderFileList(formData.photos, 'photos')}
-        </div>
-
-        {/* Other Assets */}
-        <div>
-          <Label htmlFor="otherAssets" className="block text-sm font-medium text-gray-700 mb-2">
-            Other Assets (multiple)
-          </Label>
-          <div className="relative">
-            <input
-              id="otherAssets"
-              name="otherAssets"
-              type="file"
-              multiple
-              onChange={(e) => handleFileChange('otherAssets', e.target.files)}
-              className="hidden"
-              data-testid="file-other-assets"
-            />
-            <label
-              htmlFor="otherAssets"
-              className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-electric-blue transition-colors"
-            >
-              <div className="text-center">
-                <Upload className="mx-auto h-6 w-6 text-gray-400 mb-1" />
-                <span className="text-sm text-gray-500">
-                  {formData.otherAssets.length > 0 
-                    ? `Add more files (${formData.otherAssets.length} selected)`
-                    : "Click to upload other assets"
-                  }
-                </span>
-              </div>
-            </label>
-          </div>
-          {renderFileList(formData.otherAssets, 'otherAssets')}
-        </div>
-      </div>
 
       {/* Submit Button */}
       <div className="pt-6">
