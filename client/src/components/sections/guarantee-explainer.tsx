@@ -71,7 +71,7 @@ export default function GuaranteeExplainer() {
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Compact Process Card */}
-                  <div className="glass-card rounded-2xl p-4 text-center hover:scale-105 transition-all duration-300 glow-effect group-hover:border-white/30">
+                  <div className="glass-card rounded-2xl p-4 text-center hover:scale-105 transition-all duration-300 glow-effect group-hover:border-white/30 h-[180px] flex flex-col">
                     {/* Day Circle */}
                     <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-${step.color} to-${step.color}/70 flex items-center justify-center shadow-lg`}>
                       <span className="text-white font-bold text-sm">{step.day}</span>
@@ -83,8 +83,10 @@ export default function GuaranteeExplainer() {
                     </div>
                     
                     {/* Title & Description */}
-                    <h3 className="text-white font-semibold text-sm mb-1">{step.title}</h3>
-                    <p className="text-gray-400 text-xs leading-tight">{step.desc}</p>
+                    <div className="flex-grow flex flex-col justify-center">
+                      <h3 className="text-white font-semibold text-sm mb-1">{step.title}</h3>
+                      <p className="text-gray-400 text-xs leading-tight">{step.desc}</p>
+                    </div>
                     
                     {/* Progress Indicator */}
                     <div className="mt-3 w-full bg-gray-700 h-1 rounded-full overflow-hidden">
