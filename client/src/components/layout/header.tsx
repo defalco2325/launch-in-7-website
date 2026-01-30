@@ -36,8 +36,8 @@ const Header = memo(function Header() {
                   width="120"
                   height="80"
                   style={{
-                    mixBlendMode: 'multiply',
-                    filter: 'contrast(1.2)'
+                    mixBlendMode: 'darken',
+                    filter: 'contrast(1.1)'
                   }}
                 />
               </picture>
