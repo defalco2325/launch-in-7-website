@@ -59,7 +59,7 @@ const Header = memo(function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden glass-card rounded-xl"
+              className="md:hidden bg-white rounded-xl border border-gray-200"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               aria-expanded={isMobileMenuOpen}
