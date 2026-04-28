@@ -7,345 +7,282 @@ import { Check, AlertCircle } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface ClientsFormData {
-  // Business Basics
   businessName: string;
-  tagline: string;
   website: string;
   shortDescription: string;
-  
-  // Contact
+  biggestChallenge: string;
   contactName: string;
   email: string;
   phone: string;
-  
-  // Pages Needed
-  pages: string[];
-  
-  // Features
-  features: string[];
-  
-  // Copywriting
-  copywriting: string;
-  
-  // SEO
-  seo: string;
-  
-  // Timeline
+  solutionsInterested: string[];
+  objectives: string[];
   timeline: string;
-  
-  // Package Interest
-  packageInterest: string;
+  budget: string;
 }
 
 const INITIAL_FORM_DATA: ClientsFormData = {
   businessName: "",
-  tagline: "",
   website: "",
   shortDescription: "",
+  biggestChallenge: "",
   contactName: "",
   email: "",
   phone: "",
-  pages: [],
-  features: [],
-  copywriting: "",
-  seo: "",
+  solutionsInterested: [],
+  objectives: [],
   timeline: "",
-  packageInterest: ""
+  budget: "",
 };
 
-const PAGES_OPTIONS = [
-  "Home", "About", "Services", "Blog", "Contact", "Portfolio/Case Studies", "Other"
+const SOLUTIONS_OPTIONS = [
+  "Customer Acquisition Systems",
+  "CRM & Automation Systems",
+  "Conversion Website Systems",
+  "Booking & Transaction Systems",
+  "Data & Intelligence Systems",
+  "AI Business Tools",
+  "Not Sure — Help Me Diagnose",
 ];
 
-const FEATURES_OPTIONS = [
-  "Contact Form", "Email Opt-in", "Calendar Booking", "Payments/Checkout", 
-  "Member Area", "Blog+CMS", "Other"
-];
-
-const COPYWRITING_OPTIONS = [
-  { value: "have-copy", label: "Have Copy" },
-  { value: "need-polish", label: "Need Polish" },
-  { value: "need-full-copy", label: "Need Full Copy" }
-];
-
-const SEO_OPTIONS = [
-  { value: "basic", label: "Basic" },
-  { value: "deeper", label: "Deeper" }
+const OBJECTIVES_OPTIONS = [
+  "Generate more leads",
+  "Convert more traffic",
+  "Automate follow-up",
+  "Reduce manual work",
+  "Track performance & ROI",
+  "Improve customer experience",
+  "Scale operations",
+  "Speed up booking / sales",
 ];
 
 const TIMELINE_OPTIONS = [
-  { value: "7-days", label: "7 Days" },
-  { value: "2-3-weeks", label: "2–3 Weeks" },
-  { value: "flexible", label: "Flexible" }
+  { value: "asap", label: "As soon as possible" },
+  { value: "2-4-weeks", label: "2–4 weeks" },
+  { value: "1-2-months", label: "1–2 months" },
+  { value: "flexible", label: "Flexible — let's talk" },
 ];
 
-const PACKAGE_OPTIONS = [
-  { value: "starter", label: "Starter" },
-  { value: "professional", label: "Professional" },
-  { value: "premium", label: "Premium" },
-  { value: "not-sure", label: "Not Sure" }
+const BUDGET_OPTIONS = [
+  { value: "under-2500", label: "Under $2,500" },
+  { value: "2500-5000", label: "$2,500 – $5,000" },
+  { value: "5000-10000", label: "$5,000 – $10,000" },
+  { value: "10000-plus", label: "$10,000+" },
+  { value: "not-sure", label: "Not sure yet" },
 ];
 
 interface ClientsFormProps {
-  onPackageChange?: (packageValue: string) => void;
+  onSolutionChange?: (value: string) => void;
 }
 
-export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
+export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
   const [formData, setFormData] = useState<ClientsFormData>(INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [, navigate] = useLocation();
 
   // Load draft from localStorage
   useEffect(() => {
-    const savedDraft = localStorage.getItem('client-onboarding-draft');
+    const savedDraft = localStorage.getItem('client-project-draft');
     if (savedDraft) {
       try {
         const parsed = JSON.parse(savedDraft);
-        setFormData(prev => ({ ...prev, ...parsed }));
-        // Notify parent of loaded package selection
-        if (parsed.packageInterest && onPackageChange) {
-          onPackageChange(parsed.packageInterest);
-        }
-      } catch (error) {
-        console.error('Error loading draft:', error);
-      }
+        setFormData((prev) => ({ ...prev, ...parsed }));
+      } catch {}
     }
-  }, [onPackageChange]);
+  }, []);
 
-  // Save draft to localStorage
+  // Save draft
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const dataToSave = { ...formData };
-      
-      localStorage.setItem('client-onboarding-draft', JSON.stringify(dataToSave));
+    const id = setTimeout(() => {
+      localStorage.setItem('client-project-draft', JSON.stringify(formData));
     }, 1000);
-
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(id);
   }, [formData]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
-
-    if (!formData.businessName || !formData.businessName.trim()) {
-      newErrors.businessName = "Business name is required";
-    }
-
-    if (!formData.contactName || !formData.contactName.trim()) {
-      newErrors.contactName = "Contact name is required";
-    }
-
-    if (!formData.email || !formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
+    if (!formData.businessName.trim()) newErrors.businessName = "Business name is required";
+    if (!formData.contactName.trim()) newErrors.contactName = "Contact name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Please enter a valid email";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof ClientsFormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: "" }));
-    }
-    
-    // Notify parent when package selection changes
-    if (field === 'packageInterest' && onPackageChange) {
-      onPackageChange(value);
-    }
+  const handleInputChange = (field: keyof ClientsFormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  const handleCheckboxChange = (field: 'pages' | 'features', value: string, checked: boolean) => {
-    setFormData(prev => ({
+  const handleCheckboxChange = (field: 'solutionsInterested' | 'objectives', value: string, checked: boolean) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: checked 
+      [field]: checked
         ? [...prev[field], value]
-        : prev[field].filter(item => item !== value)
+        : prev[field].filter((v) => v !== value),
     }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Check if already submitting
-    if (isSubmitting) {
-      return;
-    }
-
-    // Validate form
-    if (!validateForm()) {
-      return;
-    }
+    if (isSubmitting || !validateForm()) return;
 
     setIsSubmitting(true);
-    setErrors({}); // Clear any previous errors
-    
+    setErrors({});
+
     try {
-      // Clear draft from localStorage before submitting
-      localStorage.removeItem('client-onboarding-draft');
-      
-      // Submit to Netlify Forms
+      localStorage.removeItem('client-project-draft');
+
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
           "form-name": "launchin7-clients",
-          businessName: formData.businessName?.trim() || '',
-          tagline: formData.tagline?.trim() || '',
-          website: formData.website?.trim() || '',
-          shortDescription: formData.shortDescription?.trim() || '',
-          contactName: formData.contactName?.trim() || '',
-          email: formData.email?.trim() || '',
-          phone: formData.phone?.trim() || '',
-          pagesSelected: formData.pages?.join(', ') || '',
-          featuresSelected: formData.features?.join(', ') || '',
-          copywriting: formData.copywriting || '',
-          seo: formData.seo || '',
-          timeline: formData.timeline || '',
-          packageInterest: formData.packageInterest || ''
-        }).toString()
+          businessName: formData.businessName.trim(),
+          website: formData.website.trim(),
+          shortDescription: formData.shortDescription.trim(),
+          biggestChallenge: formData.biggestChallenge.trim(),
+          contactName: formData.contactName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          solutionsInterested: formData.solutionsInterested.join(', '),
+          objectives: formData.objectives.join(', '),
+          timeline: formData.timeline,
+          budget: formData.budget,
+        }).toString(),
       });
-      
+
       if (response.ok) {
-        // Success - navigate to success page
         navigate('/clients/success');
       } else {
-        throw new Error(`Form submission failed. Status: ${response.status}`);
+        throw new Error(`Submission failed (${response.status})`);
       }
-      
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      setErrors({ submit: `There was an error submitting your form: ${errorMessage}. Please try again.` });
+      setErrors({ submit: `There was an error submitting your form. Please try again or call us directly.` });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const isFormValid = formData.businessName?.trim() && formData.contactName?.trim() && 
-    formData.email?.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+  const isFormValid =
+    formData.businessName.trim() &&
+    formData.contactName.trim() &&
+    formData.email.trim() &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+
+  const fieldClass = (field: string) =>
+    `w-full px-4 py-3 bg-gray-50 border-2 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${
+      errors[field] ? 'border-red-400' : 'border-gray-200'
+    }`;
 
   return (
-    <form 
+    <form
       onSubmit={handleSubmit}
-      className="space-y-8"
+      className="space-y-10"
       data-netlify="true"
       name="launchin7-clients"
       method="POST"
       netlify-honeypot="bot-field"
     >
-      {/* Hidden input for Netlify form detection */}
       <input type="hidden" name="form-name" value="launchin7-clients" />
-      {/* Honeypot field for spam protection (hidden from users) */}
       <p className="hidden">
-        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        <label>Don't fill this out: <input name="bot-field" /></label>
       </p>
 
-      {/* Business Basics */}
+      {/* Business Info */}
       <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-deep-navy">Business Basics</h3>
-        
+        <div className="border-b border-gray-100 pb-3">
+          <h3 className="text-xl font-bold text-deep-navy">About Your Business</h3>
+          <p className="text-sm text-gray-500 mt-1">Help us understand what you do and who you serve.</p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-2">
-              Business Name *
+            <Label htmlFor="businessName" className="block text-sm font-semibold text-gray-700 mb-2">
+              Business Name <span className="text-red-500">*</span>
             </Label>
             <Input
               id="businessName"
               name="businessName"
-              type="text"
               value={formData.businessName}
               onChange={(e) => handleInputChange('businessName', e.target.value)}
-              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.businessName ? 'border-red-500' : ''}`}
-              data-testid="input-business-name"
-              required
+              className={fieldClass('businessName')}
+              placeholder="Your company name"
             />
-            {errors.businessName && (
-              <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>
-            )}
+            {errors.businessName && <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>}
           </div>
 
           <div>
-            <Label htmlFor="tagline" className="block text-sm font-medium text-gray-700 mb-2">
-              Tagline
+            <Label htmlFor="website" className="block text-sm font-semibold text-gray-700 mb-2">
+              Current Website
             </Label>
             <Input
-              id="tagline"
-              name="tagline"
-              type="text"
-              value={formData.tagline}
-              onChange={(e) => handleInputChange('tagline', e.target.value)}
-              className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-              data-testid="input-tagline"
+              id="website"
+              name="website"
+              value={formData.website}
+              onChange={(e) => handleInputChange('website', e.target.value)}
+              className={fieldClass('website')}
+              placeholder="example.com"
             />
           </div>
         </div>
 
         <div>
-          <Label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
-            Current Website
-          </Label>
-          <Input
-            id="website"
-            name="website"
-            type="text"
-            value={formData.website}
-            onChange={(e) => handleInputChange('website', e.target.value)}
-            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            placeholder="example.com"
-            data-testid="input-website"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700 mb-2">
-            Short Description
+          <Label htmlFor="shortDescription" className="block text-sm font-semibold text-gray-700 mb-2">
+            What does your business do?
           </Label>
           <textarea
             id="shortDescription"
             name="shortDescription"
-            rows={4}
+            rows={3}
             value={formData.shortDescription}
             onChange={(e) => handleInputChange('shortDescription', e.target.value)}
-            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            placeholder="Tell us about your business..."
-            data-testid="textarea-description"
+            className={fieldClass('shortDescription')}
+            placeholder="Briefly describe your business, your customers, and what you sell..."
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="biggestChallenge" className="block text-sm font-semibold text-gray-700 mb-2">
+            What's your biggest growth challenge right now?
+          </Label>
+          <textarea
+            id="biggestChallenge"
+            name="biggestChallenge"
+            rows={3}
+            value={formData.biggestChallenge}
+            onChange={(e) => handleInputChange('biggestChallenge', e.target.value)}
+            className={fieldClass('biggestChallenge')}
+            placeholder="E.g. We can't generate consistent leads, our follow-up is manual, we have no visibility into our pipeline..."
           />
         </div>
       </div>
 
-      {/* Contact Information */}
+      {/* Contact Info */}
       <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-deep-navy">Contact Information</h3>
-        
+        <div className="border-b border-gray-100 pb-3">
+          <h3 className="text-xl font-bold text-deep-navy">Your Contact Details</h3>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
-              Contact Name *
+            <Label htmlFor="contactName" className="block text-sm font-semibold text-gray-700 mb-2">
+              Your Name <span className="text-red-500">*</span>
             </Label>
             <Input
               id="contactName"
               name="contactName"
-              type="text"
               value={formData.contactName}
               onChange={(e) => handleInputChange('contactName', e.target.value)}
-              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.contactName ? 'border-red-500' : ''}`}
-              data-testid="input-contact-name"
-              required
+              className={fieldClass('contactName')}
+              placeholder="First and last name"
             />
-            {errors.contactName && (
-              <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>
-            )}
+            {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
           </div>
 
           <div>
-            <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
+            <Label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              Email Address <span className="text-red-500">*</span>
             </Label>
             <Input
               id="email"
@@ -353,18 +290,15 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              className={`w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${errors.email ? 'border-red-500' : ''}`}
-              data-testid="input-email"
-              required
+              className={fieldClass('email')}
+              placeholder="you@company.com"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-            )}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
         </div>
 
-        <div>
-          <Label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="max-w-xs">
+          <Label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
             Phone Number
           </Label>
           <Input
@@ -373,165 +307,147 @@ export default function ClientsForm({ onPackageChange }: ClientsFormProps) {
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all"
-            data-testid="input-phone"
+            className={fieldClass('phone')}
+            placeholder="(555) 000-0000"
           />
         </div>
       </div>
 
-      {/* Pages Needed */}
+      {/* Solutions of Interest */}
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">Pages Needed</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {PAGES_OPTIONS.map((page) => (
-            <label key={page} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="checkbox"
-                name="pages"
-                value={page}
-                checked={formData.pages.includes(page)}
-                onChange={(e) => handleCheckboxChange('pages', page, e.target.checked)}
-                className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
-                data-testid={`checkbox-page-${page.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              />
-              <span className="text-sm text-gray-700">{page}</span>
+        <div className="border-b border-gray-100 pb-3">
+          <h3 className="text-xl font-bold text-deep-navy">Solutions of Interest</h3>
+          <p className="text-sm text-gray-500 mt-1">Which systems are most relevant to your needs? Select all that apply.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {SOLUTIONS_OPTIONS.map((sol) => (
+            <label key={sol} className="flex items-start space-x-3 cursor-pointer group">
+              <div className="relative mt-0.5">
+                <input
+                  type="checkbox"
+                  name="solutionsInterested"
+                  value={sol}
+                  checked={formData.solutionsInterested.includes(sol)}
+                  onChange={(e) => handleCheckboxChange('solutionsInterested', sol, e.target.checked)}
+                  className="sr-only"
+                />
+                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                  formData.solutionsInterested.includes(sol)
+                    ? 'bg-electric-blue border-electric-blue'
+                    : 'border-gray-300 group-hover:border-electric-blue/50'
+                }`}>
+                  {formData.solutionsInterested.includes(sol) && (
+                    <Check className="w-3 h-3 text-white" />
+                  )}
+                </div>
+              </div>
+              <span className="text-sm text-gray-700 leading-snug group-hover:text-deep-navy transition-colors">{sol}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Features */}
+      {/* Key Objectives */}
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">Features</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {FEATURES_OPTIONS.map((feature) => (
-            <label key={feature} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="checkbox"
-                name="features"
-                value={feature}
-                checked={formData.features.includes(feature)}
-                onChange={(e) => handleCheckboxChange('features', feature, e.target.checked)}
-                className="rounded border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
-                data-testid={`checkbox-feature-${feature.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              />
-              <span className="text-sm text-gray-700">{feature}</span>
+        <div className="border-b border-gray-100 pb-3">
+          <h3 className="text-xl font-bold text-deep-navy">Key Objectives</h3>
+          <p className="text-sm text-gray-500 mt-1">What outcomes matter most to you?</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {OBJECTIVES_OPTIONS.map((obj) => (
+            <label key={obj} className="flex items-start space-x-3 cursor-pointer group">
+              <div className="relative mt-0.5">
+                <input
+                  type="checkbox"
+                  name="objectives"
+                  value={obj}
+                  checked={formData.objectives.includes(obj)}
+                  onChange={(e) => handleCheckboxChange('objectives', obj, e.target.checked)}
+                  className="sr-only"
+                />
+                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                  formData.objectives.includes(obj)
+                    ? 'bg-success-green border-success-green'
+                    : 'border-gray-300 group-hover:border-success-green/50'
+                }`}>
+                  {formData.objectives.includes(obj) && (
+                    <Check className="w-3 h-3 text-white" />
+                  )}
+                </div>
+              </div>
+              <span className="text-sm text-gray-700 leading-snug group-hover:text-deep-navy transition-colors">{obj}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Copywriting */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">Copywriting</h3>
-        <div className="space-y-3">
-          {COPYWRITING_OPTIONS.map((option) => (
-            <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="copywriting"
-                value={option.value}
-                checked={formData.copywriting === option.value}
-                onChange={(e) => handleInputChange('copywriting', e.target.value)}
-                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
-                data-testid={`radio-copywriting-${option.value}`}
-              />
-              <span className="text-sm text-gray-700">{option.label}</span>
-            </label>
-          ))}
+      {/* Timeline + Budget */}
+      <div className="space-y-6">
+        <div className="border-b border-gray-100 pb-3">
+          <h3 className="text-xl font-bold text-deep-navy">Timeline & Budget</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Label className="block text-sm font-semibold text-gray-700 mb-2">Ideal Timeline</Label>
+            <Select onValueChange={(v) => handleInputChange('timeline', v)} value={formData.timeline}>
+              <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+                <SelectValue placeholder="Select timeline" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIMELINE_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label className="block text-sm font-semibold text-gray-700 mb-2">Budget Range</Label>
+            <Select onValueChange={(v) => handleInputChange('budget', v)} value={formData.budget}>
+              <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+                <SelectValue placeholder="Select budget" />
+              </SelectTrigger>
+              <SelectContent>
+                {BUDGET_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
-      {/* SEO */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">SEO</h3>
-        <div className="space-y-3">
-          {SEO_OPTIONS.map((option) => (
-            <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="seo"
-                value={option.value}
-                checked={formData.seo === option.value}
-                onChange={(e) => handleInputChange('seo', e.target.value)}
-                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
-                data-testid={`radio-seo-${option.value}`}
-              />
-              <span className="text-sm text-gray-700">{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Timeline */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">Timeline</h3>
-        <div className="space-y-3">
-          {TIMELINE_OPTIONS.map((option) => (
-            <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="timeline"
-                value={option.value}
-                checked={formData.timeline === option.value}
-                onChange={(e) => handleInputChange('timeline', e.target.value)}
-                className="border-2 border-gray-400 text-electric-blue focus:ring-electric-blue"
-                data-testid={`radio-timeline-${option.value}`}
-              />
-              <span className="text-sm text-gray-700">{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Package Interest */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-deep-navy">Package Interest</h3>
-        <Select onValueChange={(value) => handleInputChange('packageInterest', value)} value={formData.packageInterest}>
-          <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all" data-testid="select-package-interest">
-            <SelectValue placeholder="Select package" />
-          </SelectTrigger>
-          <SelectContent>
-            {PACKAGE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-
-      {/* Submit Button */}
-      <div className="pt-6">
+      {/* Submit */}
+      <div className="pt-2">
         {errors.submit && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-center">
-              <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-              <span className="text-red-600">{errors.submit}</span>
-            </div>
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start space-x-3">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <span className="text-red-600 text-sm">{errors.submit}</span>
           </div>
         )}
-        
+
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
-          data-testid="button-submit-onboarding"
-          onClick={handleSubmit}
+          className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 text-lg"
         >
           {isSubmitting ? (
-            <div className="flex items-center justify-center">
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-              <span>Submitting...</span>
-            </div>
+            <span className="flex items-center justify-center">
+              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></span>
+              Submitting...
+            </span>
           ) : (
-            <div className="flex items-center justify-center">
-              <span>Submit & Launch My Website</span>
+            <span className="flex items-center justify-center">
+              Submit & Start My Project
               <Check className="w-5 h-5 ml-2" />
-            </div>
+            </span>
           )}
         </button>
+
+        <p className="text-center text-sm text-gray-400 mt-4">
+          We'll review your submission within 24 hours and reach out to schedule a discovery call.
+        </p>
       </div>
     </form>
   );
