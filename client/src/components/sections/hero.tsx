@@ -1,305 +1,211 @@
-// Optimize icon imports for tree-shaking
-import { 
-  ShieldCheck, 
-  Zap, 
-  Code2, 
-  Sparkles, 
-  ArrowRight, 
-  ChevronDown, 
-  Palette, 
-  TestTube, 
-  Rocket, 
-  CheckCircle 
-} from "lucide-react";
+import { ArrowRight, Layers, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo, memo, useRef, useCallback } from "react";
+import { useState, useEffect, memo, useRef, useCallback } from "react";
+import { Link } from "wouter";
+
+const systemNodes = [
+  { label: "Lead Generation", color: "from-electric-blue to-neon-cyan", delay: "0s" },
+  { label: "CRM & Follow-Up", color: "from-accent-purple to-electric-blue", delay: "0.15s" },
+  { label: "Automation", color: "from-tech-orange to-accent-purple", delay: "0.3s" },
+  { label: "Conversion", color: "from-success-green to-neon-cyan", delay: "0.45s" },
+  { label: "Analytics", color: "from-electric-blue to-accent-purple", delay: "0.6s" },
+];
 
 const HeroSection = memo(function HeroSection() {
-  // 7-day process animation state
-  const [currentDay, setCurrentDay] = useState(1);
-  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [activeNode, setActiveNode] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
 
-  const dayProcesses = useMemo(() => [
-    { day: 1, label: "Strategy & Planning", icon: Code2, color: "text-electric-blue", description: "Discovery & wireframes" },
-    { day: 2, label: "Design Creation", icon: Palette, color: "text-accent-purple", description: "UI/UX design & mockups" },
-    { day: 3, label: "Development Start", icon: Zap, color: "text-tech-orange", description: "Frontend development" },
-    { day: 4, label: "Feature Build", icon: ShieldCheck, color: "text-success-green", description: "Core functionality" },
-    { day: 5, label: "Testing & QA", icon: TestTube, color: "text-neon-cyan", description: "Quality assurance" },
-    { day: 6, label: "Optimization", icon: Rocket, color: "text-electric-blue", description: "Performance tuning" },
-    { day: 7, label: "Launch Ready", icon: CheckCircle, color: "text-success-green", description: "Go live!" }
-  ], []);
-
-  // Intersection Observer for animation start
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(() => {
-            setIsVisible(true);
-          });
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
       { threshold: 0.1 }
     );
-
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
-
+    if (heroRef.current) observer.observe(heroRef.current);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!isVisible) return;
-    
-    // Smooth progress animation
-    const totalCycleDuration = 17500; // 7 days * 2.5 seconds each
-    const startTime = Date.now();
-    
-    const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
-      const cycleProgress = (elapsed % totalCycleDuration) / totalCycleDuration;
-      
-      // Calculate smooth progress (0 to 100)
-      const smoothProgress = cycleProgress * 100;
-      setProgress(smoothProgress);
-      
-      // Calculate current day based on progress
-      const dayProgress = Math.floor(cycleProgress * 7) + 1;
-      setCurrentDay(Math.min(dayProgress, 7));
-    };
-    
-    const animationFrame = setInterval(updateProgress, 16); // ~60fps
-    
-    return () => clearInterval(animationFrame);
+    const interval = setInterval(() => {
+      setActiveNode((prev) => (prev + 1) % systemNodes.length);
+    }, 1800);
+    return () => clearInterval(interval);
   }, [isVisible]);
 
-  // Memoized callbacks to reduce re-renders
-  const handleStartBuild = useCallback(() => {
-    const auditSection = document.querySelector('#audit-section');
-    auditSection?.scrollIntoView({ behavior: 'smooth' });
+  const handleBuildMySystem = useCallback(() => {
+    window.location.href = '/clients';
   }, []);
 
-  const handleFreeAudit = useCallback(() => {
-    const auditSection = document.querySelector('#audit-section');
-    auditSection?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSolutions = useCallback(() => {
+    document.querySelector('#solutions-section')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const scrollToNext = useCallback(() => {
-    const nextSection = document.querySelector('#guarantee-section');
-    nextSection?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector('#solutions-section')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  // Memoized current process for performance
-  const currentProcess = useMemo(() => dayProcesses[currentDay - 1], [currentDay, dayProcesses]);
-
   return (
-    <section 
+    <section
       ref={heroRef}
-      className="hero-section relative min-h-screen md:h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-x-hidden"
-      style={{ minHeight: '120vh' }}
+      className="hero-section relative min-h-screen bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy text-white overflow-x-hidden flex items-center"
       role="banner"
-      aria-label="Hero section"
     >
-      {/* Advanced Background Effects */}
+      {/* Background */}
       <div className="absolute inset-0">
-        {/* Tech Grid Background */}
         <div className="absolute inset-0 tech-grid-bg opacity-30"></div>
-        
-        {/* Animated Gradient Orbs with CSS animations - Mobile optimized */}
         {isVisible && (
           <>
-            <div 
-              className="absolute top-20 left-0 md:-left-20 w-60 md:w-80 h-60 md:h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow"
-            />
-            <div 
-              className="absolute bottom-20 right-0 md:-right-20 w-72 md:w-96 h-72 md:h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium"
-            />
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-gradient-to-r from-tech-orange/8 to-neon-cyan/8 rounded-full"
-            />
+            <div className="absolute top-20 left-0 md:-left-20 w-60 md:w-80 h-60 md:h-80 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 rounded-full animate-float-slow" />
+            <div className="absolute bottom-20 right-0 md:-right-20 w-72 md:w-96 h-72 md:h-96 bg-gradient-to-r from-accent-purple/10 to-electric-blue/10 rounded-full animate-float-medium" />
           </>
         )}
       </div>
-      
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen md:h-screen flex items-center py-8 md:py-0">
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-0 w-full">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-screen">
+
             {/* Left Content */}
-            <div className="space-y-8">
-              {/* Tech Badge */}
+            <div className="space-y-8 py-20 lg:py-0">
+              {/* Badge */}
               <div className="inline-flex items-center space-x-2 animate-fade-in-left">
                 <div className="flex items-center space-x-2 glass-card rounded-full px-4 py-2 glow-effect">
                   <div className="w-2 h-2 bg-success-green rounded-full animate-pulse"></div>
-                  <span className="text-sm text-gray-300">Live Development</span>
-                  <Code2 className="w-4 h-4 text-neon-cyan" />
+                  <span className="text-sm text-gray-300">Business Systems Company</span>
+                  <Layers className="w-4 h-4 text-neon-cyan" />
                 </div>
               </div>
 
-              {/* Guarantee Badge */}
-              <div className="inline-flex items-center glass-card rounded-full px-6 py-3 glow-effect animate-fade-in-up">
-                <div className="relative">
-                  <ShieldCheck className="w-5 h-5 mr-3 text-success-green" />
-                </div>
-                <span className="font-semibold text-success-green">7-Day Guarantee</span>
-                <span className="text-gray-300 ml-2">— or it's Free</span>
-              </div>
-              
               {/* Main Headline */}
-              <div className="space-y-6 animate-fade-in-up-delay">
-                <h1 className="hero-title font-poppins font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.9] tracking-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}>
-                  <span className="block text-white">Your Website,</span>
-                  <span className="block gradient-text animate-pulse-scale">Live in 7 Days</span>
+              <div className="space-y-6 animate-fade-in-up">
+                <h1
+                  className="font-poppins font-black leading-[0.95] tracking-tight"
+                  style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)' }}
+                >
+                  <span className="block text-white">We Build the Systems</span>
+                  <span className="block gradient-text">That Grow Your Business</span>
                 </h1>
-                
+
                 <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-xl">
-                  Cutting-edge, conversion-focused websites that launch your business into the future. 
-                  <span className="text-neon-cyan font-semibold"> Fast. Professional. Guaranteed.</span>
+                  From lead generation to automation and conversion, Launchin7 designs the infrastructure that helps businesses{" "}
+                  <span className="text-neon-cyan font-semibold">capture opportunities, streamline operations, and scale.</span>
                 </p>
               </div>
-              
-              {/* Stats Row */}
-              <div className="flex items-center space-x-8 animate-fade-in-up-delay-2">
+
+              {/* Stats */}
+              <div className="flex items-center space-x-8 animate-fade-in-up">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">50+</div>
-                  <div className="text-sm text-gray-400">Sites Launched</div>
+                  <div className="text-sm text-gray-400">Systems Built</div>
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">7</div>
-                  <div className="text-sm text-gray-400">Day Process</div>
+                  <div className="text-2xl font-bold text-white">6</div>
+                  <div className="text-sm text-gray-400">Core Solutions</div>
                 </div>
                 <div className="w-px h-12 bg-gray-700"></div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">100%</div>
-                  <div className="text-sm text-gray-400">On-Time Rate</div>
+                  <div className="text-sm text-gray-400">Results-Driven</div>
                 </div>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up-delay-3">
-                <Button 
-                  onClick={handleStartBuild}
+              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up">
+                <Button
+                  onClick={handleBuildMySystem}
                   className="cutting-edge-gradient text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2"
-                  data-testid="button-hero-start-build"
-                  style={{ minHeight: '44px', fontSize: '18px' }}
-                  aria-label="Start your 7-day website build process"
+                  style={{ minHeight: '44px' }}
                 >
-                  <span>Start Your 7-Day Build</span>
+                  <span>Build My System</span>
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
-                <Button 
-                  onClick={handleFreeAudit}
+                <Button
+                  onClick={scrollToSolutions}
                   variant="outline"
-                  className="bg-white text-deep-navy px-8 py-4 rounded-2xl font-semibold text-lg border-white shadow-lg focus:outline-none focus:ring-2 focus:ring-deep-navy focus:ring-offset-2"
-                  data-testid="button-hero-free-audit"
-                  style={{ minHeight: '44px', fontSize: '18px' }}
-                  aria-label="Get a free website audit"
+                  className="bg-white/10 text-white border-white/30 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+                  style={{ minHeight: '44px' }}
                 >
-                  <Sparkles className="mr-2 w-5 h-5 text-electric-blue" />
-                  Free Website Audit
+                  Explore Solutions
                 </Button>
               </div>
             </div>
 
-            {/* Right Visual */}
-            <div className="relative animate-fade-in-right overflow-hidden">
-              {/* Main Visual Container */}
+            {/* Right Visual — Connected Systems Diagram */}
+            <div className="relative animate-fade-in-right hidden lg:block">
               <div className="relative">
-                {/* Background Glow */}
+                {/* Glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/20 via-neon-cyan/20 to-accent-purple/20 rounded-3xl blur-2xl scale-110"></div>
-                
-                {/* Glass Container */}
-                <div className="relative glass-card rounded-3xl p-4 md:p-8 space-y-6">
+
+                <div className="relative glass-card rounded-3xl p-8 space-y-4">
                   {/* Top Bar */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-2">
                     <div className="flex space-x-2">
                       <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                       <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     </div>
-                    <div className="text-xs text-gray-400 font-mono">launchin7.io</div>
+                    <div className="text-xs text-gray-400 font-mono">Growth System — Active</div>
                   </div>
 
-                  {/* Code Editor Mockup */}
-                  <div className="space-y-3 font-mono text-sm">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-accent-purple">const</span>
-                      <span className="text-white">website</span>
-                      <span className="text-gray-400">=</span>
-                      <span className="text-success-green">"launching..."</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-accent-purple">deployment</span>
-                      <span className="text-gray-400">:</span>
-                      <span className="text-tech-orange">"7 days"</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-electric-blue">guarantee</span>
-                      <span className="text-gray-400">:</span>
-                      <span className="text-success-green">true</span>
-                    </div>
-                  </div>
+                  {/* System Flow Nodes */}
+                  <div className="space-y-3">
+                    {systemNodes.map((node, i) => (
+                      <div key={i} className="relative">
+                        <div
+                          className={`flex items-center space-x-4 p-4 rounded-xl border transition-all duration-500 ${
+                            activeNode === i
+                              ? 'border-electric-blue/50 bg-electric-blue/10 shadow-lg shadow-electric-blue/10'
+                              : 'border-white/10 bg-white/5'
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${node.color} flex items-center justify-center flex-shrink-0 transition-all duration-300 ${activeNode === i ? 'scale-110' : 'opacity-70'}`}>
+                            <div className={`w-2 h-2 bg-white rounded-full ${activeNode === i ? 'animate-pulse' : ''}`}></div>
+                          </div>
+                          <div className="flex-1">
+                            <div className={`font-semibold text-sm transition-colors duration-300 ${activeNode === i ? 'text-white' : 'text-gray-400'}`}>{node.label}</div>
+                            <div className={`text-xs mt-0.5 transition-colors duration-300 ${activeNode === i ? 'text-neon-cyan' : 'text-gray-600'}`}>
+                              {activeNode === i ? '● Running' : '○ Standby'}
+                            </div>
+                          </div>
+                          {activeNode === i && (
+                            <div className="text-xs text-success-green font-mono animate-pulse">▲ Live</div>
+                          )}
+                        </div>
 
-                  {/* Animated 7-Day Progress */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Build Progress</span>
-                      <span className="text-neon-cyan font-semibold animate-pulse-scale">
-                        Day {currentDay}/7
-                      </span>
-                    </div>
-                    
-                    {/* Smooth Progress Bar */}
-                    <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                      <div 
-                        className="cutting-edge-gradient h-3 rounded-full"
-                        style={{
-                          width: `${progress}%`,
-                          transform: "translateZ(0)",
-                          backfaceVisibility: "hidden",
-                          transition: "none" // Disable transition for smooth animation
-                        }}
-                      ></div>
-                    </div>
-
-                    {/* Current Day Process */}
-                    <div className="glass-card rounded-xl p-4 border border-electric-blue/20 animate-fade-in-up">
-                      <div className="flex items-center space-x-3">
-                        {(() => {
-                          const currentProcess = dayProcesses[currentDay - 1];
-                          const IconComponent = currentProcess.icon;
-                          return (
-                            <>
-                              <div className={`p-2 rounded-lg ${currentProcess.color.replace('text-', 'bg-')}/10`}>
-                                <IconComponent className={`w-5 h-5 ${currentProcess.color}`} />
-                              </div>
-                              <div>
-                                <div className="text-white font-medium text-sm">{currentProcess.label}</div>
-                                <div className="text-gray-400 text-xs">{currentProcess.description}</div>
-                              </div>
-                            </>
-                          );
-                        })()}
+                        {/* Connector */}
+                        {i < systemNodes.length - 1 && (
+                          <div className="flex justify-center my-1">
+                            <div className={`w-px h-4 transition-colors duration-500 ${activeNode === i ? 'bg-electric-blue' : 'bg-white/10'}`}></div>
+                          </div>
+                        )}
                       </div>
-                    </div>
+                    ))}
                   </div>
 
-                  {/* Bottom Status */}
-                  <div className="text-center pt-2">
-                    <div className="text-xs text-gray-400 animate-fade-in">
-                      {currentDay === 7 ? "🎉 Ready to launch!" : "Building your website..."}
+                  {/* Bottom status */}
+                  <div className="pt-2 border-t border-white/10 text-center">
+                    <div className="text-xs text-gray-400">
+                      Systems connected · <span className="text-success-green">All operational</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
-
       </div>
+
+      {/* Scroll indicator */}
+      <button
+        onClick={scrollToNext}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-400 hover:text-white transition-colors animate-bounce"
+        aria-label="Scroll to next section"
+      >
+        <ChevronDown className="w-6 h-6" />
+      </button>
     </section>
   );
 });

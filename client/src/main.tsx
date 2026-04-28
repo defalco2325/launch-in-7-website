@@ -7,16 +7,22 @@ import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
 
-// CRITICAL PATH: Eagerly load shell + above-the-fold components
 import Header from "@/components/layout/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
-
-// Inline most components, only lazy load heavy ones
 import Home from "@/pages/home";
 import Footer from "@/components/layout/footer";
+
 const NotFound = lazy(() => import("@/pages/not-found"));
 const Clients = lazy(() => import("@/pages/clients"));
 const ClientsSuccess = lazy(() => import("@/pages/clients/success"));
+
+// Solution subpages
+const CustomerAcquisition = lazy(() => import("@/pages/solutions/customer-acquisition"));
+const CRMAutomation = lazy(() => import("@/pages/solutions/crm-automation"));
+const ConversionWebsites = lazy(() => import("@/pages/solutions/conversion-websites"));
+const BookingTransactions = lazy(() => import("@/pages/solutions/booking-transactions"));
+const DataIntelligence = lazy(() => import("@/pages/solutions/data-intelligence"));
+const AIBusinessTools = lazy(() => import("@/pages/solutions/ai-business-tools"));
 
 function Router() {
   return (
@@ -29,6 +35,12 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/clients" component={Clients} />
         <Route path="/clients/success" component={ClientsSuccess} />
+        <Route path="/solutions/customer-acquisition" component={CustomerAcquisition} />
+        <Route path="/solutions/crm-automation" component={CRMAutomation} />
+        <Route path="/solutions/conversion-websites" component={ConversionWebsites} />
+        <Route path="/solutions/booking-transactions" component={BookingTransactions} />
+        <Route path="/solutions/data-intelligence" component={DataIntelligence} />
+        <Route path="/solutions/ai-business-tools" component={AIBusinessTools} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -41,12 +53,10 @@ function App() {
       <TooltipProvider>
         <SEOProvider>
           <div className="min-h-screen bg-background">
-            {/* Header in critical path - no lazy loading */}
             <Header />
-            <main id="main-content" className="pt-16" role="main">
+            <main id="main-content" className="pt-20" role="main">
               <Router />
             </main>
-            {/* Footer inlined */}
             <Footer />
           </div>
         </SEOProvider>
@@ -57,13 +67,9 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-
-// Defer all non-critical scripts to after initial render
 const deferNonCriticalScripts = () => {
-  // Setup Netlify Forms progressive enhancement
   setupNetlifyForms();
 
-  // Register service worker for PWA functionality (deferred)
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
       .then((registration) => {
@@ -75,10 +81,8 @@ const deferNonCriticalScripts = () => {
   }
 };
 
-// Use requestIdleCallback with fallback for better browser support
 if (typeof requestIdleCallback === 'function') {
   requestIdleCallback(deferNonCriticalScripts, { timeout: 2000 });
 } else {
-  // Fallback for older browsers
   setTimeout(deferNonCriticalScripts, 1000);
 }
