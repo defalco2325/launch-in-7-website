@@ -70,14 +70,11 @@ createRoot(document.getElementById("root")!).render(<App />);
 const deferNonCriticalScripts = () => {
   setupNetlifyForms();
 
+  // Unregister any existing service workers to prevent caching issues
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered successfully:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      registrations.forEach(reg => reg.unregister());
+    });
   }
 };
 
