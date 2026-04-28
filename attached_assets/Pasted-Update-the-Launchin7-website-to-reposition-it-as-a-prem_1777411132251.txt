@@ -1,0 +1,355 @@
+Update the Launchin7 website to reposition it as a premium business systems and automation company.
+
+========================================
+CRITICAL DESIGN RULE (DO NOT SKIP)
+========================================
+
+Keep the current Launchin7 website’s existing:
+
+- Color palette
+- Typography / fonts
+- Logo styling
+- Button styles
+- Gradients
+- Spacing system
+- Shadows
+- Card styles
+- Overall brand feel
+
+DO NOT redesign the brand.
+
+Only update:
+- Positioning
+- Copy
+- Structure
+- Sections
+- Add animations
+- Add solution subpages
+
+Before making changes:
+1. Audit the current site design system.
+2. Reuse existing styles and classes.
+3. Ensure ALL new sections feel native to the current site.
+4. Do NOT introduce a new visual identity or generic SaaS template.
+
+========================================
+POSITIONING
+========================================
+
+Launchin7 is NOT a web design service.
+
+Launchin7 is a business systems company that builds infrastructure to:
+- Generate leads
+- Convert customers
+- Automate operations
+- Scale businesses
+
+DO NOT mention:
+- Hospitality
+- Nightlife
+- Restaurants
+- Clubs
+- Venues
+
+========================================
+MAIN HEADLINE
+========================================
+
+“We Build the Systems That Grow Your Business”
+
+Subheadline:
+“From lead generation to automation and conversion, Launchin7 designs the infrastructure that helps businesses capture opportunities, streamline operations, and scale.”
+
+Primary CTA:
+“Build My System”
+
+Secondary CTA:
+“Explore Solutions”
+
+========================================
+NAVIGATION
+========================================
+
+- Home
+- Solutions (dropdown)
+- Process
+- Work
+- Contact
+
+Solutions dropdown:
+- Customer Acquisition Systems
+- CRM & Automation Systems
+- Conversion Website Systems
+- Booking & Transaction Systems
+- Data & Intelligence Systems
+- AI Business Tools
+
+========================================
+HOMEPAGE STRUCTURE
+========================================
+
+1. HERO SECTION
+
+- Use existing design styling
+- Add subtle animated background (gradient or pattern)
+- Add visual showing connected systems (leads → CRM → automation → conversion → analytics)
+- CTA buttons
+
+========================================
+
+2. SOLUTIONS SECTION
+
+Title:
+“Business Systems Designed to Scale”
+
+Subtitle:
+“Each solution is built to solve a specific business bottleneck — then connected into one operating system for growth.”
+
+Create 6 animated cards:
+
+Customer Acquisition Systems  
+“We build lead generation funnels that capture qualified opportunities and turn traffic into pipeline.”
+
+CRM & Automation Systems  
+“We organize every lead, automate follow-up, and make sure no opportunity gets lost.”
+
+Conversion Website Systems  
+“We build websites designed to convert visitors into leads, customers, or booked calls.”
+
+Booking & Transaction Systems  
+“We streamline how customers schedule, pay, confirm, and complete transactions.”
+
+Data & Intelligence Systems  
+“We turn scattered data into dashboards, insights, and smarter decisions.”
+
+AI Business Tools  
+“We deploy AI to qualify leads, automate workflows, and improve efficiency.”
+
+Each card must include:
+- Icon
+- Short description
+- Hover animation
+- Subtle glow using existing brand colors
+- “Learn More” link to subpage
+
+========================================
+
+3. SYSTEMS FRAMEWORK SECTION
+
+Title:
+“From Fragmented Tools to One Growth System”
+
+Create 3 large animated panels:
+
+Growth System  
+“Lead capture, funnels, landing pages, and conversion paths.”
+
+Automation System  
+“CRM, follow-ups, workflows, notifications, and operational logic.”
+
+Optimization System  
+“Dashboards, analytics, insights, and continuous improvement.”
+
+Show visual connection between these systems (lines/arrows animation).
+
+========================================
+
+4. PROCESS SECTION
+
+Title:
+“How Launchin7 Builds Your System”
+
+Steps:
+
+1. Diagnose  
+“We identify the bottlenecks holding back growth.”
+
+2. Build  
+“We design and deploy the right systems.”
+
+3. Launch  
+“We test and deploy with precision.”
+
+4. Improve  
+“We optimize continuously based on data.”
+
+========================================
+
+5. RESULTS SECTION
+
+Title:
+“Built for Outcomes, Not Just Appearance”
+
+Cards:
+- Capture more leads
+- Convert more traffic
+- Automate repetitive work
+- Track every opportunity
+- Reduce manual follow-up
+- Improve customer experience
+- Make faster decisions
+- Scale operations
+
+========================================
+
+6. WORK / CASE STUDIES
+
+Create 3 placeholder cards:
+- Lead Generation System
+- CRM Automation Build
+- Conversion Website Redesign
+
+Each shows:
+Problem / Solution / Result
+
+========================================
+
+7. FINAL CTA
+
+Headline:
+“Ready to Build the System Behind Your Growth?”
+
+CTA:
+“Start a Project”
+
+========================================
+SUBPAGES (CREATE ALL)
+========================================
+
+Create separate pages for each:
+
+----------------------------------------
+
+/solutions/customer-acquisition
+
+Title:
+Customer Acquisition Systems
+
+Position:
+Generate and capture qualified leads.
+
+Include:
+- Problems
+- What we build
+- How it works
+- CTA
+
+----------------------------------------
+
+/solutions/crm-automation
+
+Title:
+CRM & Automation Systems
+
+Focus:
+Tracking leads + automating follow-ups
+
+----------------------------------------
+
+/solutions/conversion-websites
+
+Title:
+Conversion Website Systems
+
+Focus:
+Turning visitors into customers
+
+----------------------------------------
+
+/solutions/booking-transactions
+
+Title:
+Booking & Transaction Systems
+
+Focus:
+Scheduling, payments, confirmations
+
+----------------------------------------
+
+/solutions/data-intelligence
+
+Title:
+Data & Intelligence Systems
+
+Focus:
+Dashboards, analytics, insights
+
+----------------------------------------
+
+/solutions/ai-business-tools
+
+Title:
+AI Business Tools
+
+Focus:
+AI automation, assistants, workflows
+
+----------------------------------------
+
+Each page must include:
+- Hero
+- What it solves
+- What we build
+- How it works
+- CTA
+
+========================================
+ANIMATIONS
+========================================
+
+Use existing design style as base.
+
+Add:
+- Fade-up on scroll
+- Staggered card animations
+- Hover lift effects
+- Subtle glow effects using brand colors
+- Smooth transitions
+- Animated system connections (lines/arrows)
+- Button hover animations
+
+Keep animations:
+- Clean
+- Smooth
+- Professional
+- Not flashy
+
+========================================
+TECH REQUIREMENTS
+========================================
+
+- React + Vite + TypeScript
+- Tailwind CSS
+- React Router for subpages
+- Mobile responsive
+- Reusable components
+- SEO meta tags
+- Fast load speed
+
+========================================
+COMPONENTS
+========================================
+
+- Header
+- Footer
+- Hero
+- SolutionCard
+- SystemsFramework
+- ProcessSection
+- ResultsGrid
+- CaseStudyCard
+- CTASection
+- SolutionPageTemplate
+
+========================================
+ACCEPTANCE CRITERIA
+========================================
+
+- Brand visuals remain unchanged
+- Positioning is now systems-focused
+- Each solution has its own page
+- Animations feel premium and clean
+- Navigation works across all pages
+- Mobile UX is strong
+- No mention of hospitality anywhere
+- Site feels like a high-end business infrastructure company
