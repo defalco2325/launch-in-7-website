@@ -64,10 +64,6 @@ export default function SolutionPageTemplate({
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-4xl mx-auto text-center">
-            <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white text-sm mb-8 transition-colors">
-              ← Back to Home
-            </Link>
-
             <div className="inline-flex items-center space-x-2 glass-card rounded-full px-4 py-2 mb-6">
               <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
               <span className="text-neon-cyan font-medium text-sm">{category}</span>
