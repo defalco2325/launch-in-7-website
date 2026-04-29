@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { AIBusinessToolsAnimation } from "@/components/solutions/SolutionAnimations";
 import { Bot } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-ai-business-tools.png";
 
 export default function AIBusinessTools() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function AIBusinessTools() {
       ]}
       ctaHeadline="Ready to Deploy AI That Actually Works for Your Business?"
       animationSection={<AIBusinessToolsAnimation />}
+      heroImage={heroImg}
     />
   );
 }

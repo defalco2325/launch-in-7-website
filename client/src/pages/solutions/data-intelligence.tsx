@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { DataIntelligenceAnimation } from "@/components/solutions/SolutionAnimations";
 import { BarChart3 } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-data-intelligence.png";
 
 export default function DataIntelligence() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function DataIntelligence() {
       ]}
       ctaHeadline="Ready to Build an Intelligence System for Your Business?"
       animationSection={<DataIntelligenceAnimation />}
+      heroImage={heroImg}
     />
   );
 }

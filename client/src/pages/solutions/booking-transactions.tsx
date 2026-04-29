@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { BookingTransactionsAnimation } from "@/components/solutions/SolutionAnimations";
 import { Calendar } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-booking-transactions.png";
 
 export default function BookingTransactions() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function BookingTransactions() {
       ]}
       ctaHeadline="Ready to Streamline How Customers Book and Pay?"
       animationSection={<BookingTransactionsAnimation />}
+      heroImage={heroImg}
     />
   );
 }

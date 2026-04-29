@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { ConversionWebsitesAnimation } from "@/components/solutions/SolutionAnimations";
 import { Globe } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-conversion-websites.png";
 
 export default function ConversionWebsites() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function ConversionWebsites() {
       ]}
       ctaHeadline="Ready to Launch a Website That Actually Converts?"
       animationSection={<ConversionWebsitesAnimation />}
+      heroImage={heroImg}
     />
   );
 }

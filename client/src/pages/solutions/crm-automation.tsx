@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { CRMAutomationAnimation } from "@/components/solutions/SolutionAnimations";
 import { Settings } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-crm-automation.png";
 
 export default function CRMAutomation() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function CRMAutomation() {
       ]}
       ctaHeadline="Ready to Automate Your Follow-Up and Close More Deals?"
       animationSection={<CRMAutomationAnimation />}
+      heroImage={heroImg}
     />
   );
 }

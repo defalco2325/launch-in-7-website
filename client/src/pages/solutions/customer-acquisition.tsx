@@ -3,6 +3,7 @@ import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
 import { CustomerAcquisitionAnimation } from "@/components/solutions/SolutionAnimations";
 import { Target } from "lucide-react";
+import heroImg from "@assets/generated_images/hero-customer-acquisition.png";
 
 export default function CustomerAcquisition() {
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function CustomerAcquisition() {
       ]}
       ctaHeadline="Ready to Build a Predictable Lead Generation System?"
       animationSection={<CustomerAcquisitionAnimation />}
+      heroImage={heroImg}
     />
   );
 }
