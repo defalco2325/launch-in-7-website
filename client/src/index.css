@@ -197,6 +197,26 @@ body, p, div, span {
 /* Simplified animations to reduce main-thread work */
 /* Removed unused keyframes to reduce CSS size and parsing time */
 
+@keyframes ken-burns {
+  0%   { transform: scale(1)    translate(0,     0);     }
+  50%  { transform: scale(1.12) translate(-1.5%, -1%);   }
+  100% { transform: scale(1.07) translate(1.2%,  0.8%);  }
+}
+
+.hero-ken-burns {
+  animation: ken-burns 28s ease-in-out infinite alternate;
+  will-change: transform;
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+.hero-text-shadow h1,
+.hero-text-shadow h2,
+.hero-text-shadow p,
+.hero-text-shadow span {
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
 @keyframes fade-in-left {
   from { opacity: 0; transform: translateX(-40px); }
   to { opacity: 1; transform: translateX(0); }
