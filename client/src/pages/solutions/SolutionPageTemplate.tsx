@@ -50,8 +50,8 @@ export default function SolutionPageTemplate({
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="text-white py-28 relative overflow-hidden bg-deep-navy">
-        {/* Animated background image layer */}
+      <section className="min-h-[92vh] flex items-center relative overflow-hidden bg-[#060C22]">
+        {/* Ken Burns animated image */}
         {heroImage && (
           <div
             className="absolute inset-0 hero-ken-burns"
@@ -62,43 +62,69 @@ export default function SolutionPageTemplate({
             }}
           />
         )}
-        {/* Dark gradient overlay — on top of the image, below content */}
-        <div
-          className={`absolute inset-0 ${heroImage
-            ? "bg-gradient-to-b from-deep-navy/88 via-slate-900/75 to-deep-navy/88"
-            : "bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy"
-          }`}
-        />
-        <div className="absolute inset-0 tech-grid-bg opacity-20 pointer-events-none"></div>
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-electric-blue via-neon-cyan to-accent-purple"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-electric-blue/8 to-accent-purple/8 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Radial vignette: darker at edges, reveals image at center */}
+        {heroImage && (
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: "radial-gradient(ellipse 110% 90% at 50% 45%, rgba(6,12,34,0.55) 0%, rgba(6,12,34,0.82) 55%, rgba(6,12,34,0.98) 100%)"
+          }} />
+        )}
+        {/* Bottom fade — seamless transition to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#060C22] to-transparent pointer-events-none" />
+        {/* Top fade */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#060C22]/80 to-transparent pointer-events-none" />
+        {/* Fallback for no image */}
+        {!heroImage && (
+          <div className="absolute inset-0 bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy" />
+        )}
+
+        {/* Subtle tech grid */}
+        <div className="absolute inset-0 tech-grid-bg opacity-[0.08] pointer-events-none" />
+
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-electric-blue via-neon-cyan to-accent-purple" />
+
+        {/* Ambient glow orbs */}
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-electric-blue/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center hero-text-shadow">
-            <div className="inline-flex items-center space-x-2 glass-card rounded-full px-4 py-2 mb-6">
-              <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
-              <span className="text-neon-cyan font-medium text-sm">{category}</span>
+
+            {/* Premium category badge */}
+            <div className="inline-flex items-center space-x-2.5 border border-white/10 bg-white/[0.06] backdrop-blur-md rounded-full px-5 py-2 mb-10">
+              <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+              <span className="text-neon-cyan font-semibold text-xs tracking-[0.22em] uppercase">{category}</span>
             </div>
 
-            <h1 className="font-poppins font-black text-4xl lg:text-6xl mb-6 leading-tight">
+            {/* Large cinematic title */}
+            <h1 className="font-poppins font-black text-5xl md:text-6xl lg:text-[78px] leading-[1.04] tracking-tight text-white mb-6">
               {title}
             </h1>
 
-            <p className="text-xl text-gray-300 leading-relaxed mb-8 max-w-2xl mx-auto">
+            {/* Gradient tagline */}
+            <p className="text-xl md:text-2xl font-semibold gradient-text mb-7 max-w-2xl mx-auto leading-snug">
               {position}
             </p>
 
-            <p className="text-lg text-gray-400 leading-relaxed max-w-3xl mx-auto mb-10">
+            {/* Description */}
+            <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mx-auto mb-12">
               {heroDescription}
             </p>
 
-            <Button
-              onClick={() => window.location.href = '/clients'}
-              className="cutting-edge-gradient text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group glow-effect"
-            >
-              Build This System
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            {/* CTA cluster */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button
+                onClick={() => window.location.href = '/clients'}
+                className="cutting-edge-gradient text-white px-10 py-5 rounded-2xl font-bold text-base hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group glow-effect"
+              >
+                Build This System
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Link href="/" className="text-white/45 hover:text-white/80 text-sm font-medium transition-colors duration-200 tracking-wide">
+                ← View all solutions
+              </Link>
+            </div>
           </div>
         </div>
       </section>
