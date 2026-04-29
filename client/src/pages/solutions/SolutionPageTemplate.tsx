@@ -1,5 +1,4 @@
-import { useEffect, useRef, useMemo } from "react";
-import { ArrowRight, CheckCircle, LucideIcon, ChevronDown } from "lucide-react";
+import { ArrowRight, CheckCircle, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
@@ -48,84 +47,30 @@ export default function SolutionPageTemplate({
   animationSection,
   heroImage,
 }: SolutionPageProps) {
-  const heroRef = useRef<HTMLElement>(null);
-  const parallaxRef = useRef<HTMLDivElement>(null);
-
-  // Mouse parallax — subtle drift on the image layer
-  useEffect(() => {
-    const hero = heroRef.current;
-    const parallax = parallaxRef.current;
-    if (!hero || !parallax) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let frame = 0;
-    const handleMove = (e: MouseEvent) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        parallax.style.transform = `translate3d(${x * -22}px, ${y * -22}px, 0)`;
-      });
-    };
-    const reset = () => {
-      cancelAnimationFrame(frame);
-      parallax.style.transform = "translate3d(0, 0, 0)";
-    };
-
-    hero.addEventListener("mousemove", handleMove);
-    hero.addEventListener("mouseleave", reset);
-    return () => {
-      hero.removeEventListener("mousemove", handleMove);
-      hero.removeEventListener("mouseleave", reset);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  // Stable particle positions per render
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => ({
-        left: `${(i * 7.3 + Math.random() * 4) % 100}%`,
-        delay: `${(i * 1.4) % 12}s`,
-        duration: `${14 + (i % 5) * 3}s`,
-        purple: i % 3 === 0,
-        size: i % 4 === 0 ? 4 : 2,
-      })),
-    []
-  );
-
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section ref={heroRef} className="min-h-[92vh] flex items-center relative overflow-hidden bg-[#060C22]">
-        {/* Parallax wrapper holds the Ken Burns image so transforms compose cleanly */}
-        <div ref={parallaxRef} className="absolute inset-[-3%] hero-parallax-wrap">
-          {heroImage && (
-            <div
-              className="absolute inset-0 hero-ken-burns"
-              style={{
-                backgroundImage: `url(${heroImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-          )}
-        </div>
+      <section className="min-h-[92vh] flex items-center relative overflow-hidden bg-[#060C22]">
+        {/* Ken Burns animated image */}
+        {heroImage && (
+          <div
+            className="absolute inset-0 hero-ken-burns"
+            style={{
+              backgroundImage: `url(${heroImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        )}
 
-        {/* Radial vignette */}
+        {/* Radial vignette: darker at edges, reveals image at center */}
         {heroImage && (
           <div className="absolute inset-0 pointer-events-none" style={{
             background: "radial-gradient(ellipse 110% 90% at 50% 45%, rgba(6,12,34,0.55) 0%, rgba(6,12,34,0.82) 55%, rgba(6,12,34,0.98) 100%)"
           }} />
         )}
-
-        {/* Aurora drifting blobs — premium ambient glow */}
-        <div aria-hidden="true" className="hero-aurora-1 absolute top-[10%] left-[10%] w-[55vw] h-[55vw] max-w-[700px] max-h-[700px] bg-electric-blue/[0.08] rounded-full blur-[140px] pointer-events-none" />
-        <div aria-hidden="true" className="hero-aurora-2 absolute bottom-[5%] right-[8%] w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-accent-purple/[0.10] rounded-full blur-[120px] pointer-events-none" />
-
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-[#060C22] to-transparent pointer-events-none" />
+        {/* Bottom fade — seamless transition to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#060C22] to-transparent pointer-events-none" />
         {/* Top fade */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#060C22]/80 to-transparent pointer-events-none" />
         {/* Fallback for no image */}
@@ -133,58 +78,42 @@ export default function SolutionPageTemplate({
           <div className="absolute inset-0 bg-gradient-to-br from-deep-navy via-slate-900 to-deep-navy" />
         )}
 
-        {/* Tech grid */}
+        {/* Subtle tech grid */}
         <div className="absolute inset-0 tech-grid-bg opacity-[0.08] pointer-events-none" />
 
-        {/* Animated accent line */}
-        <div className="hero-accent-line absolute top-0 left-0 w-full h-[2px]" />
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-electric-blue via-neon-cyan to-accent-purple" />
 
-        {/* Floating glow particles */}
-        <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
-          {particles.map((p, i) => (
-            <span
-              key={i}
-              className={`hero-particle ${p.purple ? "purple" : ""}`}
-              style={{
-                left: p.left,
-                animationDelay: p.delay,
-                animationDuration: p.duration,
-                width: `${p.size}px`,
-                height: `${p.size}px`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Scanning light beam */}
-        <div aria-hidden="true" className="hero-scan-beam" />
+        {/* Ambient glow orbs */}
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-electric-blue/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center hero-text-shadow">
 
             {/* Premium category badge */}
-            <div className="hero-reveal-1 inline-flex items-center space-x-2.5 border border-white/10 bg-white/[0.06] backdrop-blur-md rounded-full px-5 py-2 mb-10">
+            <div className="inline-flex items-center space-x-2.5 border border-white/10 bg-white/[0.06] backdrop-blur-md rounded-full px-5 py-2 mb-10">
               <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
               <span className="text-neon-cyan font-semibold text-xs tracking-[0.22em] uppercase">{category}</span>
             </div>
 
             {/* Large cinematic title */}
-            <h1 className="hero-reveal-2 font-poppins font-black text-5xl md:text-6xl lg:text-[78px] leading-[1.04] tracking-tight text-white mb-6">
+            <h1 className="font-poppins font-black text-5xl md:text-6xl lg:text-[78px] leading-[1.04] tracking-tight text-white mb-6">
               {title}
             </h1>
 
             {/* Gradient tagline */}
-            <p className="hero-reveal-3 text-xl md:text-2xl font-semibold gradient-text mb-7 max-w-2xl mx-auto leading-snug">
+            <p className="text-xl md:text-2xl font-semibold gradient-text mb-7 max-w-2xl mx-auto leading-snug">
               {position}
             </p>
 
             {/* Description */}
-            <p className="hero-reveal-4 text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mx-auto mb-12">
+            <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mx-auto mb-12">
               {heroDescription}
             </p>
 
             {/* CTA cluster */}
-            <div className="hero-reveal-5 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
                 onClick={() => window.location.href = '/clients'}
                 className="cutting-edge-gradient text-white px-10 py-5 rounded-2xl font-bold text-base hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group glow-effect"
@@ -196,14 +125,6 @@ export default function SolutionPageTemplate({
                 ← View all solutions
               </Link>
             </div>
-          </div>
-        </div>
-
-        {/* Animated scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-10">
-          <span className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-medium">Scroll</span>
-          <div className="w-6 h-10 border border-white/20 rounded-full flex justify-center pt-2">
-            <ChevronDown className="hero-scroll-dot w-3 h-3 text-white/60" />
           </div>
         </div>
       </section>
