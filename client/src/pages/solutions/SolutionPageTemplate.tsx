@@ -29,6 +29,7 @@ interface SolutionPageProps {
   builds: BuildItem[];
   howItWorks: HowItWorksStep[];
   ctaHeadline: string;
+  animationSection?: React.ReactNode;
 }
 
 export default function SolutionPageTemplate({
@@ -42,6 +43,7 @@ export default function SolutionPageTemplate({
   builds,
   howItWorks,
   ctaHeadline,
+  animationSection,
 }: SolutionPageProps) {
   return (
     <div className="min-h-screen">
@@ -88,6 +90,9 @@ export default function SolutionPageTemplate({
           </div>
         </div>
       </section>
+
+      {/* Animated Explainer (per-solution) */}
+      {animationSection}
 
       {/* What It Solves */}
       <section className="py-20 bg-white">

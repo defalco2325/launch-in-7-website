@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { CRMAutomationAnimation } from "@/components/solutions/SolutionAnimations";
 import { Settings } from "lucide-react";
 
 export default function CRMAutomation() {
@@ -40,6 +41,7 @@ export default function CRMAutomation() {
         { step: "04", title: "Training & Handoff", description: "We train your team on the system and hand over documentation for long-term use." },
       ]}
       ctaHeadline="Ready to Automate Your Follow-Up and Close More Deals?"
+      animationSection={<CRMAutomationAnimation />}
     />
   );
 }

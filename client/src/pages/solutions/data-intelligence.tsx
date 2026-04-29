@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { DataIntelligenceAnimation } from "@/components/solutions/SolutionAnimations";
 import { BarChart3 } from "lucide-react";
 
 export default function DataIntelligence() {
@@ -40,6 +41,7 @@ export default function DataIntelligence() {
         { step: "04", title: "Training & Handoff", description: "We walk you through the dashboards and ensure your team can use them independently." },
       ]}
       ctaHeadline="Ready to Build an Intelligence System for Your Business?"
+      animationSection={<DataIntelligenceAnimation />}
     />
   );
 }

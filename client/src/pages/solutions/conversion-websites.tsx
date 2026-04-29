@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { ConversionWebsitesAnimation } from "@/components/solutions/SolutionAnimations";
 import { Globe } from "lucide-react";
 
 export default function ConversionWebsites() {
@@ -40,6 +41,7 @@ export default function ConversionWebsites() {
         { step: "04", title: "Launch & Monitor", description: "We launch the site, set up tracking, and monitor performance to optimize conversion rates." },
       ]}
       ctaHeadline="Ready to Launch a Website That Actually Converts?"
+      animationSection={<ConversionWebsitesAnimation />}
     />
   );
 }

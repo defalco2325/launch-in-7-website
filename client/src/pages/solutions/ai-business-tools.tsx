@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { AIBusinessToolsAnimation } from "@/components/solutions/SolutionAnimations";
 import { Bot } from "lucide-react";
 
 export default function AIBusinessTools() {
@@ -40,6 +41,7 @@ export default function AIBusinessTools() {
         { step: "04", title: "Launch & Optimize", description: "We launch the tools, monitor performance, and continuously improve based on real usage." },
       ]}
       ctaHeadline="Ready to Deploy AI That Actually Works for Your Business?"
+      animationSection={<AIBusinessToolsAnimation />}
     />
   );
 }

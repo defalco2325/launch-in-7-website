@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { CustomerAcquisitionAnimation } from "@/components/solutions/SolutionAnimations";
 import { Target } from "lucide-react";
 
 export default function CustomerAcquisition() {
@@ -40,6 +41,7 @@ export default function CustomerAcquisition() {
         { step: "04", title: "Launch & Optimize", description: "We launch, monitor performance, and optimize based on real data to continuously improve results." },
       ]}
       ctaHeadline="Ready to Build a Predictable Lead Generation System?"
+      animationSection={<CustomerAcquisitionAnimation />}
     />
   );
 }

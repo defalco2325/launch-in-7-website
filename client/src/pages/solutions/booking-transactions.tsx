@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { updateSEO } from "@/lib/seo";
 import SolutionPageTemplate from "./SolutionPageTemplate";
+import { BookingTransactionsAnimation } from "@/components/solutions/SolutionAnimations";
 import { Calendar } from "lucide-react";
 
 export default function BookingTransactions() {
@@ -40,6 +41,7 @@ export default function BookingTransactions() {
         { step: "04", title: "Testing & Launch", description: "We test every scenario end-to-end before launching to ensure a seamless experience." },
       ]}
       ctaHeadline="Ready to Streamline How Customers Book and Pay?"
+      animationSection={<BookingTransactionsAnimation />}
     />
   );
 }
