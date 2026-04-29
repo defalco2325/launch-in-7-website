@@ -122,6 +122,12 @@ const Header = memo(function Header() {
               Process
             </button>
             <button
+              onClick={() => scrollToSection('#pricing-section')}
+              className="text-deep-navy font-medium hover:text-electric-blue transition-colors"
+            >
+              Pricing
+            </button>
+            <button
               onClick={() => scrollToSection('#work-section')}
               className="text-deep-navy font-medium hover:text-electric-blue transition-colors"
             >
@@ -190,6 +196,7 @@ const Header = memo(function Header() {
             </div>
 
             <button onClick={() => scrollToSection('#process-section')} className="block w-full text-left text-deep-navy font-medium py-2 hover:text-electric-blue transition-colors">Process</button>
+            <button onClick={() => scrollToSection('#pricing-section')} className="block w-full text-left text-deep-navy font-medium py-2 hover:text-electric-blue transition-colors">Pricing</button>
             <button onClick={() => scrollToSection('#work-section')} className="block w-full text-left text-deep-navy font-medium py-2 hover:text-electric-blue transition-colors">Work</button>
             <button onClick={() => scrollToSection('#contact-section')} className="block w-full text-left text-deep-navy font-medium py-2 hover:text-electric-blue transition-colors">Contact</button>
 

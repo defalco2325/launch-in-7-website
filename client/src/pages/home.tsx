@@ -2,6 +2,7 @@ import HeroSection from "@/components/sections/hero";
 import SolutionsSection from "@/components/sections/solutions-section";
 import SystemsFramework from "@/components/sections/systems-framework";
 import ProcessSection from "@/components/sections/process-section";
+import PricingTable from "@/components/sections/pricing-table";
 import ResultsGrid from "@/components/sections/results-grid";
 import CaseStudies from "@/components/sections/case-studies";
 import CTASection from "@/components/sections/cta-section";
@@ -22,6 +23,7 @@ export default function Home() {
       <SolutionsSection />
       <SystemsFramework />
       <ProcessSection />
+      <PricingTable />
       <ResultsGrid />
       <CaseStudies />
       <CTASection />
