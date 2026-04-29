@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Switch, Route } from "wouter";
-import { Suspense, lazy } from "react";
+import { Switch, Route, useLocation } from "wouter";
+import { Suspense, lazy, useEffect } from "react";
 import { SEOProvider } from "@/lib/seo";
 import { setupNetlifyForms } from "@/utils/netlify-forms";
 import "./index.css";
@@ -23,6 +23,14 @@ const ConversionWebsites = lazy(() => import("@/pages/solutions/conversion-websi
 const BookingTransactions = lazy(() => import("@/pages/solutions/booking-transactions"));
 const DataIntelligence = lazy(() => import("@/pages/solutions/data-intelligence"));
 const AIBusinessTools = lazy(() => import("@/pages/solutions/ai-business-tools"));
+
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location]);
+  return null;
+}
 
 function Router() {
   return (
@@ -53,6 +61,7 @@ function App() {
       <TooltipProvider>
         <SEOProvider>
           <div className="min-h-screen bg-background">
+            <ScrollToTop />
             <Header />
             <main id="main-content" className="pt-20" role="main">
               <Router />
