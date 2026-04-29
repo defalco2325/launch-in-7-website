@@ -210,6 +210,11 @@ body, p, div, span {
   backface-visibility: hidden;
 }
 
+.hero-parallax-wrap {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
 .hero-text-shadow h1 {
   text-shadow: 0 0 60px rgba(0, 0, 0, 0.9), 0 4px 24px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
 }
@@ -220,6 +225,120 @@ body, p, div, span {
 
 .hero-text-shadow span {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* Floating glow particles */
+@keyframes particle-float {
+  0%   { transform: translate3d(0, 0, 0)        scale(0); opacity: 0; }
+  10%  { transform: translate3d(0, -10vh, 0)    scale(1); opacity: 1; }
+  90%  { transform: translate3d(0, -90vh, 0)    scale(1); opacity: 0.6; }
+  100% { transform: translate3d(0, -100vh, 0)   scale(0.5); opacity: 0; }
+}
+
+.hero-particle {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(0, 240, 255, 0.85);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.9), 0 0 16px rgba(0, 240, 255, 0.5);
+  animation: particle-float linear infinite;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.hero-particle.purple {
+  background: rgba(168, 85, 247, 0.85);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.9), 0 0 16px rgba(168, 85, 247, 0.5);
+}
+
+/* Scanning light beam */
+@keyframes scan-sweep {
+  0%   { transform: translateX(-30vw); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(130vw); opacity: 0; }
+}
+
+.hero-scan-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25vw;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 240, 255, 0.04) 40%, rgba(0, 240, 255, 0.12) 50%, rgba(0, 240, 255, 0.04) 60%, transparent 100%);
+  animation: scan-sweep 9s ease-in-out infinite;
+  animation-delay: 3s;
+  pointer-events: none;
+  will-change: transform, opacity;
+  filter: blur(8px);
+}
+
+/* Title reveal */
+@keyframes hero-reveal {
+  0%   { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0);     filter: blur(0);   }
+}
+
+.hero-reveal-1 { animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
+.hero-reveal-2 { animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.20s both; }
+.hero-reveal-3 { animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both; }
+.hero-reveal-4 { animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.50s both; }
+.hero-reveal-5 { animation: hero-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both; }
+
+/* Scroll indicator */
+@keyframes scroll-dot-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(10px); opacity: 1; }
+}
+
+.hero-scroll-dot {
+  animation: scroll-dot-bounce 1.8s ease-in-out infinite;
+}
+
+/* Animated gradient title underline */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-accent-line {
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--accent-purple), var(--electric-blue), transparent);
+  background-size: 200% 100%;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+/* Aurora mesh blobs */
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(8%, -6%, 0) scale(1.15); }
+}
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-6%, 8%, 0) scale(1.2); }
+}
+
+.hero-aurora-1 { animation: aurora-drift-1 22s ease-in-out infinite; will-change: transform; }
+.hero-aurora-2 { animation: aurora-drift-2 28s ease-in-out infinite; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ken-burns,
+  .hero-particle,
+  .hero-scan-beam,
+  .hero-aurora-1,
+  .hero-aurora-2,
+  .hero-scroll-dot,
+  .hero-accent-line {
+    animation: none !important;
+  }
+  .hero-reveal-1, .hero-reveal-2, .hero-reveal-3, .hero-reveal-4, .hero-reveal-5 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 @keyframes fade-in-left {
