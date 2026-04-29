@@ -73,10 +73,6 @@ export default function SolutionPageTemplate({
               <span className="text-neon-cyan font-medium text-sm">{category}</span>
             </div>
 
-            <div className={`w-20 h-20 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-8 shadow-2xl`}>
-              <Icon className="w-10 h-10 text-white" />
-            </div>
-
             <h1 className="font-poppins font-black text-4xl lg:text-6xl mb-6 leading-tight">
               {title}
             </h1>
