@@ -36,7 +36,7 @@ export default function DataIntelligence() {
         { title: "Automated Reporting", description: "Scheduled reports delivered to your inbox so you're always informed without effort." },
       ]}
       howItWorks={[
-        { step: "01", title: "Data Audit", description: "We audit your current tools, data sources, and identify what's being tracked vs. what matters." },
+        { step: "01", title: "Data Review", description: "We review your current tools and data sources to separate what is being tracked from what actually matters." },
         { step: "02", title: "Dashboard Architecture", description: "We design the dashboard structure around the decisions you need to make." },
         { step: "03", title: "Integration & Build", description: "We connect all data sources and build the dashboards and automated reports." },
         { step: "04", title: "Training & Handoff", description: "We walk you through the dashboards and ensure your team can use them independently." },

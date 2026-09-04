@@ -36,7 +36,7 @@ export default function AIBusinessTools() {
         { title: "AI Analytics & Insights", description: "AI-assisted reporting that surfaces insights and anomalies automatically." },
       ]}
       howItWorks={[
-        { step: "01", title: "Process Audit", description: "We identify every repetitive, manual task in your business that AI can handle." },
+        { step: "01", title: "Process Mapping", description: "We identify every repetitive, manual task in your business where practical AI workflows can create leverage." },
         { step: "02", title: "Tool Selection & Architecture", description: "We select the right AI tools and design how they connect with your existing systems." },
         { step: "03", title: "Build & Integration", description: "We build and integrate all AI tools, testing every workflow before deployment." },
         { step: "04", title: "Launch & Optimize", description: "We launch the tools, monitor performance, and continuously improve based on real usage." },

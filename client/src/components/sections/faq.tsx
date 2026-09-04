@@ -4,8 +4,8 @@ import { addStructuredData } from "@/lib/seo";
 
 const faqs = [
   {
-    question: "How does the 7-day process work?",
-    answer: "Our 7-day process is designed for maximum efficiency. Day 1 focuses on strategy and understanding your goals. Days 2-3 involve UX/UI design and getting your approval. Days 4-6 are dedicated to development and integrations. Day 7 is for quality assurance and launch. You'll receive daily updates and have opportunities for feedback throughout."
+    question: "Could my project launch in seven days?",
+    answer: "Focused Launch projects may qualify for a seven-day sprint when the scope, inputs, and decisions support it. Larger connected builds receive a scoped timeline covering strategy, content, integrations, testing, and handoff."
   },
   {
     question: "What do you need from me to start?",
@@ -17,15 +17,15 @@ const faqs = [
   },
   {
     question: "What's included post-launch?",
-    answer: "Post-launch, you receive complete documentation, training videos, and 30 days of free support for any technical issues. We also offer ongoing maintenance plans that include security updates, content updates, performance monitoring, and priority support."
+    answer: "We document the build, train your team, and hand over working assets and access. Ongoing optimization, reporting, automation, and strategic systems work are available through Growth OS."
   },
   {
     question: "Why don't you show pricing?",
     answer: "Every business has unique needs, and we believe in providing accurate quotes based on your specific requirements. Rather than showing generic pricing that might not apply to your situation, we prefer to understand your goals first and provide a detailed, personalized proposal that ensures you get exactly what you need."
   },
   {
-    question: "How do revisions work inside the 7 days?",
-    answer: "We include up to 3 rounds of revisions within the 7-day timeline. These are built into our process - one after the initial design presentation, one during development, and one final review before launch. We work closely with you to ensure we get it right the first time, but revisions are there when you need them."
+    question: "How do revisions and decisions work?",
+    answer: "We agree on the decision points and review moments in the scope. Focused Launch work stays deliberately narrow; larger builds receive the review cadence appropriate to their integrations and content."
   },
 ];
 
@@ -65,7 +65,7 @@ export default function FAQ() {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-gray-600">
-              Everything you need to know about our 7-day website building process.
+              Clear answers about scope, timelines, handoff, and ongoing support.
             </p>
           </div>
           

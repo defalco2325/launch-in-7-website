@@ -207,8 +207,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   console.log('Registered route: POST /api/clients/test');
 
-  // Client onboarding form submission with file uploads
-  app.all("/api/clients/submit", upload.any(), async (req, res) => {
+  // Client project form submission with optional file uploads
+  app.post("/api/clients/submit", upload.any(), async (req, res) => {
     console.log('=== CLIENT SUBMISSION ENDPOINT HIT ===');
     console.log('Request method:', req.method);
     console.log('Request URL:', req.url);
@@ -289,8 +289,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <ul>
           <li><strong>Business Name:</strong> ${businessName}</li>
           <li><strong>Website:</strong> ${website}</li>
-          <li><strong>Tagline:</strong> ${sanitizeText(req.body.tagline || '')}</li>
-          <li><strong>Short Description:</strong> ${sanitizeText(req.body.shortDescription || '')}</li>
+          <li><strong>Short Description:</strong> ${sanitizeText(req.body.shortDescription || 'Not provided')}</li>
+          <li><strong>Biggest Challenge:</strong> ${sanitizeText(req.body.biggestChallenge || 'Not provided')}</li>
         </ul>
 
         <h3>Contact Information</h3>
@@ -302,12 +302,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         <h3>Project Details</h3>
         <ul>
-          <li><strong>Pages Needed:</strong> ${sanitizeText(req.body.pagesSelected || 'Not specified')}</li>
-          <li><strong>Features:</strong> ${sanitizeText(req.body.featuresSelected || 'Not specified')}</li>
-          <li><strong>Copywriting:</strong> ${sanitizeText(req.body.copywriting || 'Not specified')}</li>
-          <li><strong>SEO:</strong> ${sanitizeText(req.body.seo || 'Not specified')}</li>
+          <li><strong>Systems of Interest:</strong> ${sanitizeText(req.body.solutionsInterested || 'Not specified')}</li>
+          <li><strong>Business Objectives:</strong> ${sanitizeText(req.body.objectives || 'Not specified')}</li>
           <li><strong>Timeline:</strong> ${sanitizeText(req.body.timeline || 'Not specified')}</li>
-          <li><strong>Package Interest:</strong> ${sanitizeText(req.body.packageInterest || 'Not specified')}</li>
+          <li><strong>Budget / Package:</strong> ${sanitizeText(req.body.budget || 'Not specified')}</li>
         </ul>
 
         ${attachmentsTooBig ? `

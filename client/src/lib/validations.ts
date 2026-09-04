@@ -9,35 +9,4 @@ export const contactFormSchema = z.object({
   type: z.literal("contact"),
 });
 
-export const auditFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Valid email is required"),
-  website: z.string().url("Valid website URL is required"),
-  goal: z.enum([
-    "increase-traffic",
-    "improve-conversions", 
-    "better-performance",
-    "modernize-design",
-    "add-ecommerce",
-    "mobile-optimization"
-  ]),
-  timeline: z.enum([
-    "asap",
-    "this-month",
-    "next-month", 
-    "this-quarter",
-    "exploring"
-  ]),
-  budget: z.enum([
-    "200-500",
-    "500-1000",
-    "1000-2000",
-    "2000-3000",
-    "3000-4000",
-    "4000-5000",
-    "5000-plus"
-  ]),
-});
-
 export type ContactFormData = z.infer<typeof contactFormSchema>;
-export type AuditFormData = z.infer<typeof auditFormSchema>;

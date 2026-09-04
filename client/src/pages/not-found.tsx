@@ -1,21 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
-
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { Link } from "wouter";
+import { useEffect } from "react";
+import { updateSEO } from "@/lib/seo";
 export default function NotFound() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  useEffect(() => { updateSEO({ title: "Page not found — Launchin7", description: "This Launchin7 page does not exist.", noindex: true }); }, []);
+  return <div className="l7-not-found"><p className="l7-intake-kicker">ERROR / 404</p><h1>This page took<br /><em>a wrong turn.</em></h1><p>The page you’re looking for is not part of this system. Return to the studio and keep moving.</p><Link href="/" className="l7-editorial-button l7-editorial-button-coral"><ArrowLeft size={16} /> Back to home <ArrowUpRight size={16} /></Link></div>;
 }

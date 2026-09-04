@@ -7,7 +7,7 @@ const tiers = [
     name: "Foundation",
     tagline: "One system, launched fast",
     price: "$2,997",
-    deliveryNote: "Delivered in 7 days",
+    deliveryNote: "Focused scope; timeline agreed together",
     icon: Zap,
     accentColor: "from-electric-blue to-neon-cyan",
     borderClass: "border-gray-200",
@@ -190,7 +190,7 @@ export default function PricingTable() {
 
           {/* Trust line */}
           <p className="text-center text-gray-400 text-sm mt-8">
-            All packages include our delivery guarantee — or your money back. No hidden fees, no long-term contracts.
+            Focused Launch projects may qualify for a 7-day sprint. Larger builds receive a scoped timeline; ongoing optimization is available through Growth OS.
           </p>
         </div>
       </div>

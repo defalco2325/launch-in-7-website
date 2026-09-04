@@ -252,8 +252,7 @@ export function CRMAutomationAnimation() {
           <div
             className="absolute top-8 left-8 h-0.5 bg-gradient-to-r from-accent-purple via-electric-blue to-neon-cyan hidden lg:block"
             style={{
-              right: "calc(100% - 8px)",
-              right: "8px",
+                right: "8px",
               width: activeStep >= 0 ? `${Math.min(activeStep / 4, 1) * 100}%` : "0%",
               transition: "width 2.4s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s",
             }}

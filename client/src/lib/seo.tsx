@@ -5,13 +5,15 @@ interface SEOData {
   description?: string;
   url?: string;
   image?: string;
+  noindex?: boolean;
 }
 
 export function updateSEO({
-  title = "Launch in 7 - Your New Website, Live in 7 Days",
-  description = "Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.",
+  title = "Launchin7 — Business systems that move growth",
+  description = "Launchin7 builds connected websites, lead generation, CRM, automation, booking, payments, analytics, and practical AI workflows for serious businesses.",
   url = typeof window !== "undefined" ? window.location.href : "",
-  image = `/og-image.jpg?v=${Date.now()}`
+  image = "/og-image.jpg",
+  noindex = false
 }: SEOData) {
   if (typeof window === "undefined") return;
 
@@ -25,6 +27,7 @@ export function updateSEO({
   };
 
   const absoluteImageUrl = getAbsoluteUrl(image);
+  const canonicalUrl = url || window.location.href;
 
   // Update title
   document.title = title;
@@ -56,18 +59,27 @@ export function updateSEO({
   // Open Graph tags for social sharing (iMessage, Facebook, etc.)
   updateMetaTag("og:title", title);
   updateMetaTag("og:description", description);
-  updateMetaTag("og:url", url);
+  updateMetaTag("og:url", canonicalUrl);
   updateMetaTag("og:image", absoluteImageUrl);
   updateMetaTag("og:image:width", "1200");
   updateMetaTag("og:image:height", "630");
   updateMetaTag("og:type", "website");
-  updateMetaTag("og:site_name", "Launch in 7");
+  updateMetaTag("og:site_name", "Launchin7");
 
   // Twitter Card tags
   updateNameMetaTag("twitter:card", "summary_large_image");
   updateNameMetaTag("twitter:title", title);
   updateNameMetaTag("twitter:description", description);
   updateNameMetaTag("twitter:image", absoluteImageUrl);
+  updateNameMetaTag("robots", noindex ? "noindex, nofollow" : "index, follow");
+
+  let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
+  canonical.href = canonicalUrl;
 }
 
 export function SEOProvider({ children }: { children: React.ReactNode }) {

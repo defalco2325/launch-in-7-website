@@ -6,7 +6,7 @@ const steps = [
     number: "01",
     icon: Search,
     title: "Diagnose",
-    description: "We identify the bottlenecks holding back growth — through discovery calls, audits, and competitive analysis.",
+    description: "We identify the bottlenecks holding back growth through discovery calls, mapping, and practical review.",
     color: "electric-blue",
     gradient: "from-electric-blue to-neon-cyan",
   },

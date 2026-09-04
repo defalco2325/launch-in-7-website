@@ -24,32 +24,28 @@ export default function Clients() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="l7-intake">
+      <div className="l7-intake-intro"><p className="l7-intake-kicker">START A PROJECT / 01</p>
 
         {/* Hero */}
         <div className="text-center mb-12 max-w-4xl mx-auto">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-electric-blue/10 to-neon-cyan/10 border border-electric-blue/20 rounded-full px-6 py-3 mb-6">
-            <Layers className="w-5 h-5 text-electric-blue" />
-            <span className="text-electric-blue font-semibold">Start a Project</span>
+          <div className="l7-intake-chip">
+            <Layers className="w-5 h-5" /><span>Private project intake</span>
           </div>
 
-          <h1 className="font-poppins font-black text-4xl lg:text-6xl text-deep-navy mb-6">
-            Let's Build the System <span className="gradient-text">Behind Your Growth</span>
-          </h1>
+          <h1>Let’s build the system<br /><em>behind your growth.</em></h1>
 
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Tell us about your business and your biggest challenge. We'll identify the right system and build it properly.
           </p>
         </div>
 
-        {/* Two Column Layout */}
-        <div className="max-w-7xl mx-auto">
+        <div className="l7-intake-layout">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
             {/* Form Column */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-12">
+              <div className="l7-intake-form">
                 <ClientsForm onSolutionChange={setSelectedSolution} />
               </div>
             </div>
@@ -59,15 +55,15 @@ export default function Clients() {
               <div className="sticky top-24 space-y-5">
 
                 {/* What's Included */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div className="l7-intake-aside-card">
                   <div className="flex items-center space-x-3 mb-5">
-                    <div className="w-10 h-10 bg-gradient-to-r from-electric-blue to-neon-cyan rounded-full flex items-center justify-center">
+                    <div className="l7-aside-icon">
                       <CheckCircle className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="font-poppins font-bold text-lg text-deep-navy">Every System Includes</h3>
+                     <h3 className="font-poppins font-bold text-lg text-deep-navy">What we scope together</h3>
                   </div>
                   <div className="space-y-3">
-                    {coreDeliverables.map((item, i) => (
+                     {coreDeliverables.slice(0, 6).map((item, i) => (
                       <div key={i} className="flex items-start space-x-3">
                         <div className="flex-shrink-0 mt-1">
                           <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
@@ -81,7 +77,7 @@ export default function Clients() {
                 </div>
 
                 {/* Our Process */}
-                <div className="bg-gradient-to-br from-electric-blue/5 to-neon-cyan/5 rounded-2xl border-2 border-electric-blue/20 p-6">
+                <div className="l7-intake-aside-card accent">
                   <div className="flex items-center space-x-3 mb-4">
                     <Zap className="w-6 h-6 text-electric-blue" />
                     <h4 className="font-bold text-deep-navy">What Happens Next</h4>
@@ -90,11 +86,11 @@ export default function Clients() {
                     {[
                       { step: "1", text: "Review within 24 hours" },
                       { step: "2", text: "Discovery & strategy call" },
-                      { step: "3", text: "System architecture plan" },
-                      { step: "4", text: "Build, test & launch" },
+                      { step: "3", text: "Scope, price & timeline" },
+                      { step: "4", text: "Build, test & hand over" },
                     ].map((item) => (
                       <div key={item.step} className="flex items-center space-x-3">
-                        <div className="w-6 h-6 bg-electric-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="l7-step-dot">
                           <span className="text-white text-xs font-bold">{item.step}</span>
                         </div>
                         <span className="text-sm text-gray-600">{item.text}</span>
@@ -104,13 +100,13 @@ export default function Clients() {
                 </div>
 
                 {/* Results-focused card */}
-                <div className="bg-gradient-to-br from-success-green/5 to-neon-cyan/5 rounded-2xl border-2 border-success-green/20 p-6">
+                <div className="l7-intake-aside-card mint">
                   <div className="flex items-center space-x-3 mb-3">
                     <ArrowRight className="w-6 h-6 text-success-green" />
                     <h4 className="font-bold text-deep-navy">Results-Focused</h4>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
-                    Every system we build is tied to a measurable outcome — more leads, more conversions, less manual work, or faster decisions.
+                     We scope the right first move around your bottleneck. Focused Launch projects may qualify for a 7-day sprint; larger builds receive a scoped timeline. Ongoing optimization is available through Growth OS.
                   </p>
                 </div>
 

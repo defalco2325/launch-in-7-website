@@ -56,17 +56,17 @@ const OBJECTIVES_OPTIONS = [
 ];
 
 const TIMELINE_OPTIONS = [
-  { value: "asap", label: "As soon as possible" },
-  { value: "2-4-weeks", label: "2–4 weeks" },
-  { value: "1-2-months", label: "1–2 months" },
+  { value: "focused-launch", label: "Focused Launch — may qualify for a 7-day sprint" },
+  { value: "4-8-weeks", label: "4–8 weeks — scoped build" },
+  { value: "2-3-months", label: "2–3 months — larger connected build" },
   { value: "flexible", label: "Flexible — let's talk" },
 ];
 
 const BUDGET_OPTIONS = [
-  { value: "under-2500", label: "Under $2,500" },
-  { value: "2500-5000", label: "$2,500 – $5,000" },
-  { value: "5000-10000", label: "$5,000 – $10,000" },
-  { value: "10000-plus", label: "$10,000+" },
+  { value: "launch-2500", label: "$2,500 — Launch" },
+  { value: "growth-4500", label: "$4,500 — Growth" },
+  { value: "scale-7500-plus", label: "$7,500+ — Scale" },
+  { value: "growth-os-1250-monthly", label: "$1,250+/month — Growth OS" },
   { value: "not-sure", label: "Not sure yet" },
 ];
 
@@ -133,7 +133,7 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
     try {
       localStorage.removeItem('client-project-draft');
 
-      const response = await fetch("/", {
+      const response = await fetch("/api/clients/submit", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
@@ -152,10 +152,12 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
         }).toString(),
       });
 
-      if (response.ok) {
+      const result = await response.json().catch(() => null);
+
+      if (response.ok && result?.ok) {
         navigate('/clients/success');
       } else {
-        throw new Error(`Submission failed (${response.status})`);
+        throw new Error(result?.message || `Submission failed (${response.status})`);
       }
     } catch (error) {
       setErrors({ submit: `There was an error submitting your form. Please try again or call us directly.` });
