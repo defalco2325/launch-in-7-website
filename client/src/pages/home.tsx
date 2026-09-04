@@ -1,7 +1,90 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check, ChevronDown, Circle, Clock3, Layers3, Mail, Menu, Phone, X } from "lucide-react";
 import { Link } from "wouter";
 import { updateSEO } from "@/lib/seo";
+
+const flowNodes = [
+  { id: "capture", label: "CAPTURE", detail: "Demand enters", x: 42, y: 74, tone: "mint" },
+  { id: "followup", label: "FOLLOW-UP", detail: "Next move clear", x: 176, y: 28, tone: "paper" },
+  { id: "booking", label: "BOOKING", detail: "Commitment made", x: 310, y: 74, tone: "coral" },
+  { id: "handoff", label: "HANDOFF", detail: "Work moves", x: 310, y: 220, tone: "paper" },
+  { id: "visibility", label: "VISIBILITY", detail: "Signal in view", x: 176, y: 266, tone: "mint" },
+  { id: "automation", label: "AUTOMATION", detail: "Useful, practical", x: 42, y: 220, tone: "paper" },
+];
+
+function OperatingLayerVisual() {
+  const visualRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(min-width: 901px) and (pointer: fine)");
+    if (!finePointer.matches || reduce.matches) return;
+    let frame = 0;
+    const onMove = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 10;
+      const y = (event.clientY / window.innerHeight - 0.5) * 7;
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        visualRef.current?.style.setProperty("--parallax-x", `${x}px`);
+        visualRef.current?.style.setProperty("--parallax-y", `${y}px`);
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={visualRef}
+      className="l7-operating-visual"
+      aria-label="Connected business system showing demand moving from capture through follow-up, booking, handoff, visibility, and practical automation"
+      role="img"
+    >
+      <div className="l7-visual-aura" />
+      <div className="l7-visual-caption"><span><i /> LIVE OPERATING LAYER</span><b>DEMAND → MOMENTUM</b></div>
+      <svg className="l7-flow-diagram" viewBox="0 0 352 326" aria-hidden="true">
+        <defs>
+          <linearGradient id="l7-flow-line" x1="0" x2="1">
+            <stop offset="0" stopColor="var(--l7-mint)" stopOpacity=".18" />
+            <stop offset=".5" stopColor="var(--l7-mint)" stopOpacity=".8" />
+            <stop offset="1" stopColor="var(--l7-coral)" stopOpacity=".45" />
+          </linearGradient>
+          <filter id="l7-soft-glow"><feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        </defs>
+        <g className="l7-flow-routes" fill="none" stroke="url(#l7-flow-line)" strokeWidth="1.2">
+          <path d="M42 74 C92 74 120 28 176 28 S260 74 310 74" />
+          <path d="M310 74 C310 132 310 162 310 220" />
+          <path d="M310 220 C260 220 230 266 176 266 S92 220 42 220" />
+          <path d="M42 220 C42 162 42 132 42 74" />
+          <path d="M42 74 C92 112 118 166 176 166 S260 114 310 74" className="l7-flow-route-secondary" />
+          <path d="M176 28 C176 83 176 116 176 166 S176 225 176 266" className="l7-flow-route-secondary" />
+        </g>
+        <g className="l7-flow-packets" filter="url(#l7-soft-glow)">
+          <circle r="3" fill="var(--l7-mint)"><animateMotion dur="5.8s" repeatCount="indefinite" path="M42 74 C92 74 120 28 176 28 S260 74 310 74" /></circle>
+          <circle r="2.5" fill="var(--l7-coral)"><animateMotion dur="6.8s" begin="1.4s" repeatCount="indefinite" path="M310 74 C310 132 310 162 310 220" /></circle>
+          <circle r="3" fill="var(--l7-mint)"><animateMotion dur="7.6s" begin="2.6s" repeatCount="indefinite" path="M310 220 C260 220 230 266 176 266 S92 220 42 220" /></circle>
+          <circle r="2" fill="var(--l7-coral)"><animateMotion dur="8s" begin="3.4s" repeatCount="indefinite" path="M42 220 C42 162 42 132 42 74" /></circle>
+        </g>
+        {flowNodes.map((node) => (
+          <g className={`l7-flow-node-svg node-${node.tone}`} transform={`translate(${node.x} ${node.y})`} key={node.id}>
+            <circle r="20" />
+            <circle r="25" className="l7-node-halo" />
+            <text y="-2" textAnchor="middle">{node.label}</text>
+            <text y="9" textAnchor="middle" className="l7-node-detail">{node.detail}</text>
+          </g>
+        ))}
+        <g className="l7-flow-core-svg" transform="translate(176 166)">
+          <circle r="44" /><circle r="51" className="l7-core-outline" />
+          <text y="-2" textAnchor="middle">L7</text><text y="13" textAnchor="middle" className="l7-core-sub">OPERATING LAYER</text>
+        </g>
+      </svg>
+      <div className="l7-visual-footer"><span>CAPTURE</span><i /><span>CONNECT</span><i /><span>SEE CLEARLY</span></div>
+    </div>
+  );
+}
 
 const systems = [
   ["01", "Conversion websites", "A sharp front door that turns attention into qualified conversations.", "/solutions/conversion-websites"],
@@ -47,16 +130,8 @@ export default function Home() {
             </div>
             <p className="l7-trust"><span /> For serious service and professional businesses with something worth scaling.</p>
           </div>
-          <div className="l7-orbit-art" aria-label="A diagram of a connected business system">
-            <div className="l7-orbit-ring ring-a" /><div className="l7-orbit-ring ring-b" /><div className="l7-orbit-ring ring-c" />
-            <div className="l7-orbit-core"><span>L7</span><small>THE OPERATING<br />LAYER</small></div>
-            <div className="l7-orbit-label label-top">DEMAND <b>↗</b></div>
-            <div className="l7-orbit-label label-right">HANDOFF <b>↗</b></div>
-            <div className="l7-orbit-label label-bottom">VISIBILITY <b>↗</b></div>
-            <div className="l7-orbit-label label-left">MOMENTUM <b>↗</b></div>
-          </div>
+          <OperatingLayerVisual />
         </div>
-        <button className="l7-scroll" onClick={() => jump("#problem")} aria-label="Scroll to learn more"><span /> SCROLL TO BEGIN</button>
       </section>
 
       <section className="l7-marquee" aria-label="Launchin7 capabilities"><span>WEBSITE</span><b>+</b><span>LEADS</span><b>+</b><span>CRM</span><b>+</b><span>AUTOMATION</span><b>+</b><span>CLARITY</span></section>

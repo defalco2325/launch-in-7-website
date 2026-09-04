@@ -12,7 +12,7 @@ export function updateSEO({
   title = "Launchin7 — Business systems that move growth",
   description = "Launchin7 builds connected websites, lead generation, CRM, automation, booking, payments, analytics, and practical AI workflows for serious businesses.",
   url = typeof window !== "undefined" ? window.location.href : "",
-  image = "/og-image.jpg",
+  image = "/og-image.png",
   noindex = false
 }: SEOData) {
   if (typeof window === "undefined") return;
@@ -61,8 +61,11 @@ export function updateSEO({
   updateMetaTag("og:description", description);
   updateMetaTag("og:url", canonicalUrl);
   updateMetaTag("og:image", absoluteImageUrl);
+  updateMetaTag("og:image:secure_url", absoluteImageUrl);
+  updateMetaTag("og:image:type", "image/png");
   updateMetaTag("og:image:width", "1200");
   updateMetaTag("og:image:height", "630");
+  updateMetaTag("og:image:alt", "Launchin7 — connected business systems that make growth move");
   updateMetaTag("og:type", "website");
   updateMetaTag("og:site_name", "Launchin7");
 
