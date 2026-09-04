@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, AlertCircle } from "lucide-react";
 import { useLocation } from "wouter";
+import { shouldNavigateToClientSuccess } from "@/lib/client-submission";
 
 interface ClientsFormData {
   businessName: string;
@@ -154,7 +155,7 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
 
       const result = await response.json().catch(() => null);
 
-      if (response.ok && result?.ok) {
+      if (shouldNavigateToClientSuccess(response.ok, result)) {
         navigate('/clients/success');
       } else {
         throw new Error(result?.message || `Submission failed (${response.status})`);

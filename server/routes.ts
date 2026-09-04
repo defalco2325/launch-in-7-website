@@ -41,6 +41,10 @@ const auditFormSchema = insertAuditRequestSchema.extend({
 // Rate limiting store (simple in-memory)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
+export function resetClientSubmissionRateLimits(): void {
+  rateLimitStore.clear();
+}
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const key = ip;
@@ -114,8 +118,18 @@ if (process.env.SENDGRID_API_KEY) {
   console.warn('WARNING: SENDGRID_API_KEY not found in environment variables');
 }
 
-export async function registerRoutes(app: Express): Promise<Server> {
+type MailSender = Pick<MailService, "send">;
+
+interface RouteDependencies {
+  clientSubmissionMailService?: MailSender;
+}
+
+export async function registerRoutes(
+  app: Express,
+  dependencies: RouteDependencies = {},
+): Promise<Server> {
   console.log('=== REGISTERING ROUTES ===');
+  const clientSubmissionMailService = dependencies.clientSubmissionMailService ?? mailService;
   
   // Contact form submission
   app.post("/api/lead", async (req, res) => {
@@ -332,7 +346,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         attachments: attachmentsTooBig ? [] : attachments
       };
 
-      await mailService.send(emailData);
+      await clientSubmissionMailService.send(emailData);
       
       console.log(`Client onboarding submission sent: ${email} for ${website || businessName}`);
       
