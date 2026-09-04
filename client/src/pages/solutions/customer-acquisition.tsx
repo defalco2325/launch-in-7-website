@@ -20,7 +20,7 @@ export default function CustomerAcquisition() {
       position="Generate and capture qualified leads at scale."
       heroDescription="Most businesses struggle with inconsistent lead flow — relying on referrals, cold outreach, or ad spend with no system behind it. We fix that by building end-to-end acquisition infrastructure that turns traffic into qualified pipeline, consistently."
       icon={Target}
-      gradient="from-electric-blue to-neon-cyan"
+      gradient="from-[#1b4a50] to-[#b9d8c9]"
       problems={[
         { title: "Inconsistent Lead Flow", description: "No reliable system to generate leads predictably month over month." },
         { title: "Unqualified Traffic", description: "Visitors arrive but don't convert because messaging and targeting are misaligned." },

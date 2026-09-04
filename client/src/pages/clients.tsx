@@ -66,7 +66,7 @@ export default function Clients() {
                      {coreDeliverables.slice(0, 6).map((item, i) => (
                       <div key={i} className="flex items-start space-x-3">
                         <div className="flex-shrink-0 mt-1">
-                          <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
+                          <div className="w-4 h-4 bg-[#6fae91] rounded-full flex items-center justify-center">
                             <CheckCircle className="w-2.5 h-2.5 text-white" />
                           </div>
                         </div>
@@ -79,7 +79,7 @@ export default function Clients() {
                 {/* Our Process */}
                 <div className="l7-intake-aside-card accent">
                   <div className="flex items-center space-x-3 mb-4">
-                    <Zap className="w-6 h-6 text-electric-blue" />
+                    <Zap className="w-6 h-6 text-[#dc7253]" />
                     <h4 className="font-bold text-deep-navy">What Happens Next</h4>
                   </div>
                   <div className="space-y-3">
@@ -102,7 +102,7 @@ export default function Clients() {
                 {/* Results-focused card */}
                 <div className="l7-intake-aside-card mint">
                   <div className="flex items-center space-x-3 mb-3">
-                    <ArrowRight className="w-6 h-6 text-success-green" />
+                    <ArrowRight className="w-6 h-6 text-[#6fae91]" />
                     <h4 className="font-bold text-deep-navy">Results-Focused</h4>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">

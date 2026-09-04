@@ -173,7 +173,7 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
 
   const fieldClass = (field: string) =>
-    `w-full px-4 py-3 bg-gray-50 border-2 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all ${
+    `w-full px-4 py-3 bg-[#f4f0e7] border-2 rounded-xl focus:ring-2 focus:ring-[#dc7253] focus:border-[#dc7253] transition-all ${
       errors[field] ? 'border-red-400' : 'border-gray-200'
     }`;
 
@@ -335,8 +335,8 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
                 />
                 <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                   formData.solutionsInterested.includes(sol)
-                    ? 'bg-electric-blue border-electric-blue'
-                    : 'border-gray-300 group-hover:border-electric-blue/50'
+                    ? 'bg-[#123842] border-[#123842]'
+                    : 'border-[#cbd2cb] group-hover:border-[#dc7253]'
                 }`}>
                   {formData.solutionsInterested.includes(sol) && (
                     <Check className="w-3 h-3 text-white" />
@@ -369,8 +369,8 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
                 />
                 <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                   formData.objectives.includes(obj)
-                    ? 'bg-success-green border-success-green'
-                    : 'border-gray-300 group-hover:border-success-green/50'
+                    ? 'bg-[#6fae91] border-[#6fae91]'
+                    : 'border-[#cbd2cb] group-hover:border-[#6fae91]'
                 }`}>
                   {formData.objectives.includes(obj) && (
                     <Check className="w-3 h-3 text-white" />
@@ -393,7 +393,7 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
           <div>
             <Label className="block text-sm font-semibold text-gray-700 mb-2">Ideal Timeline</Label>
             <Select onValueChange={(v) => handleInputChange('timeline', v)} value={formData.timeline}>
-              <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+              <SelectTrigger className="w-full px-4 py-3 bg-[#f4f0e7] border-2 border-[#cbd2cb] rounded-xl focus:ring-2 focus:ring-[#dc7253] focus:border-[#dc7253] transition-all">
                 <SelectValue placeholder="Select timeline" />
               </SelectTrigger>
               <SelectContent>
@@ -407,7 +407,7 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
           <div>
             <Label className="block text-sm font-semibold text-gray-700 mb-2">Budget Range</Label>
             <Select onValueChange={(v) => handleInputChange('budget', v)} value={formData.budget}>
-              <SelectTrigger className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-electric-blue focus:border-electric-blue transition-all">
+              <SelectTrigger className="w-full px-4 py-3 bg-[#f4f0e7] border-2 border-[#cbd2cb] rounded-xl focus:ring-2 focus:ring-[#dc7253] focus:border-[#dc7253] transition-all">
                 <SelectValue placeholder="Select budget" />
               </SelectTrigger>
               <SelectContent>
@@ -432,11 +432,11 @@ export default function ClientsForm({ onSolutionChange }: ClientsFormProps) {
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className="w-full bg-gradient-to-r from-electric-blue to-neon-cyan hover:from-electric-blue/90 hover:to-neon-cyan/90 text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 text-lg"
+          className="w-full bg-[#dc7253] hover:bg-[#c96347] text-white font-bold py-5 px-8 rounded-2xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#dc7253] focus:ring-offset-2 text-lg"
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center">
-              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></span>
+              <span className="l7-loader mr-3" aria-hidden="true"></span>
               Submitting...
             </span>
           ) : (

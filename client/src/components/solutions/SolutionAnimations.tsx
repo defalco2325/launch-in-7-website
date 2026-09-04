@@ -6,6 +6,14 @@ import {
   Activity, Database, FileText, Sparkles
 } from "lucide-react";
 
+const MOTION = {
+  fast: "var(--l7-motion-fast)",
+  base: "var(--l7-motion-base)",
+  slow: "var(--l7-motion-slow)",
+  ease: "var(--l7-motion-ease)",
+  soft: "var(--l7-motion-soft)",
+} as const;
+
 function useInView(threshold = 0.25) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -106,7 +114,7 @@ export function CustomerAcquisitionAnimation() {
                     {i > 0 && (
                       <span
                         className="text-xs text-neon-cyan font-mono"
-                        style={{ opacity: inView ? 1 : 0, transition: `opacity 0.5s ease ${0.4 + i * 0.3}s` }}
+                        style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.base} ${MOTION.ease} ${0.4 + i * 0.3}s` }}
                       >
                         {stage.pct}% convert
                       </span>
@@ -121,13 +129,13 @@ export function CustomerAcquisitionAnimation() {
                     className={`h-full bg-gradient-to-r ${stage.color} rounded-xl relative`}
                     style={{
                       width: inView ? stage.w : "0%",
-                      transition: `width 1.6s cubic-bezier(0.25,0.46,0.45,0.94) ${0.15 + i * 0.3}s`,
+                      transition: `width ${MOTION.slow} ${MOTION.soft} ${0.15 + i * 0.3}s`,
                     }}
                   >
                     <div className="absolute inset-0 bg-white/10 rounded-xl" />
                     <div
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-white font-bold text-xs"
-                      style={{ opacity: inView ? 1 : 0, transition: `opacity 0.4s ease ${0.6 + i * 0.3}s` }}
+                      style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.fast} ${MOTION.ease} ${0.6 + i * 0.3}s` }}
                     >
                       {stage.w}
                     </div>
@@ -137,7 +145,7 @@ export function CustomerAcquisitionAnimation() {
                   <div className="flex justify-center mt-1">
                     <div
                       className="w-0.5 bg-gradient-to-b from-electric-blue/40 to-transparent"
-                      style={{ height: inView ? "12px" : "0px", transition: `height 0.4s ease ${0.5 + i * 0.3}s` }}
+                      style={{ height: inView ? "12px" : "0px", transition: `height ${MOTION.fast} ${MOTION.ease} ${0.5 + i * 0.3}s` }}
                     />
                   </div>
                 )}
@@ -154,7 +162,7 @@ export function CustomerAcquisitionAnimation() {
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? "translateY(0)" : "translateY(20px)",
-                  transition: `all 0.6s ease ${0.8 + i * 0.2}s`,
+                  transition: `all ${MOTION.slow} ${MOTION.ease} ${0.8 + i * 0.2}s`,
                 }}
               >
                 <div className="text-3xl font-black gradient-text mb-1">{m.value}</div>
@@ -167,7 +175,7 @@ export function CustomerAcquisitionAnimation() {
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.6s ease 1.4s",
+                transition: `all ${MOTION.slow} ${MOTION.ease} 1.4s`,
               }}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -223,7 +231,7 @@ export function CRMAutomationAnimation() {
         <div className="flex flex-col items-center mb-8">
           <div
             className="glass-card rounded-2xl px-6 py-4 border border-accent-purple/30 flex items-center gap-4 mb-4"
-            style={{ opacity: inView ? 1 : 0, transform: inView ? "scale(1)" : "scale(0.9)", transition: "all 0.5s ease 0.2s" }}
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "scale(1)" : "scale(0.9)", transition: `all ${MOTION.base} ${MOTION.ease} 0.2s` }}
           >
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-purple to-electric-blue flex items-center justify-center">
               <Users className="w-5 h-5 text-white" />
@@ -234,14 +242,14 @@ export function CRMAutomationAnimation() {
             </div>
             <div
               className="ml-2 px-3 py-1 rounded-full bg-success-green/20 border border-success-green/30 text-success-green text-xs font-bold"
-              style={{ opacity: inView ? 1 : 0, transition: "opacity 0.4s ease 0.6s" }}
+              style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.fast} ${MOTION.ease} 0.6s` }}
             >
               LIVE
             </div>
           </div>
           <div
             className="w-0.5 h-6 bg-gradient-to-b from-accent-purple/60 to-transparent"
-            style={{ opacity: inView ? 1 : 0, transition: "opacity 0.4s ease 0.7s" }}
+            style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.fast} ${MOTION.ease} 0.7s` }}
           />
         </div>
 
@@ -254,7 +262,7 @@ export function CRMAutomationAnimation() {
             style={{
                 right: "8px",
               width: activeStep >= 0 ? `${Math.min(activeStep / 4, 1) * 100}%` : "0%",
-              transition: "width 2.4s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s",
+              transition: `width ${MOTION.slow} ${MOTION.soft} 0.5s`,
             }}
           />
 
@@ -268,12 +276,12 @@ export function CRMAutomationAnimation() {
                   style={{
                     opacity: active ? 1 : 0.25,
                     transform: active ? "translateY(0)" : "translateY(8px)",
-                    transition: `all 0.5s ease ${0.3 + i * 0.7}s`,
+                    transition: `all ${MOTION.base} ${MOTION.ease} ${0.3 + i * 0.7}s`,
                   }}
                 >
                   <div
                     className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${tp.color} flex items-center justify-center mb-3 shadow-lg relative`}
-                    style={{ boxShadow: active ? "0 0 20px rgba(0,176,255,0.35)" : "none", transition: "box-shadow 0.4s ease" }}
+                    style={{ boxShadow: active ? "0 0 20px color-mix(in srgb, var(--l7-mint) 32%, transparent)" : "none", transition: `box-shadow ${MOTION.fast} ${MOTION.ease}` }}
                   >
                     <tp.icon className="w-7 h-7 text-white" />
                     {active && (
@@ -286,7 +294,7 @@ export function CRMAutomationAnimation() {
                   <div className="text-white font-bold text-xs mb-1">{tp.label}</div>
                   <div
                     className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-400 text-xs"
-                    style={{ opacity: active ? 1 : 0, transition: `opacity 0.3s ease ${0.6 + i * 0.7}s` }}
+                    style={{ opacity: active ? 1 : 0, transition: `opacity ${MOTION.fast} ${MOTION.ease} ${0.6 + i * 0.7}s` }}
                   >
                     {tp.tag}
                   </div>
@@ -299,7 +307,7 @@ export function CRMAutomationAnimation() {
         {/* Bottom stat */}
         <div
           className="mt-10 flex items-center justify-center gap-3 glass-card rounded-2xl px-8 py-5 border border-electric-blue/20 max-w-sm mx-auto"
-          style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 3.8s" }}
+          style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 3.8s` }}
         >
           <div className="text-3xl font-black gradient-text tabular-nums">{contactsHandled.toLocaleString()}</div>
           <div className="text-left">
@@ -344,7 +352,7 @@ export function ConversionWebsitesAnimation() {
           {/* Before card */}
           <div
             className="rounded-2xl border border-red-500/20 bg-red-950/20 p-6 relative overflow-hidden"
-            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-30px)", transition: "all 0.7s ease 0.2s" }}
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-30px)", transition: `all ${MOTION.slow} ${MOTION.ease} 0.2s` }}
           >
             <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold">
               BEFORE
@@ -361,7 +369,7 @@ export function ConversionWebsitesAnimation() {
                     <span className="text-white font-bold tabular-nums">{item.val}</span>
                   </div>
                   <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div className={`h-full ${item.color} rounded-full`} style={{ width: inView ? `${item.bar * 100}%` : "0%", transition: `width 1.5s ease ${0.5 + i * 0.2}s` }} />
+                    <div className={`h-full ${item.color} rounded-full`} style={{ width: inView ? `${item.bar * 100}%` : "0%", transition: `width ${MOTION.slow} ${MOTION.soft} ${0.5 + i * 0.2}s` }} />
                   </div>
                 </div>
               ))}
@@ -374,7 +382,7 @@ export function ConversionWebsitesAnimation() {
           {/* After card */}
           <div
             className="rounded-2xl border border-neon-cyan/30 bg-neon-cyan/5 p-6 relative overflow-hidden"
-            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(30px)", transition: "all 0.7s ease 0.4s" }}
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(30px)", transition: `all ${MOTION.slow} ${MOTION.ease} 0.4s` }}
           >
             <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-success-green/20 border border-success-green/30 text-success-green text-xs font-bold">
               AFTER
@@ -391,7 +399,7 @@ export function ConversionWebsitesAnimation() {
                     <span className="text-white font-bold tabular-nums">{item.val}</span>
                   </div>
                   <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div className={`h-full ${item.color} rounded-full`} style={{ width: inView ? `${item.bar * 100}%` : "0%", transition: `width 1.8s ease ${0.7 + i * 0.2}s` }} />
+                    <div className={`h-full ${item.color} rounded-full`} style={{ width: inView ? `${item.bar * 100}%` : "0%", transition: `width ${MOTION.slow} ${MOTION.soft} ${0.7 + i * 0.2}s` }} />
                   </div>
                 </div>
               ))}
@@ -408,7 +416,7 @@ export function ConversionWebsitesAnimation() {
             <div
               key={i}
               className="glass-card rounded-xl p-4 border border-white/10 text-center"
-              style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(16px)", transition: `all 0.5s ease ${1.0 + i * 0.15}s` }}
+              style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(16px)", transition: `all ${MOTION.base} ${MOTION.ease} ${1.0 + i * 0.15}s` }}
             >
               <div className="text-xl font-black text-success-green mb-1">{item.delta}</div>
               <div className="text-gray-400 text-xs">{item.label}</div>
@@ -526,7 +534,7 @@ export function BookingTransactionsAnimation() {
                 style={{
                   opacity: notifications.includes(i) ? 1 : 0,
                   transform: notifications.includes(i) ? "translateX(0)" : "translateX(20px)",
-                  transition: "all 0.5s ease",
+                  transition: `all ${MOTION.base} ${MOTION.ease}`,
                 }}
               >
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tech-orange to-accent-purple flex items-center justify-center flex-shrink-0">
@@ -541,7 +549,7 @@ export function BookingTransactionsAnimation() {
             ))}
             <div
               className="glass-card rounded-xl p-4 border border-tech-orange/20 bg-tech-orange/5 mt-2"
-              style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 4.5s" }}
+              style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 4.5s` }}
             >
               <div className="flex items-center gap-2 mb-1">
                 <Zap className="w-4 h-4 text-tech-orange" />
@@ -601,7 +609,7 @@ export function DataIntelligenceAnimation() {
             <div
               key={i}
               className={`glass-card rounded-2xl p-5 border ${kpi.border}`}
-              style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)", transition: `all 0.5s ease ${0.2 + i * 0.15}s` }}
+              style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)", transition: `all ${MOTION.base} ${MOTION.ease} ${0.2 + i * 0.15}s` }}
             >
               <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${kpi.color} flex items-center justify-center mb-3`}>
                 <kpi.icon className="w-4 h-4 text-white" />
@@ -618,7 +626,7 @@ export function DataIntelligenceAnimation() {
           {/* Bar chart */}
           <div
             className="lg:col-span-2 glass-card rounded-2xl p-6 border border-white/10"
-            style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 0.8s" }}
+            style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 0.8s` }}
           >
             <div className="flex items-center justify-between mb-6">
               <div className="text-white font-bold text-sm">Revenue Trend</div>
@@ -628,7 +636,7 @@ export function DataIntelligenceAnimation() {
               {barHeights.map((h, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-2">
                   <div className="w-full rounded-t-lg bg-gradient-to-t from-success-green to-neon-cyan relative overflow-hidden"
-                    style={{ height: inView ? `${h}%` : "0%", transition: `height 1.2s cubic-bezier(0.34,1.56,0.64,1) ${1.0 + i * 0.1}s` }}>
+                      style={{ height: inView ? `${h}%` : "0%", transition: `height ${MOTION.slow} ${MOTION.soft} ${1.0 + i * 0.1}s` }}>
                     <div className="absolute inset-0 bg-white/10" />
                   </div>
                   <span className="text-gray-500 text-xs">{barLabels[i]}</span>
@@ -640,7 +648,7 @@ export function DataIntelligenceAnimation() {
           {/* Sources */}
           <div
             className="glass-card rounded-2xl p-6 border border-white/10"
-            style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 1.0s" }}
+            style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 1.0s` }}
           >
             <div className="text-white font-bold text-sm mb-5">Lead Sources</div>
             <div className="space-y-4">
@@ -653,7 +661,7 @@ export function DataIntelligenceAnimation() {
                   <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-success-green to-neon-cyan"
-                      style={{ width: inView ? `${s.pct}%` : "0%", transition: `width 1.4s ease ${1.2 + i * 0.2}s` }}
+                      style={{ width: inView ? `${s.pct}%` : "0%", transition: `width ${MOTION.slow} ${MOTION.soft} ${1.2 + i * 0.2}s` }}
                     />
                   </div>
                 </div>
@@ -720,7 +728,7 @@ export function AIBusinessToolsAnimation() {
           {/* Input column */}
           <div
             className="glass-card rounded-2xl p-5 border border-white/10"
-            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)", transition: `all ${MOTION.slow} ${MOTION.ease} 0.2s` }}
           >
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5">
               <Database className="w-4 h-4 text-gray-400" />
@@ -731,7 +739,7 @@ export function AIBusinessToolsAnimation() {
                 <div
                   key={i}
                   className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5"
-                  style={{ opacity: stage >= 1 ? 1 : 0, transform: stage >= 1 ? "translateX(0)" : "translateX(-10px)", transition: `all 0.4s ease ${0.3 + i * 0.2}s` }}
+                  style={{ opacity: stage >= 1 ? 1 : 0, transform: stage >= 1 ? "translateX(0)" : "translateX(-10px)", transition: `all ${MOTION.fast} ${MOTION.ease} ${0.3 + i * 0.2}s` }}
                 >
                   <t.icon className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-300 text-xs leading-relaxed">{t.text}</span>
@@ -743,7 +751,7 @@ export function AIBusinessToolsAnimation() {
           {/* AI Processing column */}
           <div
             className="glass-card rounded-2xl p-5 border border-accent-purple/30 bg-accent-purple/5 flex flex-col items-center text-center"
-            style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 0.5s" }}
+            style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 0.5s` }}
           >
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5 w-full justify-center">
               <Bot className="w-4 h-4 text-accent-purple" />
@@ -753,7 +761,7 @@ export function AIBusinessToolsAnimation() {
             <div className="relative my-4">
               <div
                 className="w-20 h-20 rounded-full bg-gradient-to-br from-accent-purple to-electric-blue flex items-center justify-center shadow-2xl"
-                style={{ boxShadow: stage >= 2 ? "0 0 40px rgba(139,92,246,0.5), 0 0 80px rgba(139,92,246,0.2)" : "none", transition: "box-shadow 0.6s ease" }}
+                style={{ boxShadow: stage >= 2 ? "0 0 32px color-mix(in srgb, var(--l7-coral) 34%, transparent), 0 0 64px color-mix(in srgb, var(--l7-mint) 16%, transparent)" : "none", transition: `box-shadow ${MOTION.slow} ${MOTION.ease}` }}
               >
                 <Sparkles className={`w-9 h-9 text-white ${stage >= 1 && stage < 3 ? "animate-spin" : ""}`} style={{ animationDuration: "2s" }} />
               </div>
@@ -792,7 +800,7 @@ export function AIBusinessToolsAnimation() {
           {/* Output column */}
           <div
             className="glass-card rounded-2xl p-5 border border-white/10"
-            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(20px)", transition: "all 0.6s ease 0.8s" }}
+            style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(20px)", transition: `all ${MOTION.slow} ${MOTION.ease} 0.8s` }}
           >
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5">
               <CheckCircle className="w-4 h-4 text-success-green" />
@@ -803,7 +811,7 @@ export function AIBusinessToolsAnimation() {
                 <div
                   key={i}
                   className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5"
-                  style={{ opacity: outputs.includes(i) ? 1 : 0, transform: outputs.includes(i) ? "translateX(0)" : "translateX(10px)", transition: "all 0.5s ease" }}
+                  style={{ opacity: outputs.includes(i) ? 1 : 0, transform: outputs.includes(i) ? "translateX(0)" : "translateX(10px)", transition: `all ${MOTION.base} ${MOTION.ease}` }}
                 >
                   <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${o.color} flex items-center justify-center flex-shrink-0`}>
                     <o.icon className="w-4 h-4 text-white" />
@@ -821,7 +829,7 @@ export function AIBusinessToolsAnimation() {
         {/* Time saved counter */}
         <div
           className="mt-8 flex items-center justify-center gap-4 glass-card rounded-2xl px-8 py-5 border border-accent-purple/20 max-w-md mx-auto"
-          style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease 5.5s" }}
+          style={{ opacity: inView ? 1 : 0, transition: `opacity ${MOTION.slow} ${MOTION.ease} 5.5s` }}
         >
           <Clock className="w-8 h-8 text-accent-purple flex-shrink-0" />
           <div>

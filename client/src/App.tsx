@@ -20,7 +20,7 @@ const AIBusinessTools = lazy(() => import("@/pages/solutions/ai-business-tools")
 
 const PageFallback = () => (
   <div className="min-h-[60vh] flex items-center justify-center">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-electric-blue"></div>
+    <div className="l7-loader" aria-label="Loading" />
   </div>
 );
 

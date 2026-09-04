@@ -143,13 +143,11 @@ img[loading="lazy"] {
 /* Optimize gradient animations for 60fps */
 .cutting-edge-gradient {
   /* Simplified gradient to reduce GPU processing */
-  background: linear-gradient(135deg, 
-    #0EA5E9 0%, 
-    #06B6D4 100%);
+  background: linear-gradient(120deg, var(--l7-night), var(--l7-mint) 62%, var(--l7-coral));
 }
 
 .animate-progress-continuous {
-  background: linear-gradient(90deg, #0EA5E9 0%, #06B6D4 100%);
+  background: linear-gradient(90deg, var(--l7-night-2), var(--l7-mint));
 }
 
 /* Removed progress-flow animation to reduce main-thread work */
@@ -316,15 +314,15 @@ body, p, div, span {
   --chart-5: hsl(341.5, 75.2%, 50.98%);
   
   /* Custom brand colors - Professional & Cutting Edge */
-  --deep-navy: hsl(217, 33%, 8%);
-  --electric-blue: hsl(222, 84%, 58%);
-  --aqua: hsl(198, 76%, 52%);
-  --success-green: hsl(145, 63%, 49%);
+  --deep-navy: #123842;
+  --electric-blue: #1b4a50;
+  --aqua: #b9d8c9;
+  --success-green: #6fae91;
   --light-gray: hsl(210, 20%, 98%);
-  --accent-purple: hsl(263, 70%, 60%);
-  --neon-cyan: hsl(178, 100%, 50%);
-  --tech-orange: hsl(24, 100%, 60%);
-  --gradient-dark: linear-gradient(135deg, hsl(217, 33%, 8%) 0%, hsl(230, 25%, 12%) 100%);
+  --accent-purple: #dc7253;
+  --neon-cyan: #b9d8c9;
+  --tech-orange: #dc7253;
+  --gradient-dark: linear-gradient(135deg, #123842 0%, #1b4a50 100%);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   
@@ -405,8 +403,8 @@ body, p, div, span {
 
   .tech-grid-bg {
     background-image: 
-      linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--l7-mint) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--l7-mint) 8%, transparent) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
@@ -417,10 +415,10 @@ body, p, div, span {
 
   @keyframes pulse-glow-shadow {
     0%, 100% { 
-      box-shadow: 0 0 8px rgba(14, 165, 233, 0.1);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--l7-mint) 10%, transparent);
     }
     50% { 
-      box-shadow: 0 0 15px rgba(14, 165, 233, 0.2), 0 0 25px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 0 15px color-mix(in srgb, var(--l7-coral) 18%, transparent), 0 0 25px color-mix(in srgb, var(--l7-mint) 12%, transparent);
     }
   }
 
@@ -431,7 +429,7 @@ body, p, div, span {
   /* Critical mobile optimizations only */
   @media (max-width: 768px) {
     .cutting-edge-gradient {
-      background: linear-gradient(90deg, #3B82F6 0%, #06B6D4 50%, #10B981 100%);
+      background: linear-gradient(90deg, var(--l7-night-2), var(--l7-mint) 52%, var(--l7-coral));
       transform: translateZ(0);
     }
     
@@ -442,10 +440,10 @@ body, p, div, span {
     
     @keyframes pulse-glow-shadow-mobile {
       0%, 100% { 
-        box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+        box-shadow: 0 0 12px color-mix(in srgb, var(--l7-mint) 24%, transparent);
       }
       50% { 
-        box-shadow: 0 0 25px rgba(14, 165, 233, 0.6), 0 0 35px rgba(14, 165, 233, 0.3);
+        box-shadow: 0 0 25px color-mix(in srgb, var(--l7-coral) 28%, transparent), 0 0 35px color-mix(in srgb, var(--l7-mint) 18%, transparent);
       }
     }
     
@@ -576,6 +574,94 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;op
 @media(max-width:900px){.l7-hero-inner{grid-template-columns:1fr}.l7-orbit-art{min-height:400px;margin-top:30px}.l7-split,.l7-proof-box{gap:45px}.l7-system-row{grid-template-columns:45px 25px 1fr 30px}.l7-system-row p{display:none}.l7-price.popular{transform:none}.l7-contact-strip{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.l7-hero-mast,.l7-hero-inner{padding-left:20px;padding-right:20px}.l7-hero-mast{font-size:8px}.l7-hero-coordinate{display:none}.l7-hero-inner{padding-top:75px;padding-bottom:80px}.l7-hero h1{font-size:clamp(4rem,20vw,6rem)}.l7-orbit-art{min-height:315px;transform:scale(.78);transform-origin:top center;margin-bottom:-65px}.l7-scroll{left:20px}.l7-section{padding:80px 20px}.l7-split,.l7-proof-box{display:block}.l7-split>div,.l7-split>p{margin-top:28px}.l7-outcome-row,.l7-method-grid,.l7-price-grid{grid-template-columns:1fr}.l7-outcome-row{margin-top:60px}.l7-outcome-row>div{border-right:0;border-bottom:1px solid var(--line);padding-bottom:19px;margin-right:0}.l7-system-list{margin-top:45px}.l7-system-row{grid-template-columns:35px 22px 1fr 25px;gap:10px}.l7-system-row h3{font-size:16px}.l7-method-grid{margin-top:60px}.l7-method-grid>div{border-right:0;border-bottom:1px solid rgba(216,229,223,.2);padding:20px 0;margin:0}.l7-proof-note{margin-top:40px}.l7-price{min-height:400px}.l7-growth{display:block}.l7-growth .l7-underlink{margin-top:20px}.l7-final{padding:75px 20px;display:block}.l7-final h2{font-size:clamp(3.5rem,17vw,6rem)}.l7-final .l7-btn{margin-top:28px}.l7-contact-strip{display:block;padding:40px 20px}.l7-contact-strip>div{margin-top:25px}.l7-contact-links{margin-top:25px!important}}
 @media(prefers-reduced-motion:reduce){.l7-home *,.l7-home *:before,.l7-home *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Unified Launchin7 motion language
+   Palette: night teal / warm paper / mint / coral. Motion is quiet, tactile,
+   and always preserves legibility. Legacy utility names below are aliases so
+   older routes inherit the approved system instead of their old colorways. */
+:root {
+  --l7-motion-fast: 160ms;
+  --l7-motion-base: 260ms;
+  --l7-motion-slow: 520ms;
+  --l7-motion-ease: cubic-bezier(.22,.61,.36,1);
+  --l7-motion-soft: cubic-bezier(.16,1,.3,1);
+  --electric-blue: var(--l7-night-2);
+  --neon-cyan: var(--l7-mint);
+  --accent-purple: var(--l7-coral);
+  --success-green: #6fae91;
+  --tech-orange: var(--l7-coral);
+  --aqua: var(--l7-mint);
+  --deep-navy: var(--l7-night);
+  --ring: var(--l7-coral);
+  --primary: 188 52% 18%;
+  --primary-foreground: 42 38% 95%;
+  --accent: 156 31% 83%;
+  --accent-foreground: 188 52% 18%;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--l7-coral);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--l7-coral) 22%, transparent);
+}
+
+button, a, input, textarea, select, [role="button"] {
+  transition:
+    color var(--l7-motion-fast) var(--l7-motion-ease),
+    background-color var(--l7-motion-base) var(--l7-motion-ease),
+    border-color var(--l7-motion-base) var(--l7-motion-ease),
+    opacity var(--l7-motion-base) var(--l7-motion-ease),
+    transform var(--l7-motion-base) var(--l7-motion-soft);
+}
+
+.gradient-text {
+  background: linear-gradient(110deg, var(--l7-mint), var(--l7-coral));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-bg, .cutting-edge-gradient {
+  background: linear-gradient(120deg, var(--l7-night), var(--l7-night-2) 58%, var(--l7-coral));
+}
+.tech-grid-bg {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--l7-mint) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--l7-mint) 10%, transparent) 1px, transparent 1px);
+}
+.glass-card {
+  background: color-mix(in srgb, var(--l7-night) 86%, transparent);
+  border-color: color-mix(in srgb, var(--l7-mint) 22%, transparent);
+  box-shadow: 0 18px 55px color-mix(in srgb, var(--l7-night) 18%, transparent);
+}
+.glow-effect { animation: l7-breathe 5s var(--l7-motion-ease) infinite !important; }
+@keyframes l7-breathe {
+  0%, 100% { box-shadow: 0 10px 34px color-mix(in srgb, var(--l7-night) 16%, transparent); }
+  50% { box-shadow: 0 14px 42px color-mix(in srgb, var(--l7-coral) 18%, transparent); }
+}
+.animate-pulse, .pulse-ring { animation-duration: 4s !important; animation-timing-function: var(--l7-motion-ease) !important; }
+.l7-button:hover, .l7-btn:hover, .l7-editorial-button:hover, .l7-header-cta:hover { transform: translateY(-2px); }
+.l7-global-nav a:hover, .l7-footer-links a:hover, .l7-mobile-menu a:hover { color: var(--l7-coral); }
+.l7-solutions-dropdown, .l7-mobile-menu { animation: l7-reveal var(--l7-motion-base) var(--l7-motion-soft) both; transform-origin: top center; }
+@keyframes l7-reveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.l7-loader {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  border: 2px solid color-mix(in srgb, var(--l7-paper) 42%, transparent);
+  border-top-color: var(--l7-paper);
+  border-radius: 999px;
+  animation: l7-loader-spin 800ms linear infinite;
+}
+@keyframes l7-loader-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
 
 /* Above-the-fold calibration: preserve the wide composition without letting the orbit push the offer below the first frame. */
 @media(min-width:901px) and (max-height:800px){

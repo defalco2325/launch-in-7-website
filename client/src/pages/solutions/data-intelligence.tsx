@@ -20,7 +20,7 @@ export default function DataIntelligence() {
       position="Turn scattered data into dashboards, insights, and faster decisions."
       heroDescription="Most businesses are drowning in data but starving for insights. We build intelligence systems that pull from your existing tools, consolidate the data that matters, and present it in clear dashboards so you can make faster, better decisions."
       icon={BarChart3}
-      gradient="from-success-green to-neon-cyan"
+      gradient="from-[#6fae91] to-[#b9d8c9]"
       problems={[
         { title: "Data Scattered Across Tools", description: "Key metrics live in different platforms with no unified view of business performance." },
         { title: "No Reporting Visibility", description: "It takes hours to compile reports manually, and by then the data is already stale." },

@@ -20,7 +20,7 @@ export default function CRMAutomation() {
       position="Track leads and automate follow-ups so no opportunity gets lost."
       heroDescription="The difference between closing a deal and losing it often comes down to speed and consistency of follow-up. We build CRM systems and automation sequences that ensure every lead is tracked, followed up, and moved through your pipeline — without manual effort."
       icon={Settings}
-      gradient="from-accent-purple to-electric-blue"
+      gradient="from-[#dc7253] to-[#1b4a50]"
       problems={[
         { title: "Leads Falling Through the Cracks", description: "Contacts are tracked in spreadsheets or notes with no centralized system." },
         { title: "Slow or Inconsistent Follow-Up", description: "The team follows up when they remember, not when the lead is most likely to convert." },

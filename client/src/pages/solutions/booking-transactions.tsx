@@ -20,7 +20,7 @@ export default function BookingTransactions() {
       position="Streamline scheduling, payments, and confirmations."
       heroDescription="Friction in the booking or payment process kills conversions. We build seamless transaction systems that make it easy for customers to schedule, pay, and confirm — while automating the backend so your team doesn't have to manage it manually."
       icon={Calendar}
-      gradient="from-tech-orange to-accent-purple"
+      gradient="from-[#dc7253] to-[#1b4a50]"
       problems={[
         { title: "Friction in the Booking Process", description: "Customers have to go through too many steps to book, leading to drop-offs." },
         { title: "Manual Scheduling Overhead", description: "The team spends hours managing calendars, confirmations, and rescheduling." },

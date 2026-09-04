@@ -20,7 +20,7 @@ export default function AIBusinessTools() {
       position="Deploy AI to automate workflows and improve efficiency."
       heroDescription="AI isn't just for enterprises. We deploy practical AI tools that qualify leads, respond to inquiries, automate repetitive work, and help your team operate faster — without replacing the human relationships that drive your business."
       icon={Bot}
-      gradient="from-accent-purple to-tech-orange"
+      gradient="from-[#dc7253] to-[#b9d8c9]"
       problems={[
         { title: "Team Overwhelmed by Repetitive Tasks", description: "Staff spending hours on tasks that could be automated, reducing time for high-value work." },
         { title: "Slow Lead Response Times", description: "Leads go unresponded for hours or days, losing them to faster competitors." },
