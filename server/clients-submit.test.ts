@@ -2,10 +2,8 @@ import assert from "node:assert/strict";
 import test, { after, before, beforeEach } from "node:test";
 import express from "express";
 import type { AddressInfo } from "node:net";
-import {
-  registerRoutes,
-  resetClientSubmissionRateLimits,
-} from "./routes";
+import { registerRoutes } from "./routes";
+import { MemoryInquiryRateLimiter } from "./inquiry-rate-limiter";
 import { shouldNavigateToClientSuccess } from "../client/src/lib/client-submission";
 
 const sentNotifications: any[] = [];
@@ -19,6 +17,8 @@ const mailService = {
 let server: Awaited<ReturnType<typeof registerRoutes>>;
 let baseUrl: string;
 let previousApiKey: string | undefined;
+let now = 1_000_000;
+const inquiryRateLimiter = new MemoryInquiryRateLimiter(() => now);
 
 before(async () => {
   previousApiKey = process.env.SENDGRID_API_KEY;
@@ -30,6 +30,7 @@ before(async () => {
   app.use(express.urlencoded({ extended: false }));
   server = await registerRoutes(app, {
     clientSubmissionMailService: mailService,
+    inquiryRateLimiter,
   });
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   const address = server.address() as AddressInfo;
@@ -49,7 +50,8 @@ after(async () => {
 
 beforeEach(() => {
   sentNotifications.length = 0;
-  resetClientSubmissionRateLimits();
+  now = 1_000_000;
+  inquiryRateLimiter.reset();
 });
 
 async function submit(
@@ -126,6 +128,33 @@ test("a fourth submission from the same IP is rate limited", async () => {
 
   const response = await submit(validPayload, ip);
   assert.equal(response.status, 429);
-  assert.equal((await response.json()).ok, false);
+  assert.deepEqual(await response.json(), {
+    ok: false,
+    message: "Too many requests. Please try again later.",
+  });
   assert.equal(sentNotifications.length, 3);
+});
+
+test("rate limits are isolated between client identifiers", async () => {
+  const limitedIp = "203.0.113.45";
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    assert.equal((await submit(validPayload, limitedIp)).status, 200);
+  }
+
+  assert.equal((await submit(validPayload, limitedIp)).status, 429);
+  assert.equal(
+    (await submit(validPayload, "203.0.113.46")).status,
+    200,
+  );
+});
+
+test("rate limits expire after the one-minute window", async () => {
+  const ip = "203.0.113.47";
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    assert.equal((await submit(validPayload, ip)).status, 200);
+  }
+
+  assert.equal((await submit(validPayload, ip)).status, 429);
+  now += 60_000;
+  assert.equal((await submit(validPayload, ip)).status, 200);
 });

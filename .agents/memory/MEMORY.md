@@ -1,1 +1,2 @@
 - [No scanner positioning](no-scanner-positioning.md) — Launchin7 must remain a service-led business systems brand; never introduce scanner or audit-funnel identity.
+- [Database timing tests](database-timing-tests.md) — Use realistic expiry windows when smoke-testing remote database coordination; tiny windows can expire during network round trips.

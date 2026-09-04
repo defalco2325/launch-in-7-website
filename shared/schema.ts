@@ -1,5 +1,12 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -29,6 +36,16 @@ export const auditRequests = pgTable("audit_requests", {
   timeline: text("timeline").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const inquiryRateLimits = pgTable(
+  "inquiry_rate_limits",
+  {
+    identifierHash: varchar("identifier_hash", { length: 64 }).primaryKey(),
+    requestCount: integer("request_count").notNull(),
+    resetAt: timestamp("reset_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [index("inquiry_rate_limits_reset_at_idx").on(table.resetAt)],
+);
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,

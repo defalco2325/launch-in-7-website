@@ -5,6 +5,10 @@ import { insertLeadSchema, insertAuditRequestSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
 import { MailService } from '@sendgrid/mail';
+import {
+  getProductionInquiryRateLimiter,
+  type InquiryRateLimiter,
+} from "./inquiry-rate-limiter";
 
 // Enhanced contact form schema with validation
 const contactFormSchema = insertLeadSchema.extend({
@@ -37,31 +41,6 @@ const auditFormSchema = insertAuditRequestSchema.extend({
     "exploring"
   ]),
 });
-
-// Rate limiting store (simple in-memory)
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
-
-export function resetClientSubmissionRateLimits(): void {
-  rateLimitStore.clear();
-}
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const key = ip;
-  const limit = rateLimitStore.get(key);
-  
-  if (!limit || now > limit.resetTime) {
-    rateLimitStore.set(key, { count: 1, resetTime: now + 60000 }); // 1 minute window
-    return true;
-  }
-  
-  if (limit.count >= 3) { // Max 3 submissions per minute
-    return false;
-  }
-  
-  limit.count++;
-  return true;
-}
 
 function cleanSubject(website: string, businessName: string): string {
   let subject = website || businessName;
@@ -122,6 +101,7 @@ type MailSender = Pick<MailService, "send">;
 
 interface RouteDependencies {
   clientSubmissionMailService?: MailSender;
+  inquiryRateLimiter?: InquiryRateLimiter;
 }
 
 export async function registerRoutes(
@@ -130,6 +110,8 @@ export async function registerRoutes(
 ): Promise<Server> {
   console.log('=== REGISTERING ROUTES ===');
   const clientSubmissionMailService = dependencies.clientSubmissionMailService ?? mailService;
+  const inquiryRateLimiter =
+    dependencies.inquiryRateLimiter ?? getProductionInquiryRateLimiter();
   
   // Contact form submission
   app.post("/api/lead", async (req, res) => {
@@ -231,7 +213,7 @@ export async function registerRoutes(
     try {
       // Rate limiting
       const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
-      if (!checkRateLimit(clientIp)) {
+      if (!(await inquiryRateLimiter.consume(clientIp))) {
         return res.status(429).json({ 
           ok: false, 
           message: "Too many requests. Please try again later." 
