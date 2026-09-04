@@ -25,7 +25,7 @@ export default function Clients() {
 
   return (
     <div className="l7-intake">
-      <div className="l7-intake-intro"><p className="l7-intake-kicker">START A PROJECT / 01</p>
+       <div className="l7-intake-intro"><p className="l7-intake-kicker">START A PROJECT</p>
 
         {/* Hero */}
         <div className="text-center mb-12 max-w-4xl mx-auto">

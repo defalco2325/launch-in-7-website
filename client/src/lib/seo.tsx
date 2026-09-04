@@ -22,7 +22,7 @@ export function updateSEO({
     if (path.startsWith("http")) return path;
     const baseUrl = typeof window !== "undefined" 
       ? `${window.location.protocol}//${window.location.host}`
-      : "https://launchin7.netlify.app";
+      : "";
     return `${baseUrl}${path}`;
   };
 

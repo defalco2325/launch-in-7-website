@@ -1,5 +1,6 @@
 import { ArrowUpRight, Mail, Phone } from "lucide-react";
 import { Link } from "wouter";
+import Logo from "@/components/brand/logo";
 
 const solutions = [
   ["Customer acquisition", "/solutions/customer-acquisition"],
@@ -14,7 +15,7 @@ export default function Footer() {
   return <footer className="l7-footer" id="footer-section">
     <div className="l7-footer-top">
       <div>
-        <Link href="/" className="l7-wordmark l7-wordmark-footer"><span className="l7-mark">7</span><span>LAUNCHIN<span className="l7-wordmark-accent">7</span></span></Link>
+        <Logo linked inverse className="l7-footer-logo" />
         <p className="l7-footer-lede">The operating layer behind serious service businesses. Websites, demand, handoffs, and visibility — designed to work together.</p>
         <div className="l7-footer-contact"><a href="mailto:hello@launchin7.com"><Mail size={14} /> hello@launchin7.com</a><a href="tel:7025826584"><Phone size={14} /> (702) 582-6584</a></div>
       </div>

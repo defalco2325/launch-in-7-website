@@ -17,23 +17,20 @@
     
     <!-- Favicon - Multiple formats for browser compatibility -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="shortcut icon" href="/favicon.ico" />
     
     <!-- Content Security Policy for PWA - Relaxed for Calendly integration -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; frame-src *;">
     
     <!-- PWA Configuration -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#3B82F6">
+    <meta name="theme-color" content="#123842">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Launch in 7">
-    <link rel="apple-touch-icon" href="/favicon.png">
+    <meta name="apple-mobile-web-app-title" content="Launchin7">
+    <link rel="apple-touch-icon" href="/favicon.svg">
     
     <!-- Critical resource hints for faster loading -->
-    <link rel="dns-prefetch" href="//netlify.app">
     <link rel="preconnect" href="https://calendly.com" crossorigin>
     
     <!-- Entry JS will be handled by Vite build process -->
@@ -41,40 +38,29 @@
     <!-- Using system fonts only - no font preloading to avoid Chrome warnings -->
     
     <!-- SEO and performance meta tags -->
-    <meta name="description" content="Professional website development with 7-day guaranteed delivery. Custom design, mobile optimization, and conversion-focused development for your business.">
-    <meta name="keywords" content="website development, web design, 7 day delivery, mobile optimization, professional websites">
+    <meta name="description" content="Launchin7 builds connected business systems: websites, demand, handoffs, bookings, payments, and visibility designed to work together.">
+    <meta name="keywords" content="business systems, CRM automation, conversion websites, lead generation, connected operations">
     
     <!-- Open Graph tags for social sharing (iMessage, Facebook, etc.) -->
-    <meta property="og:title" content="Launch in 7 - Your Website, Live in 7 Days">
-    <meta property="og:description" content="Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.">
-    <meta property="og:url" content="https://launchin7.netlify.app">
-    <meta property="og:image" content="https://launchin7.netlify.app/logo.png">
-    <meta property="og:image:secure_url" content="https://launchin7.netlify.app/logo.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
-    <meta property="og:image:alt" content="Launch in 7 Logo - Professional Website Development">
+    <meta property="og:title" content="Launchin7 — Business systems that move growth">
+    <meta property="og:description" content="Connected websites, demand, CRM, automation, bookings, payments, and visibility for serious businesses.">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Launch in 7">
+    <meta property="og:site_name" content="Launchin7">
     
     <!-- Twitter Card tags -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Launch in 7 - Your Website, Live in 7 Days">
-    <meta name="twitter:description" content="Conversion-focused, SEO-ready website builds designed to grow your business fast. 7-day turnaround guarantee.">
-    <meta name="twitter:image" content="https://launchin7.netlify.app/logo.png">
+    <meta name="twitter:title" content="Launchin7 — Business systems that move growth">
+    <meta name="twitter:description" content="Connected systems for demand, handoffs, bookings, payments, and visibility.">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://launchin7.netlify.app/">
     
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Launch in 7",
-      "description": "Professional website development with 7-day guaranteed delivery",
-      "url": "https://launchin7.netlify.app",
-      "logo": "https://launchin7.netlify.app/logo.png",
+      "name": "Launchin7",
+      "description": "Connected business systems for serious service and professional businesses",
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer service",
@@ -91,18 +77,17 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Launch in 7",
-      "url": "https://launchin7.netlify.app",
-      "description": "Professional website development with guaranteed 7-day delivery",
+      "name": "Launchin7",
+      "description": "Connected business systems for serious service and professional businesses",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://launchin7.netlify.app/?q={search_term_string}",
+        "target": "/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
     </script>
     
-    <title>Launch in 7 - Professional Website Development</title>
+    <title>Launchin7 — Business systems that move growth</title>
   </head>
   <body>
     <!-- Hidden form for Netlify Forms detection at build time -->
@@ -136,20 +121,6 @@
       <input name="phone" />
       <input name="website" />
       <textarea name="message"></textarea>
-    </form>
-    
-    <!-- Audit Form -->
-    <form name="launchin7-audit" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="hidden" name="form-name" value="launchin7-audit" />
-      <p>
-        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-      </p>
-      <input name="name" />
-      <input name="email" />
-      <input name="website" />
-      <input name="goal" />
-      <input name="timeline" />
-      <input name="budget" />
     </form>
     
     <script type="module" src="/src/main.tsx"></script>

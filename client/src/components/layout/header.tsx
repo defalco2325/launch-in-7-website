@@ -1,6 +1,7 @@
 import { useState, memo, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import Logo from "@/components/brand/logo";
 
 const solutions = [
   ["Customer acquisition", "/solutions/customer-acquisition"],
@@ -49,9 +50,7 @@ const Header = memo(function Header() {
   return (
     <header className="l7-global-header">
       <div className="l7-header-inner">
-        <Link href="/" className="l7-wordmark" onClick={() => window.scrollTo({ top: 0 })}>
-          <span className="l7-mark">7</span><span>LAUNCHIN<span className="l7-wordmark-accent">7</span></span>
-        </Link>
+        <Logo linked className="l7-header-logo" />
 
           {/* Desktop Navigation */}
           <nav className="l7-global-nav">
@@ -71,7 +70,7 @@ const Header = memo(function Header() {
                 <div className="l7-solutions-dropdown">
                   {solutions.map(([label, href], i) => (
                     <Link key={href} href={href} onClick={() => setIsSolutionsOpen(false)}>
-                      <span>0{i + 1}</span>{label}<ArrowUpRight size={14} />
+                      <span className="l7-menu-signal" aria-hidden="true" />{label}<ArrowUpRight size={14} />
                     </Link>
                   ))}
                   </div>

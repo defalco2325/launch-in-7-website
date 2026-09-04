@@ -656,6 +656,26 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;op
 @media(max-width:640px){.l7-hero-mast,.l7-hero-inner{padding-left:20px;padding-right:20px}.l7-hero-mast{font-size:8px}.l7-hero-coordinate{display:none}.l7-hero-inner{padding-top:75px;padding-bottom:80px}.l7-hero h1{font-size:clamp(4rem,20vw,6rem)}.l7-orbit-art{min-height:315px;transform:scale(.78);transform-origin:top center;margin-bottom:-65px}.l7-scroll{left:20px}.l7-section{padding:80px 20px}.l7-split,.l7-proof-box{display:block}.l7-split>div,.l7-split>p{margin-top:28px}.l7-outcome-row,.l7-method-grid,.l7-price-grid{grid-template-columns:1fr}.l7-outcome-row{margin-top:60px}.l7-outcome-row>div{border-right:0;border-bottom:1px solid var(--line);padding-bottom:19px;margin-right:0}.l7-system-list{margin-top:45px}.l7-system-row{grid-template-columns:35px 22px 1fr 25px;gap:10px}.l7-system-row h3{font-size:16px}.l7-method-grid{margin-top:60px}.l7-method-grid>div{border-right:0;border-bottom:1px solid rgba(216,229,223,.2);padding:20px 0;margin:0}.l7-proof-note{margin-top:40px}.l7-price{min-height:400px}.l7-growth{display:block}.l7-growth .l7-underlink{margin-top:20px}.l7-final{padding:75px 20px;display:block}.l7-final h2{font-size:clamp(3.5rem,17vw,6rem)}.l7-final .l7-btn{margin-top:28px}.l7-contact-strip{display:block;padding:40px 20px}.l7-contact-strip>div{margin-top:25px}.l7-contact-links{margin-top:25px!important}}
 @media(prefers-reduced-motion:reduce){.l7-home *,.l7-home *:before,.l7-home *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+/* The L7 identity: a precise open-frame monogram, never a generic badge. */
+.l7-logo{display:inline-flex;align-items:center;gap:10px;color:var(--l7-ink);text-decoration:none}
+.l7-logo-mark{width:30px;height:30px;display:block;overflow:visible}
+.l7-logo-frame{fill:none;stroke:currentColor;stroke-width:1.5;opacity:.3}
+.l7-logo-l,.l7-logo-seven{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square;stroke-linejoin:miter}
+.l7-logo-seven{color:var(--l7-coral)}
+.l7-logo-type{font:800 15px/1 var(--l7-sans);letter-spacing:.17em}
+.l7-logo-type span{color:var(--l7-coral)}
+.l7-logo.is-inverse{color:#edf2e9}
+.l7-logo.is-inverse .l7-logo-frame{opacity:.35}
+.l7-logo.is-compact .l7-logo-mark{width:32px;height:32px}
+.l7-header-logo{margin-right:auto}
+.l7-footer-logo{color:#edf2e9}
+.l7-menu-signal{width:4px;height:4px;background:var(--l7-coral);display:block;align-self:center}
+.l7-outcome-glyph{width:20px;height:8px;border-top:1px solid currentColor;border-bottom:1px solid currentColor;opacity:.7}
+.l7-outcome-glyph:after{content:"";display:block;width:8px;height:1px;background:currentColor;margin-top:3px}
+.l7-section-num{font-size:0}
+.l7-section-num span{font-size:10px}
+.l7-feature-rule,.l7-build-rule{display:block;width:18px;height:2px;background:var(--l7-coral);margin-top:6px}
+
 /* Unified Launchin7 motion language
    Palette: night teal / warm paper / mint / coral. Motion is quiet, tactile,
    and always preserves legibility. Legacy utility names below are aliases so
