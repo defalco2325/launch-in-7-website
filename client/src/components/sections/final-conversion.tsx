@@ -7,10 +7,7 @@ export default function FinalConversion() {
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   
   const handleStartBuild = () => {
-    const auditSection = document.querySelector('#audit-section');
-    if (auditSection) {
-      auditSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.location.href = '/clients';
   };
 
   const handleStrategyCall = () => {

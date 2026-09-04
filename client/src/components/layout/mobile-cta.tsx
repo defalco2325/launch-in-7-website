@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
 
 export default function MobileCTA() {
-
   const handleStartBuild = () => {
-    const auditSection = document.querySelector('#audit-section');
-    if (auditSection) {
-      auditSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.location.href = '/clients';
   };
 
   return (
