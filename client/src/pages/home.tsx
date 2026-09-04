@@ -67,13 +67,26 @@ export default function Home() {
           <h2>Growth gets<br /><em>lost in the middle.</em></h2>
           <div><p>Most businesses do not need another tool. They need the space between their tools to stop leaking opportunity.</p><p className="l7-callout">We design the connective tissue — then make every important handoff easier to see, own, and improve.</p></div>
         </div>
-        <div className="l7-outcome-row">{[["01", "Fewer lost leads", "Every serious enquiry captured and routed."], ["02", "Faster follow-up", "Every opportunity gets a clear next move."], ["03", "More booked work", "Less friction between interest and yes."], ["04", "One view of growth", "The signal you need, without the noise."]].map(([n, t, c]) => <div key={n}><b>{n}</b><strong>{t}</strong><span>{c}</span></div>)}</div>
+        <div className="l7-outcome-editorial" aria-label="Business outcomes">
+          {[["01", "Fewer lost leads", "Every serious enquiry captured and routed.", "CAPTURE"], ["02", "Faster follow-up", "Every opportunity gets a clear next move.", "MOMENTUM"], ["03", "More booked work", "Less friction between interest and yes.", "CONVERSION"], ["04", "One view of growth", "The signal you need, without the noise.", "CLARITY"]].map(([n, t, c, tag], i) =>
+            <article className={`l7-outcome-panel outcome-${i + 1}`} key={n}>
+              <div className="l7-outcome-panel-top"><b>{n}</b><span>{tag}</span></div>
+              <div className="l7-outcome-signal"><i /><i /><i /><i /><i /></div>
+              <div><strong>{t}</strong><p>{c}</p></div>
+              <span className="l7-outcome-index">0{i + 1} / 04</span>
+            </article>
+          )}
+        </div>
       </section>
 
       <section className="l7-section l7-systems" id="systems">
         <div className="l7-section-num">02 <span>THE BUILD</span></div>
         <div className="l7-split l7-systems-heading"><h2>One system.<br /><em>Six useful layers.</em></h2><p>Start with the bottleneck. Build what creates leverage. Connect the rest when the business is ready.</p></div>
-        <div className="l7-system-list">{systems.map(([n, title, copy, href]) => <Link href={href} className="l7-system-row" key={n}><span className="l7-system-n">{n}</span><Layers3 size={18} /><h3>{title}</h3><p>{copy}</p><ArrowUpRight className="l7-row-arrow" size={20} /></Link>)}</div>
+        <div className="l7-system-map" aria-label="Connected business systems">
+          <div className="l7-system-map-core"><span>THE</span><strong>OPERATING<br />LAYER</strong><small>06 connected<br />systems</small></div>
+          <span className="l7-system-line line-a" /><span className="l7-system-line line-b" /><span className="l7-system-line line-c" /><span className="l7-system-line line-d" /><span className="l7-system-line line-e" />
+          <div className="l7-system-list">{systems.map(([n, title, copy, href], i) => <Link href={href} className={`l7-system-card system-card-${i + 1}`} key={n}><span className="l7-system-n">{n}</span><span className="l7-system-card-icon"><Layers3 size={16} /></span><div><h3>{title}</h3><p>{copy}</p></div><ArrowUpRight className="l7-row-arrow" size={18} /></Link>)}</div>
+        </div>
       </section>
 
       <section className="l7-ink-section" id="process-section">
